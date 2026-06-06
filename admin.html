@@ -201,6 +201,24 @@
         <label>预计发货日期</label>
         <input type="text" id="addDelivery" placeholder="如：2026年7月1日">
       </div>
+      <div class="field">
+        <label>快递公司（发货后填写）</label>
+        <select id="addCarrier">
+          <option value="">暂不填写</option>
+          <option value="shunfeng">顺丰速运</option>
+          <option value="zhongtong">中通快递</option>
+          <option value="yuantong">圆通速递</option>
+          <option value="shentong">申通快递</option>
+          <option value="yunda">韵达快递</option>
+          <option value="jtexpress">极兔速递</option>
+          <option value="jd">京东物流</option>
+          <option value="debangwuliu">德邦物流</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>快递单号（发货后填写）</label>
+        <input type="text" id="addTracking" placeholder="如：SF1234567890123">
+      </div>
       <button class="btn-add" onclick="addOrder()">➕ 添加到列表</button>
     </div>
   </div>
@@ -313,6 +331,8 @@ function addOrder() {
   const stage = document.getElementById('addStage').value;
   const note = document.getElementById('addNote').value.trim();
   const delivery = document.getElementById('addDelivery').value.trim();
+  const carrier = document.getElementById('addCarrier').value;
+  const trackingNum = document.getElementById('addTracking').value.trim();
   
   if (!id || !customer || !product) {
     alert('请填写订单编号、客户名称和产品描述');
@@ -322,15 +342,23 @@ function addOrder() {
   const now = new Date();
   const dateStr = `${now.getMonth()+1}月${now.getDate()}日`;
   
+  // Build note with tracking info if provided
+  let fullNote = note;
+  if (trackingNum) {
+    fullNote = note ? note + ' 快递：' + trackingNum : '快递：' + trackingNum;
+  }
+  
   pendingChanges.push({
     action: 'add',
     orderId: id,
     customer: customer,
     product: product,
     stage_key: stage,
-    note: note,
+    note: fullNote,
     date: dateStr,
-    estimated_delivery: delivery
+    estimated_delivery: delivery,
+    carrier: carrier,
+    tracking_number: trackingNum
   });
   
   orders[id] = {
@@ -338,7 +366,10 @@ function addOrder() {
     product: product,
     stage_key: stage,
     estimated_delivery: delivery || '待定',
-    updates: note ? [{ date: dateStr, stage_key: stage, note: note }] : []
+    updates: fullNote ? [{ date: dateStr, stage_key: stage, note: fullNote }] : [],
+    carrier: carrier,
+    tracking_number: trackingNum,
+    tracking_history: []
   };
   
   // Clear form
@@ -347,6 +378,8 @@ function addOrder() {
   document.getElementById('addProduct').value = '';
   document.getElementById('addNote').value = '';
   document.getElementById('addDelivery').value = '';
+  document.getElementById('addCarrier').value = '';
+  document.getElementById('addTracking').value = '';
   
   renderList();
   switchTab('list');

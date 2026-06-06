@@ -278,6 +278,77 @@
     color: var(--success);
   }
 
+  /* Tracking Section */
+  .tracking-section {
+    margin-top: 20px;
+    display: none;
+  }
+  .tracking-section.show { display: block; }
+  .tracking-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+  .tracking-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .tracking-badge.transit { background: #FFF3E0; color: #E67E22; }
+  .tracking-badge.picked { background: #E3F2FD; color: #1565C0; }
+  .tracking-badge.signed { background: #E8F8F0; color: #27AE60; }
+  .tracking-badge.default { background: #F0EDE8; color: #666; }
+
+  .tracking-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    position: relative;
+  }
+  .tracking-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 32px;
+    bottom: -10px;
+    width: 2px;
+    background: var(--border);
+  }
+  .tracking-item.latest .tracking-dot {
+    background: var(--navy);
+    border-color: var(--navy);
+    box-shadow: 0 0 0 4px rgba(27, 40, 56, 0.1);
+  }
+  .tracking-dot {
+    width: 16px;
+    min-width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid var(--border);
+    margin-top: 2px;
+  }
+  .tracking-content .t-time {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-bottom: 2px;
+  }
+  .tracking-content .t-desc {
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 500;
+  }
+  .tracking-item.latest .t-desc {
+    color: var(--navy);
+    font-weight: 600;
+  }
+
   /* Timeline Updates */
   .timeline {
     margin-top: 20px;
@@ -435,6 +506,15 @@
     <div class="timeline" id="timeline">
       <div class="timeline-title">进度记录</div>
       <!-- Timeline items injected by JS -->
+    </div>
+
+    <!-- Logistics Tracking -->
+    <div class="tracking-section" id="trackingSection">
+      <div class="tracking-title">📦 物流追踪</div>
+      <div class="tracking-badge" id="trackingBadge"></div>
+      <div class="tracking-list" id="trackingList">
+        <!-- Tracking items injected by JS -->
+      </div>
     </div>
   </div>
 
@@ -600,6 +680,45 @@ function renderOrder(orderId, order) {
       </div>`;
     timeline.appendChild(item);
   });
+
+  // Tracking section
+  const trackingSection = document.getElementById('trackingSection');
+  const trackingBadge = document.getElementById('trackingBadge');
+  const trackingList = document.getElementById('trackingList');
+  
+  const trackingHistory = order.tracking_history || [];
+  const trackingStatus = order.tracking_status || '';
+  const trackingNum = order.tracking_number || '';
+  const carrier = order.carrier || '';
+  
+  if (trackingHistory.length > 0) {
+    trackingSection.classList.add('show');
+    
+    // Badge
+    let badgeClass = 'default';
+    if (trackingStatus.includes('签收')) badgeClass = 'signed';
+    else if (trackingStatus.includes('揽收')) badgeClass = 'picked';
+    else if (trackingStatus.includes('派送') || trackingStatus.includes('在途')) badgeClass = 'transit';
+    
+    trackingBadge.className = 'tracking-badge ' + badgeClass;
+    trackingBadge.textContent = trackingStatus + (carrier ? ' · ' + carrier : '') + ' · ' + trackingNum;
+    
+    // History items
+    trackingList.querySelectorAll('.tracking-item').forEach(el => el.remove());
+    trackingHistory.forEach((t, i) => {
+      const item = document.createElement('div');
+      item.className = 'tracking-item' + (i === 0 ? ' latest' : '');
+      item.innerHTML = `
+        <div class="tracking-dot"></div>
+        <div class="tracking-content">
+          <div class="t-time">${t.time}</div>
+          <div class="t-desc">${t.desc}</div>
+        </div>`;
+      trackingList.appendChild(item);
+    });
+  } else {
+    trackingSection.classList.remove('show');
+  }
 }
 
 function showError(msg) {

@@ -11,7 +11,10 @@
           "stage_key": "shipping",
           "note": "小拉专送 车牌号赣AAD6193"
         }
-      ]
+      ],
+      "tracking_number": "",
+      "carrier": "",
+      "tracking_history": []
     },
     "AT260601WJ-311": {
       "customer": "长风体育",
@@ -24,7 +27,10 @@
           "stage_key": "shipping",
           "note": "小拉专车送货"
         }
-      ]
+      ],
+      "tracking_number": "",
+      "carrier": "",
+      "tracking_history": []
     },
     "AT260603SYS-324": {
       "customer": "高新区",
@@ -37,7 +43,10 @@
           "stage_key": "production",
           "note": "印花已打纸，还没印花"
         }
-      ]
+      ],
+      "tracking_number": "",
+      "carrier": "",
+      "tracking_history": []
     }
   }
 }
