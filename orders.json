@@ -1,74 +1,5 @@
 {
   "orders": {
-    "ORD-2026001": {
-      "customer": "张教练",
-      "product": "星火篮球队服 · 12套定制",
-      "stage_key": "production",
-      "estimated_delivery": "2026年6月15日",
-      "updates": [
-        {
-          "date": "6月1日",
-          "stage_key": "design",
-          "note": "设计稿已确认，队徽刺绣方案通过"
-        },
-        {
-          "date": "6月3日",
-          "stage_key": "fabric",
-          "note": "速干面料已下单采购，预计3天到厂"
-        },
-        {
-          "date": "6月6日",
-          "stage_key": "production",
-          "note": "面料已到，已进入缝制车间开始生产"
-        }
-      ]
-    },
-    "ORD-2026002": {
-      "customer": "李经理",
-      "product": "远航科技公司团体制服 · 50套",
-      "stage_key": "fabric",
-      "estimated_delivery": "2026年6月20日",
-      "updates": [
-        {
-          "date": "6月2日",
-          "stage_key": "design",
-          "note": "制服设计方案已确认，含公司Logo刺绣"
-        },
-        {
-          "date": "6月5日",
-          "stage_key": "fabric",
-          "note": "精梳棉面料已下单，供应商确认排期中"
-        }
-      ]
-    },
-    "ORD-2026003": {
-      "customer": "王老师",
-      "product": "阳光小学运动会班服 · 35套",
-      "stage_key": "shipping",
-      "estimated_delivery": "2026年6月8日",
-      "updates": [
-        {
-          "date": "5月20日",
-          "stage_key": "design",
-          "note": "班服设计方案确认，家长群投票通过"
-        },
-        {
-          "date": "5月23日",
-          "stage_key": "fabric",
-          "note": "纯棉面料采购完成"
-        },
-        {
-          "date": "5月28日",
-          "stage_key": "production",
-          "note": "生产完成，已进入质检环节"
-        },
-        {
-          "date": "6月5日",
-          "stage_key": "shipping",
-          "note": "已打包发货，顺丰快递：SF1234567890"
-        }
-      ]
-    },
     "AT260601WJ-309": {
       "customer": "新建区龙舟队",
       "product": "紫色长袖34件 紫色短袖34件",
@@ -92,6 +23,19 @@
           "date": "6月6日",
           "stage_key": "shipping",
           "note": "小拉专车送货"
+        }
+      ]
+    },
+    "AT260603SYS-324": {
+      "customer": "高新区",
+      "product": "35件长袖龙舟服 凉感冰丝面料",
+      "stage_key": "production",
+      "estimated_delivery": "2026年6月9日",
+      "updates": [
+        {
+          "date": "6月6日",
+          "stage_key": "production",
+          "note": "印花已打纸，还没印花"
         }
       ]
     }
