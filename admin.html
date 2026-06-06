@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>订单管理后台</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #FAF8F5;
+    color: #2C3E50;
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  h1 { font-size: 22px; margin-bottom: 6px; color: #1B2838; }
+  .subtitle { font-size: 13px; color: #7F8C8D; margin-bottom: 24px; }
+  
+  .card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  }
+  .card h2 { font-size: 16px; margin-bottom: 14px; color: #1B2838; }
+
+  .form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .field { display: flex; flex-direction: column; gap: 4px; }
+  .field label { font-size: 13px; font-weight: 600; color: #555; }
+  .field input, .field select, .field textarea {
+    height: 42px;
+    border: 2px solid #E8E2DA;
+    border-radius: 10px;
+    padding: 0 12px;
+    font-size: 15px;
+    background: #FAF8F5;
+    outline: none;
+    font-family: inherit;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: #C8956C; }
+  .field textarea { height: 80px; padding: 10px 12px; resize: vertical; }
+
+  button {
+    height: 44px;
+    padding: 0 24px;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.1s;
+  }
+  button:active { transform: scale(0.97); }
+  .btn-primary { background: #1B2838; color: #fff; width: 100%; margin-top: 8px; }
+  .btn-add { background: #C8956C; color: #fff; width: 100%; }
+  .btn-danger { background: #fff; color: #E74C3C; border: 2px solid #E74C3C; font-size: 12px; padding: 0 12px; height: 32px; }
+  .btn-copy { background: #27AE60; color: #fff; width: 100%; margin-top: 10px; }
+
+  .order-list { display: flex; flex-direction: column; gap: 10px; }
+  .order-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 14px; background: #FAF8F5; border-radius: 10px;
+    cursor: pointer; transition: background 0.15s;
+    border: 2px solid transparent;
+  }
+  .order-item:hover { background: #F0EDE8; }
+  .order-item.selected { border-color: #C8956C; background: #FDF6EF; }
+  .order-item .info { flex: 1; min-width: 0; }
+  .order-item .oid { font-size: 13px; font-weight: 700; color: #1B2838; }
+  .order-item .detail { font-size: 12px; color: #7F8C8D; margin-top: 2px; }
+  .order-item .stage-badge {
+    font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px;
+    white-space: nowrap; margin-left: 8px;
+  }
+  .badge-design { background: #E8F0FE; color: #1A73E8; }
+  .badge-fabric { background: #FFF3E0; color: #E67E22; }
+  .badge-production { background: #FCE4EC; color: #C62828; }
+  .badge-shipping { background: #E8F8F0; color: #27AE60; }
+
+  .output-area {
+    background: #1B2838; color: #F0EDE8; border-radius: 10px;
+    padding: 16px; font-size: 12px; font-family: monospace;
+    max-height: 300px; overflow-y: auto; white-space: pre-wrap;
+    word-break: break-all; margin-top: 10px; display: none;
+  }
+  .output-area.show { display: block; }
+  .output-area code { color: #C8956C; }
+
+  .toast {
+    position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+    background: #27AE60; color: #fff; padding: 10px 24px; border-radius: 20px;
+    font-size: 14px; font-weight: 600; display: none; z-index: 99;
+  }
+  .toast.show { display: block; animation: fadeInOut 2s ease; }
+  @keyframes fadeInOut {
+    0% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+    15% { opacity: 1; transform: translateX(-50%) translateY(0); }
+    85% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  .tabs { display: flex; gap: 0; margin-bottom: 0; }
+  .tab {
+    flex: 1; text-align: center; padding: 10px; font-size: 14px; font-weight: 600;
+    cursor: pointer; border-bottom: 3px solid transparent; color: #999;
+    transition: all 0.2s;
+  }
+  .tab.active { color: #1B2838; border-bottom-color: #C8956C; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .empty-note { text-align: center; color: #999; font-size: 14px; padding: 20px; }
+</style>
+</head>
+<body>
+
+<h1>📋 订单管理后台</h1>
+<p class="subtitle">添加 / 修改订单 → 生成更新内容 → 发给我 → 页面刷新生效</p>
+
+<div class="toast" id="toast">✅ 已复制！发给 Hermes 即可</div>
+
+<!-- Tabs -->
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('list')">📦 订单列表</div>
+  <div class="tab" onclick="switchTab('add')">➕ 新增订单</div>
+</div>
+
+<!-- Order List -->
+<div class="tab-content active" id="tab-list">
+  <div class="card">
+    <div class="order-list" id="orderList"></div>
+    <div class="empty-note" id="emptyNote">暂无订单</div>
+  </div>
+
+  <!-- Edit selected order -->
+  <div class="card" id="editCard" style="display:none">
+    <h2>✏️ 修改订单：<span id="editOrderId"></span></h2>
+    <div class="form-row">
+      <div class="field">
+        <label>当前进度</label>
+        <select id="editStage">
+          <option value="design">设计确认</option>
+          <option value="fabric">面料采购</option>
+          <option value="production">生产中</option>
+          <option value="shipping">已发货</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>进度备注</label>
+        <input type="text" id="editNote" placeholder="如：面料已到厂，开始缝制">
+      </div>
+      <div class="field">
+        <label>预计发货日期</label>
+        <input type="text" id="editDelivery" placeholder="如：2026年6月20日">
+      </div>
+      <button class="btn-primary" onclick="updateOrder()">✅ 更新此订单</button>
+      <button class="btn-danger" onclick="deleteOrder()" style="width:100%;margin-top:6px">🗑 删除此订单</button>
+    </div>
+  </div>
+
+  <button class="btn-copy" onclick="generateAndCopy()">📋 生成更新并复制</button>
+</div>
+
+<!-- Add Order -->
+<div class="tab-content" id="tab-add">
+  <div class="card">
+    <h2>新增订单</h2>
+    <div class="form-row">
+      <div class="field">
+        <label>订单编号</label>
+        <input type="text" id="addOrderId" placeholder="如：ORD-2026004">
+      </div>
+      <div class="field">
+        <label>客户名称</label>
+        <input type="text" id="addCustomer" placeholder="如：李教练">
+      </div>
+      <div class="field">
+        <label>产品描述</label>
+        <input type="text" id="addProduct" placeholder="如：足球队服 · 15套">
+      </div>
+      <div class="field">
+        <label>当前进度</label>
+        <select id="addStage">
+          <option value="design">设计确认</option>
+          <option value="fabric">面料采购</option>
+          <option value="production">生产中</option>
+          <option value="shipping">已发货</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>进度备注</label>
+        <input type="text" id="addNote" placeholder="如：设计方案已确认通过">
+      </div>
+      <div class="field">
+        <label>预计发货日期</label>
+        <input type="text" id="addDelivery" placeholder="如：2026年7月1日">
+      </div>
+      <button class="btn-add" onclick="addOrder()">➕ 添加到列表</button>
+    </div>
+  </div>
+</div>
+
+<!-- Output -->
+<div class="card" id="outputCard" style="display:none">
+  <h2>📤 要发给 Hermes 的内容</h2>
+  <div class="output-area" id="outputArea"></div>
+  <button class="btn-copy" onclick="copyOutput()">📋 复制内容</button>
+  <p style="font-size:12px;color:#999;text-align:center;margin-top:8px">把上面内容粘贴发给 Hermes → 自动更新线上页面</p>
+</div>
+
+<script>
+let orders = {};
+let selectedOrder = null;
+let pendingChanges = [];
+
+const STAGE_NAMES = { design: '设计确认', fabric: '面料采购', production: '生产中', shipping: '已发货' };
+const STAGE_BADGES = { design: 'badge-design', fabric: 'badge-fabric', production: 'badge-production', shipping: 'badge-shipping' };
+
+async function loadOrders() {
+  try {
+    const resp = await fetch('orders.json?' + Date.now());
+    orders = (await resp.json()).orders || {};
+  } catch(e) {
+    orders = {};
+  }
+  renderList();
+}
+loadOrders();
+
+function renderList() {
+  const list = document.getElementById('orderList');
+  const empty = document.getElementById('emptyNote');
+  list.innerHTML = '';
+  const ids = Object.keys(orders);
+  if (ids.length === 0) {
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+  ids.forEach(id => {
+    const o = orders[id];
+    const div = document.createElement('div');
+    div.className = 'order-item' + (selectedOrder === id ? ' selected' : '');
+    div.onclick = () => selectOrder(id);
+    div.innerHTML = `
+      <div class="info">
+        <div class="oid">${id}</div>
+        <div class="detail">${o.customer} · ${o.product}</div>
+      </div>
+      <span class="stage-badge ${STAGE_BADGES[o.stage_key] || ''}">${STAGE_NAMES[o.stage_key] || o.stage_key}</span>`;
+    list.appendChild(div);
+  });
+}
+
+function selectOrder(id) {
+  selectedOrder = id;
+  renderList();
+  const o = orders[id];
+  document.getElementById('editCard').style.display = 'block';
+  document.getElementById('editOrderId').textContent = id;
+  document.getElementById('editStage').value = o.stage_key;
+  document.getElementById('editNote').value = '';
+  document.getElementById('editDelivery').value = o.estimated_delivery || '';
+  document.getElementById('editCard').scrollIntoView({behavior:'smooth'});
+}
+
+function updateOrder() {
+  if (!selectedOrder) return;
+  const newStage = document.getElementById('editStage').value;
+  const note = document.getElementById('editNote').value.trim();
+  const delivery = document.getElementById('editDelivery').value.trim();
+  
+  const o = orders[selectedOrder];
+  const now = new Date();
+  const dateStr = `${now.getMonth()+1}月${now.getDate()}日`;
+  
+  // Add to pending changes
+  pendingChanges.push({
+    action: 'update',
+    orderId: selectedOrder,
+    stage_key: newStage,
+    note: note,
+    date: dateStr,
+    estimated_delivery: delivery
+  });
+  
+  // Update local
+  o.stage_key = newStage;
+  if (note) {
+    o.updates = o.updates || [];
+    o.updates.push({ date: dateStr, stage_key: newStage, note: note });
+  }
+  if (delivery) o.estimated_delivery = delivery;
+  
+  document.getElementById('editNote').value = '';
+  renderList();
+  document.getElementById('editCard').style.display = 'none';
+  selectedOrder = null;
+  
+  showToast('✅ 订单已更新（待提交）');
+}
+
+function addOrder() {
+  const id = document.getElementById('addOrderId').value.trim();
+  const customer = document.getElementById('addCustomer').value.trim();
+  const product = document.getElementById('addProduct').value.trim();
+  const stage = document.getElementById('addStage').value;
+  const note = document.getElementById('addNote').value.trim();
+  const delivery = document.getElementById('addDelivery').value.trim();
+  
+  if (!id || !customer || !product) {
+    alert('请填写订单编号、客户名称和产品描述');
+    return;
+  }
+  
+  const now = new Date();
+  const dateStr = `${now.getMonth()+1}月${now.getDate()}日`;
+  
+  pendingChanges.push({
+    action: 'add',
+    orderId: id,
+    customer: customer,
+    product: product,
+    stage_key: stage,
+    note: note,
+    date: dateStr,
+    estimated_delivery: delivery
+  });
+  
+  orders[id] = {
+    customer: customer,
+    product: product,
+    stage_key: stage,
+    estimated_delivery: delivery || '待定',
+    updates: note ? [{ date: dateStr, stage_key: stage, note: note }] : []
+  };
+  
+  // Clear form
+  document.getElementById('addOrderId').value = '';
+  document.getElementById('addCustomer').value = '';
+  document.getElementById('addProduct').value = '';
+  document.getElementById('addNote').value = '';
+  document.getElementById('addDelivery').value = '';
+  
+  renderList();
+  switchTab('list');
+  showToast('✅ 订单已添加（待提交）');
+}
+
+function deleteOrder() {
+  if (!selectedOrder) return;
+  if (!confirm(`确定删除订单 ${selectedOrder}？`)) return;
+  
+  pendingChanges.push({
+    action: 'delete',
+    orderId: selectedOrder
+  });
+  
+  delete orders[selectedOrder];
+  selectedOrder = null;
+  document.getElementById('editCard').style.display = 'none';
+  renderList();
+  showToast('🗑 订单已删除（待提交）');
+}
+
+function generateAndCopy() {
+  if (pendingChanges.length === 0) {
+    alert('没有待提交的更改');
+    return;
+  }
+  
+  let text = '更新订单：\n\n';
+  pendingChanges.forEach(c => {
+    if (c.action === 'add') {
+      text += `➕ 新增 ${c.orderId}\n   客户：${c.customer}\n   产品：${c.product}\n   进度：${STAGE_NAMES[c.stage_key]}\n   备注：${c.note}\n   预计发货：${c.estimated_delivery}\n\n`;
+    } else if (c.action === 'update') {
+      text += `✏️ ${c.orderId} → ${STAGE_NAMES[c.stage_key]}\n   备注：${c.note}\n   预计发货：${c.estimated_delivery}\n\n`;
+    } else if (c.action === 'delete') {
+      text += `🗑 删除 ${c.orderId}\n\n`;
+    }
+  });
+  
+  document.getElementById('outputArea').textContent = text;
+  document.getElementById('outputCard').style.display = 'block';
+  document.getElementById('outputCard').scrollIntoView({behavior:'smooth'});
+  
+  // Copy
+  navigator.clipboard.writeText(text).then(() => showToast('✅ 已复制！发给 Hermes 即可'));
+}
+
+function copyOutput() {
+  const text = document.getElementById('outputArea').textContent;
+  navigator.clipboard.writeText(text).then(() => showToast('✅ 已复制！发给 Hermes 即可'));
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((t,i) => {
+    t.classList.toggle('active', (tab === 'list' && i === 0) || (tab === 'add' && i === 1));
+  });
+  document.getElementById('tab-list').classList.toggle('active', tab === 'list');
+  document.getElementById('tab-add').classList.toggle('active', tab === 'add');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.remove('show');
+  void t.offsetWidth;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+</script>
+</body>
+</html>
