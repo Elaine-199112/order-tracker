@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电竞T恤设计稿</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0d0d1a;color:#fff;font-family:"PingFang SC","Microsoft YaHei",sans-serif;padding:20px}
+h1{text-align:center;font-size:24px;margin:20px 0 5px;background:linear-gradient(90deg,#00f0ff,#a000ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sub{text-align:center;color:#666;font-size:13px;margin-bottom:30px}
+
+.grid{display:flex;flex-wrap:wrap;gap:24px;justify-content:center;max-width:1100px;margin:0 auto}
+
+.card{background:#141428;border-radius:20px;overflow:hidden;width:320px;box-shadow:0 8px 40px rgba(0,0,0,.5);transition:transform .2s}
+.card:hover{transform:translateY(-4px)}
+
+.shirt-area{height:380px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+
+/* T-shirt shape */
+.shirt{width:200px;height:260px;position:relative;border-radius:16px 16px 4px 4px}
+.shirt::before{content:'';position:absolute;top:-24px;left:50px;width:100px;height:30px;border-radius:20px 20px 0 0}
+.shirt::after{content:'';position:absolute;top:30px;left:-30px;width:30px;height:100px;border-radius:30px 0 0 30px}
+
+/* === STYLE 1: Cyber Neon === */
+.s1{background:linear-gradient(160deg, #080020,#140040,#200060,#140040,#080020);border:2px solid rgba(100,140,255,.25)}
+.s1::before{background:linear-gradient(180deg, #080020,#140040);border:2px solid rgba(100,140,255,.25);border-bottom:none}
+.s1::after{background:#080020;border:2px solid rgba(100,140,255,.2);border-right:none}
+.s1 .logo{position:absolute;left:28px;top:55px;font-size:20px;font-weight:900;color:#00e5ff;text-shadow:0 0 30px rgba(0,229,255,.6);letter-spacing:3px}
+.s1 .sub{position:absolute;left:28px;top:80px;font-size:8px;color:rgba(255,255,255,.35);letter-spacing:4px}
+.s1 .num{position:absolute;left:50%;top:135px;transform:translateX(-50%);font-size:52px;font-weight:900;color:rgba(255,255,255,.04)}
+.s1 .stripe{position:absolute;left:0;right:0;top:105px;height:2px;background:linear-gradient(90deg,transparent,rgba(0,229,255,.3) 20%,rgba(0,229,255,.3) 80%,transparent)}
+.s1 .vline{position:absolute;right:20px;top:50px;bottom:60px;width:1px;background:rgba(0,229,255,.1)}
+.s1 .glow{position:absolute;right:15px;bottom:70px;width:30px;height:30px;border:1px solid rgba(0,229,255,.2);border-radius:50%;box-shadow:0 0 20px rgba(0,229,255,.1)}
+
+/* === STYLE 2: Inferno Tech === */
+.s2{background:linear-gradient(170deg, #1a0000,#2d0000,#3d0000,#2d0000,#1a0000);border:2px solid rgba(255,70,70,.2)}
+.s2::before{background:linear-gradient(180deg, #1a0000,#2d0000);border:2px solid rgba(255,70,70,.2);border-bottom:none}
+.s2::after{background:#1a0000;border:2px solid rgba(255,70,70,.15);border-right:none}
+.s2 .logo{position:absolute;left:28px;top:55px;font-size:20px;font-weight:900;color:#ff4444;text-shadow:0 0 25px rgba(255,68,68,.5);letter-spacing:3px}
+.s2 .sub{position:absolute;left:28px;top:80px;font-size:8px;color:rgba(255,255,255,.3);letter-spacing:4px}
+.s2 .num{position:absolute;left:50%;top:135px;transform:translateX(-50%);font-size:52px;font-weight:900;color:rgba(255,255,255,.03)}
+.s2 .slash{position:absolute;right:0;top:0;bottom:0;width:48px;background:linear-gradient(180deg,rgba(255,60,0,.2),transparent 70%);clip-path:polygon(30% 0,100% 0,100% 100%,0 100%)}
+.s2 .hex{position:absolute;left:45px;bottom:70px;display:grid;grid-template-columns:repeat(2,10px);gap:8px;opacity:.12}
+.s2 .hex span{width:16px;height:16px;background:#ff4444;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+
+/* === STYLE 3: Ice Matrix === */
+.s3{background:linear-gradient(160deg,#eef0f6,#dce0f0,#cfd8f0,#dce0f0,#eef0f6);border:2px solid rgba(80,120,200,.3)}
+.s3::before{background:linear-gradient(180deg,#eef0f6,#dce0f0);border:2px solid rgba(80,120,200,.3);border-bottom:none}
+.s3::after{background:#eef0f6;border:2px solid rgba(80,120,200,.2);border-right:none}
+.s3 .logo{position:absolute;left:28px;top:55px;font-size:20px;font-weight:900;color:#2563eb}
+.s3 .sub{position:absolute;left:28px;top:80px;font-size:8px;color:rgba(30,60,120,.35);letter-spacing:4px}
+.s3 .num{position:absolute;left:50%;top:135px;transform:translateX(-50%);font-size:52px;font-weight:900;color:rgba(30,60,120,.04)}
+.s3 .gridline{position:absolute;left:30px;right:30px;bottom:50px;height:40px;display:flex;flex-direction:column;gap:8px;opacity:.08}
+.s3 .gridline div{flex:1;border:1px solid #2563eb}
+.s3 .dot{position:absolute;right:25px;top:90px;width:6px;height:6px;background:#2563eb;border-radius:50%;opacity:.3}
+.s3 .dot2{position:absolute;right:35px;top:100px;width:4px;height:4px;background:#7c3aed;border-radius:50%;opacity:.25}
+
+/* === STYLE 4: Gold Phantom === */
+.s4{background:linear-gradient(160deg,#0a0a0a,#1a1a0a,#1a1a0a,#0a0a0a);border:2px solid rgba(200,160,80,.25)}
+.s4::before{background:linear-gradient(180deg,#0a0a0a,#1a1a0a);border:2px solid rgba(200,160,80,.25);border-bottom:none}
+.s4::after{background:#0a0a0a;border:2px solid rgba(200,160,80,.15);border-right:none}
+.s4 .logo{position:absolute;left:28px;top:55px;font-size:20px;font-weight:900;color:#d4a854;text-shadow:0 0 20px rgba(212,168,84,.4);letter-spacing:3px}
+.s4 .sub{position:absolute;left:28px;top:80px;font-size:8px;color:rgba(200,160,80,.3);letter-spacing:4px}
+.s4 .num{position:absolute;left:50%;top:135px;transform:translateX(-50%);font-size:52px;font-weight:900;color:rgba(212,168,84,.04)}
+.s4 .goldbar{position:absolute;left:40px;right:40px;bottom:70px;height:1px;background:linear-gradient(90deg,transparent,rgba(212,168,84,.3),transparent)}
+.s4 .crown{position:absolute;right:25px;top:75px;font-size:18px;opacity:.15}
+
+/* === STYLE 5: Void Walker === */
+.s5{background:linear-gradient(160deg,#000,#0a0a0a,#111,#0a0a0a,#000);border:2px solid rgba(255,255,255,.08)}
+.s5::before{background:linear-gradient(180deg,#000,#0a0a0a);border:2px solid rgba(255,255,255,.08);border-bottom:none}
+.s5::after{background:#000;border:2px solid rgba(255,255,255,.05);border-right:none}
+.s5 .logo{position:absolute;left:28px;top:55px;font-size:20px;font-weight:900;color:#fff;letter-spacing:3px}
+.s5 .sub{position:absolute;left:28px;top:80px;font-size:8px;color:rgba(255,255,255,.2);letter-spacing:4px}
+.s5 .num{position:absolute;left:50%;top:135px;transform:translateX(-50%);font-size:52px;font-weight:900;color:rgba(255,255,255,.02)}
+.s5 .void{position:absolute;right:20px;top:60px;bottom:60px;width:20px;background:linear-gradient(180deg,rgba(255,255,255,.02) 30%,transparent 70%);border-left:1px solid rgba(255,255,255,.04)}
+
+.card-body{padding:18px 20px 20px}
+.card-body h3{font-size:15px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.card-body h3 .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.dot.cyber{background:#00e5ff;box-shadow:0 0 8px #00e5ff}
+.dot.inferno{background:#ff4444;box-shadow:0 0 8px #ff4444}
+.dot.ice{background:#2563eb;box-shadow:0 0 8px #2563eb}
+.dot.gold{background:#d4a854;box-shadow:0 0 8px #d4a854}
+.dot.void{background:#888}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.tag{font-size:10px;padding:2px 8px;border-radius:10px;background:rgba(255,255,255,.06);color:#888}
+.specs{font-size:11px;color:#777;line-height:1.8}
+.specs b{color:#aaa}
+.price{font-size:13px;color:#d4a854;font-weight:700;margin-top:8px}
+
+/* Section headers */
+.section-title{text-align:center;margin:50px 0 20px;font-size:18px;color:#666;letter-spacing:2px}
+
+/* Comparison table */
+.compare{max-width:900px;margin:40px auto;background:#141428;border-radius:16px;padding:24px;overflow-x:auto}
+.compare table{width:100%;border-collapse:collapse;font-size:12px}
+.compare th{text-align:left;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.06);color:#888;font-weight:600}
+.compare td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.04);color:#aaa}
+.compare tr:last-child td{border-bottom:none}
+.compare .hl{color:#d4a854;font-weight:600}
+</style>
+</head>
+<body>
+
+<h1>🎮 电竞T恤设计稿</h1>
+<p class="sub">5 套可直接量产的方案 · Elaine 定制出品</p>
+
+<div class="grid">
+
+  <!-- 1: Cyber Neon -->
+  <div class="card">
+    <div class="shirt-area" style="background:radial-gradient(ellipse at center, rgba(0,229,255,0.06), transparent 70%)">
+      <div class="shirt s1">
+        <div class="logo">PHANTOM</div>
+        <div class="sub">ESPORTS</div>
+        <div class="num">00</div>
+        <div class="stripe"></div>
+        <div class="vline"></div>
+        <div class="glow"></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3><span class="dot cyber"></span> 赛博幻影</h3>
+      <div class="tags"><span class="tag">王者荣耀</span><span class="tag">LOL</span><span class="tag">赛博朋克</span></div>
+      <div class="specs">
+        <b>配色</b> 深紫渐变+霓虹蓝光条<br>
+        <b>面料</b> 速干涤氨混纺 180g<br>
+        <b>工艺</b> 全身热升华满印<br>
+        <b>设计点</b> 侧边电路纹理·胸口光晕logo<br>
+      </div>
+      <div class="price">成本 ¥36-48 &nbsp;|&nbsp; 售价 ¥109-139</div>
+    </div>
+  </div>
+
+  <!-- 2: Inferno -->
+  <div class="card">
+    <div class="shirt-area" style="background:radial-gradient(ellipse at center, rgba(255,60,0,.06), transparent 70%)">
+      <div class="shirt s2">
+        <div class="logo">INFERNO</div>
+        <div class="sub">GAMING</div>
+        <div class="num">00</div>
+        <div class="slash"></div>
+        <div class="hex"><span></span><span></span><span></span><span></span></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3><span class="dot inferno"></span> 炼狱赤焰</h3>
+      <div class="tags"><span class="tag">VALORANT</span><span class="tag">和平精英</span><span class="tag">FPS</span></div>
+      <div class="specs">
+        <b>配色</b> 深红+熔岩黑渐变<br>
+        <b>面料</b> 速干涤纶+弹力氨纶<br>
+        <b>工艺</b> 裁片满印+热升华<br>
+        <b>设计点</b> 侧边斜切熔岩纹·六边形暗格<br>
+      </div>
+      <div class="price">成本 ¥32-45 &nbsp;|&nbsp; 售价 ¥99-129</div>
+    </div>
+  </div>
+
+  <!-- 3: Ice Matrix -->
+  <div class="card">
+    <div class="shirt-area" style="background:radial-gradient(ellipse at center, rgba(100,150,255,.04), transparent 70%)">
+      <div class="shirt s3">
+        <div class="logo">ARCTIC</div>
+        <div class="sub">ACADEMY</div>
+        <div class="num">00</div>
+        <div class="gridline"><div></div><div></div><div></div></div>
+        <div class="dot"></div><div class="dot2"></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3><span class="dot ice"></span> 极光矩阵</h3>
+      <div class="tags"><span class="tag">高校电竞社</span><span class="tag">校园联赛</span><span class="tag">日常可穿</span></div>
+      <div class="specs">
+        <b>配色</b> 冰白+科技蓝几何线条<br>
+        <b>面料</b> 凉感冰丝+速干面料<br>
+        <b>工艺</b> 局部数码印+logo刺绣<br>
+        <b>设计点</b> 日常不突兀·几何切割暗纹<br>
+      </div>
+      <div class="price">成本 ¥28-38 &nbsp;|&nbsp; 售价 ¥79-99</div>
+    </div>
+  </div>
+
+  <!-- 4: Gold Phantom -->
+  <div class="card">
+    <div class="shirt-area" style="background:radial-gradient(ellipse at center, rgba(212,168,84,.05), transparent 70%)">
+      <div class="shirt s4">
+        <div class="logo">LEGACY</div>
+        <div class="sub">CHAMPIONS</div>
+        <div class="num">00</div>
+        <div class="goldbar"></div>
+        <div class="crown">👑</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3><span class="dot gold"></span> 冠军金辉</h3>
+      <div class="tags"><span class="tag">冠军纪念</span><span class="tag">俱乐部</span><span class="tag">高端定制</span></div>
+      <div class="specs">
+        <b>配色</b> 纯黑+暗金点缀<br>
+        <b>面料</b> 210g重磅精梳棉+涤纶<br>
+        <b>工艺</b> 金箔烫印logo+刺绣<br>
+        <b>设计点</b> 低调奢华·冠军纪念专属<br>
+      </div>
+      <div class="price">成本 ¥42-58 &nbsp;|&nbsp; 售价 ¥139-189</div>
+    </div>
+  </div>
+
+  <!-- 5: Void Walker -->
+  <div class="card">
+    <div class="shirt-area" style="background:radial-gradient(ellipse at center, rgba(255,255,255,.02), transparent 70%)">
+      <div class="shirt s5">
+        <div class="logo">VOID</div>
+        <div class="sub">ESPORTS</div>
+        <div class="num">00</div>
+        <div class="void"></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3><span class="dot void"></span> 虚空行者</h3>
+      <div class="tags"><span class="tag">极简风</span><span class="tag">日常通勤</span><span class="tag">粉丝款</span></div>
+      <div class="specs">
+        <b>配色</b> 全黑极简+微光暗纹<br>
+        <b>面料</b> 200g纯棉+5%氨纶<br>
+        <b>工艺</b> 哑光丝印+立体刺绣<br>
+        <b>设计点</b> 像潮牌不像队服·日常高频穿着<br>
+      </div>
+      <div class="price">成本 ¥25-35 &nbsp;|&nbsp; 售价 ¥79-109</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Comparison -->
+<div class="compare">
+  <table>
+    <tr><th>方案</th><th>风格</th><th>适合场景</th><th>面料</th><th class="hl">成本</th><th class="hl">售价</th></tr>
+    <tr><td>🌌 赛博幻影</td><td>霓虹赛博</td><td>王者/LOL战队</td><td>速干涤氨</td><td class="hl">¥36-48</td><td class="hl">¥109-139</td></tr>
+    <tr><td>🔥 炼狱赤焰</td><td>暗黑战斗</td><td>FPS战队</td><td>速干弹力</td><td class="hl">¥32-45</td><td class="hl">¥99-129</td></tr>
+    <tr><td>❄️ 极光矩阵</td><td>白冰科技</td><td>高校社团</td><td>冰丝速干</td><td class="hl">¥28-38</td><td class="hl">¥79-99</td></tr>
+    <tr><td>👑 冠军金辉</td><td>黑金高端</td><td>冠军纪念</td><td>重磅棉涤</td><td class="hl">¥42-58</td><td class="hl">¥139-189</td></tr>
+    <tr><td>⚫ 虚空行者</td><td>极简潮牌</td><td>日常/粉丝款</td><td>纯棉弹力</td><td class="hl">¥25-35</td><td class="hl">¥79-109</td></tr>
+  </table>
+</div>
+
+<p style="text-align:center;color:#555;font-size:12px;margin:40px 0 20px">
+  所有方案基于现有产线可量产 · 支持 30 件起订 · 7 天出货<br>
+  设计稿可发给客户选款，选中后提供 3D 效果图确认
+</p>
+
+</body>
+</html>
