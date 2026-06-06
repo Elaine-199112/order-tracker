@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电竞队服设计方案</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: "PingFang SC","Microsoft YaHei",sans-serif; background:#0a0a1a; color:#fff; padding:20px; }
+  h1 { text-align:center; font-size:22px; margin:20px 0 10px; }
+  .sub { text-align:center; color:#888; font-size:13px; margin-bottom:30px; }
+  
+  .jerseys { display:flex; flex-wrap:wrap; gap:20px; justify-content:center; max-width:1000px; margin:0 auto; }
+  
+  .jersey-card { background:#111; border-radius:16px; overflow:hidden; width:300px; box-shadow:0 4px 30px rgba(0,0,0,0.5); }
+  .jersey-preview { height:350px; display:flex; align-items:center; justify-content:center; position:relative; }
+  .jersey-body { width:180px; height:300px; border-radius:16px 16px 4px 4px; position:relative; overflow:hidden; }
+  
+  /* Jersey 1: Neon Phantom (蓝紫赛博) */
+  .j1 {
+    background: linear-gradient(135deg, #0a0040 0%, #1a0060 30%, #2a0080 60%, #0a0040 100%);
+    border: 2px solid rgba(100,100,255,0.3);
+  }
+  .j1 .accent-left { position:absolute; left:0; top:0; bottom:0; width:8px; background:linear-gradient(180deg, #00f0ff, #a000ff, #00f0ff); }
+  .j1 .accent-right { position:absolute; right:15px; top:40px; bottom:40px; width:4px; background:rgba(0,240,255,0.4); border-radius:2px; }
+  .j1 .chest-logo { position:absolute; left:25px; top:40px; font-size:24px; font-weight:900; color:#00f0ff; text-shadow:0 0 20px rgba(0,240,255,0.5); letter-spacing:2px; }
+  .j1 .chest-sub { position:absolute; left:25px; top:70px; font-size:9px; color:rgba(255,255,255,0.5); letter-spacing:4px; text-transform:uppercase; }
+  .j1 .player-id { position:absolute; left:50%; top:130px; transform:translateX(-50%); font-size:48px; font-weight:900; color:rgba(255,255,255,0.08); letter-spacing:6px; }
+  .j1 .sponsor { position:absolute; right:25px; top:80px; font-size:8px; color:rgba(255,255,255,0.3); letter-spacing:1px; writing-mode:vertical-rl; }
+  .j1 .circuit { position:absolute; right:30px; bottom:60px; width:40px; height:60px; border-right:1px solid rgba(0,240,255,0.15); border-bottom:1px solid rgba(0,240,255,0.15); }
+  .j1 .dots { position:absolute; left:30px; bottom:50px; display:flex; gap:3px; }
+  .j1 .dots span { width:3px; height:3px; background:rgba(0,240,255,0.3); border-radius:50%; }
+  
+  /* Jersey 2: Crimson Fury (红黑电竞) */
+  .j2 {
+    background: linear-gradient(160deg, #1a0000 0%, #330000 35%, #4a0000 65%, #1a0000 100%);
+    border: 2px solid rgba(255,60,60,0.2);
+  }
+  .j2 .slash { position:absolute; right:0; top:0; bottom:0; width:50px; background:linear-gradient(180deg, rgba(255,30,30,0.3), transparent 70%); clip-path:polygon(30% 0, 100% 0, 100% 100%, 0 100%); }
+  .j2 .chest-logo { position:absolute; left:25px; top:40px; font-size:22px; font-weight:900; color:#ff3333; text-shadow:0 0 15px rgba(255,30,30,0.6); }
+  .j2 .chest-sub { position:absolute; left:25px; top:65px; font-size:9px; color:rgba(255,255,255,0.4); letter-spacing:3px; }
+  .j2 .player-id { position:absolute; left:50%; top:135px; transform:translateX(-50%); font-size:44px; font-weight:900; color:rgba(255,255,255,0.06); }
+  .j2 .hex-grid { position:absolute; left:40px; bottom:50px; display:grid; grid-template-columns:repeat(3,8px); gap:6px; opacity:0.15; }
+  .j2 .hex-grid span { width:12px; height:12px; background:#ff3333; clip-path:polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); }
+  
+  /* Jersey 3: Arctic Phantom (白冰蓝) */
+  .j3 {
+    background: linear-gradient(160deg, #e8e8f0 0%, #d0d8e8 30%, #c0d0f0 60%, #e0e4f0 100%);
+    border: 2px solid rgba(100,150,255,0.3);
+  }
+  .j3 .chest-logo { position:absolute; left:25px; top:40px; font-size:22px; font-weight:900; color:#2255cc; }
+  .j3 .chest-sub { position:absolute; left:25px; top:65px; font-size:9px; color:rgba(30,60,120,0.5); letter-spacing:3px; }
+  .j3 .player-id { position:absolute; left:50%; top:130px; transform:translateX(-50%); font-size:44px; font-weight:900; color:rgba(30,60,120,0.06); }
+  .j3 .geo { position:absolute; right:20px; bottom:50px; width:50px; height:80px; border:1px solid rgba(30,60,120,0.1); border-radius:8px; }
+  .j3 .geo-inner { position:absolute; left:10px; top:15px; right:10px; bottom:15px; border:1px solid rgba(30,60,120,0.08); border-radius:4px; }
+  
+  .jersey-info { padding:20px; }
+  .jersey-info h3 { font-size:16px; margin-bottom:6px; }
+  .jersey-info .tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
+  .jersey-info .tag { font-size:10px; padding:3px 10px; border-radius:12px; background:rgba(255,255,255,0.08); color:#aaa; }
+  .jersey-info .specs { font-size:12px; color:#999; line-height:1.8; }
+  .jersey-info .specs strong { color:#ccc; }
+</style>
+</head>
+<body>
+
+<h1>🎮 电竞队服设计方案 × 3</h1>
+<p class="sub">Elaine 定制出品 · 可量产的实战设计</p>
+
+<div class="jerseys">
+
+  <!-- Jersey 1 -->
+  <div class="jersey-card">
+    <div class="jersey-preview">
+      <div class="jersey-body j1">
+        <div class="accent-left"></div>
+        <div class="accent-right"></div>
+        <div class="chest-logo">PHANTOM</div>
+        <div class="chest-sub">ESPORTS CLUB</div>
+        <div class="player-id">07</div>
+        <div class="sponsor">SPONSOR</div>
+        <div class="circuit"></div>
+        <div class="dots"><span></span><span></span><span></span><span></span><span></span></div>
+      </div>
+    </div>
+    <div class="jersey-info">
+      <h3>🌌 幻影 · 赛博蓝紫</h3>
+      <div class="tags">
+        <span class="tag">王者荣耀</span><span class="tag">LOL</span><span class="tag">赛博朋克</span>
+      </div>
+      <div class="specs">
+        <strong>配色：</strong>深紫渐变 + 霓虹蓝<br>
+        <strong>面料：</strong>速干涤氨混纺<br>
+        <strong>工艺：</strong>全身数码满印+热升华<br>
+        <strong>亮点：</strong>电路纹理暗纹、侧边渐变光条<br>
+        <strong>成本：</strong>¥35-48/件（50件起）<br>
+        <strong>售价建议：</strong>¥99-139
+      </div>
+    </div>
+  </div>
+
+  <!-- Jersey 2 -->
+  <div class="jersey-card">
+    <div class="jersey-preview">
+      <div class="jersey-body j2">
+        <div class="slash"></div>
+        <div class="chest-logo">FURY</div>
+        <div class="chest-sub">GAMING</div>
+        <div class="player-id">23</div>
+        <div class="hex-grid"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      </div>
+    </div>
+    <div class="jersey-info">
+      <h3>🔥 赤焰 · 红黑战魂</h3>
+      <div class="tags">
+        <span class="tag">和平精英</span><span class="tag">VALORANT</span><span class="tag">FPS通用</span>
+      </div>
+      <div class="specs">
+        <strong>配色：</strong>深红渐变 + 黑色 + 熔岩暗纹<br>
+        <strong>面料：</strong>速干涤纶+弹力氨纶<br>
+        <strong>工艺：</strong>裁片满印+热升华<br>
+        <strong>亮点：</strong>侧边斜切熔岩纹、六边形暗格<br>
+        <strong>成本：</strong>¥32-45/件（50件起）<br>
+        <strong>售价建议：</strong>¥89-129
+      </div>
+    </div>
+  </div>
+
+  <!-- Jersey 3 -->
+  <div class="jersey-card">
+    <div class="jersey-preview">
+      <div class="jersey-body j3">
+        <div class="chest-logo" style="color:#2255cc">ARCTIC</div>
+        <div class="chest-sub">ACADEMY</div>
+        <div class="player-id" style="color:rgba(30,60,120,0.06)">11</div>
+        <div class="geo"><div class="geo-inner"></div></div>
+      </div>
+    </div>
+    <div class="jersey-info">
+      <h3>❄️ 极光 · 白冰科技</h3>
+      <div class="tags">
+        <span class="tag">高校电竞社</span><span class="tag">校园联赛</span><span class="tag">日常可穿</span>
+      </div>
+      <div class="specs">
+        <strong>配色：</strong>冰白+科技蓝+极光紫点缀<br>
+        <strong>面料：</strong>凉感冰丝+速干面料<br>
+        <strong>工艺：</strong>局部数码印+刺绣Logo<br>
+        <strong>亮点：</strong>日常可穿不突兀、几何切割设计<br>
+        <strong>成本：</strong>¥30-40/件（50件起）<br>
+        <strong>售价建议：</strong>¥79-109
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
