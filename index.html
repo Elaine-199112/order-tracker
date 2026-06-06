@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>订单进度查询</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #1B2838;
+    --gold: #C8956C;
+    --gold-light: #E8D5C4;
+    --bg: #FAF8F5;
+    --card: #FFFFFF;
+    --text: #2C3E50;
+    --text-light: #7F8C8D;
+    --success: #27AE60;
+    --border: #E8E2DA;
+    --shadow: 0 2px 16px rgba(27, 40, 56, 0.06);
+    --radius: 16px;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 40px 0 20px;
+  }
+  .header .brand {
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: 1px;
+  }
+  .header .subtitle {
+    font-size: 14px;
+    color: var(--text-light);
+    margin-top: 6px;
+  }
+
+  /* Search Card */
+  .search-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    box-shadow: var(--shadow);
+  }
+  .search-card label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 12px;
+  }
+  .input-row {
+    display: flex;
+    gap: 10px;
+  }
+  .input-row input {
+    flex: 1;
+    height: 48px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 0 16px;
+    font-size: 16px;
+    color: var(--text);
+    background: var(--bg);
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .input-row input:focus {
+    border-color: var(--gold);
+  }
+  .input-row input::placeholder {
+    color: #BFC9CA;
+  }
+  .input-row button {
+    height: 48px;
+    padding: 0 24px;
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .input-row button:active {
+    transform: scale(0.96);
+  }
+  .input-row button:hover {
+    background: #2C4058;
+  }
+  .input-row button:disabled {
+    background: #BFC9CA;
+    cursor: not-allowed;
+  }
+
+  /* Error message */
+  .error-msg {
+    color: #E74C3C;
+    font-size: 13px;
+    margin-top: 10px;
+    display: none;
+  }
+  .error-msg.show { display: block; }
+
+  /* Results Card */
+  .result-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    display: none;
+    animation: fadeIn 0.4s ease;
+  }
+  .result-card.show { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .order-info {
+    text-align: center;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .order-info .customer {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .order-info .product {
+    font-size: 13px;
+    color: var(--text-light);
+    margin-top: 4px;
+  }
+  .order-info .order-id {
+    font-size: 12px;
+    color: var(--gold);
+    font-weight: 600;
+    margin-top: 6px;
+    letter-spacing: 1px;
+  }
+
+  /* Progress Tracker */
+  .progress-tracker {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    padding: 0 8px;
+  }
+
+  /* The connecting line behind stages */
+  .progress-line-bg {
+    position: absolute;
+    top: 20px;
+    left: 38px;
+    right: 38px;
+    height: 3px;
+    background: var(--border);
+    z-index: 0;
+  }
+  .progress-line-fill {
+    position: absolute;
+    top: 20px;
+    left: 38px;
+    height: 3px;
+    background: var(--gold);
+    z-index: 1;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    min-width: 0;
+  }
+  .stage-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    transition: all 0.4s ease;
+  }
+  .stage.completed .stage-circle {
+    background: var(--success);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
+  }
+  .stage.current .stage-circle {
+    background: var(--navy);
+    color: #fff;
+    box-shadow: 0 2px 12px rgba(27, 40, 56, 0.35);
+    animation: pulse 2s infinite;
+  }
+  .stage.future .stage-circle {
+    background: #F0EDE8;
+    color: #BFC9CA;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 2px 12px rgba(27, 40, 56, 0.35); }
+    50% { box-shadow: 0 2px 24px rgba(27, 40, 56, 0.15); }
+  }
+  .stage-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.3;
+    transition: color 0.3s;
+  }
+  .stage.completed .stage-label { color: var(--success); }
+  .stage.current .stage-label { color: var(--navy); }
+  .stage.future .stage-label { color: #BFC9CA; }
+  .stage-date {
+    font-size: 10px;
+    color: var(--text-light);
+    text-align: center;
+  }
+
+  /* Status Banner */
+  .status-banner {
+    margin-top: 24px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .status-banner.in-progress {
+    background: #FEF3E2;
+    color: #E67E22;
+  }
+  .status-banner.done {
+    background: #E8F8F0;
+    color: var(--success);
+  }
+
+  /* Timeline Updates */
+  .timeline {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .timeline-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-light);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .timeline-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    position: relative;
+  }
+  .timeline-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 32px;
+    bottom: -10px;
+    width: 2px;
+    background: var(--border);
+  }
+  .timeline-dot {
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    border-radius: 50%;
+    background: var(--gold-light);
+    border: 3px solid var(--gold);
+    margin-top: 2px;
+  }
+  .timeline-content .t-date {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-bottom: 2px;
+  }
+  .timeline-content .t-note {
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* Delivery estimate */
+  .delivery-estimate {
+    margin-top: 20px;
+    padding: 16px;
+    background: linear-gradient(135deg, #F5F1ED, #FEF9F3);
+    border-radius: 12px;
+    text-align: center;
+  }
+  .delivery-estimate .label {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-bottom: 4px;
+  }
+  .delivery-estimate .date {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 20px 0 40px;
+    font-size: 12px;
+    color: var(--text-light);
+  }
+  .footer .contact {
+    color: var(--gold);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  /* Loading spinner */
+  .spinner {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #fff;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    vertical-align: middle;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 32px 20px;
+    display: none;
+  }
+  .empty-state.show { display: block; }
+  .empty-icon { font-size: 48px; margin-bottom: 12px; }
+  .empty-title { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .empty-desc { font-size: 13px; color: var(--text-light); line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="brand">Order Tracking</div>
+    <h1>订单进度查询</h1>
+    <p class="subtitle">输入订单编号，实时查看制作进度</p>
+  </div>
+
+  <!-- Search -->
+  <div class="search-card" id="searchCard">
+    <label for="orderInput">订单编号</label>
+    <div class="input-row">
+      <input type="text" id="orderInput" placeholder="例如：ORD-2026001" autocomplete="off" inputmode="text">
+      <button id="searchBtn" onclick="lookupOrder()">查询</button>
+    </div>
+    <p class="error-msg" id="errorMsg"></p>
+  </div>
+
+  <!-- Loading -->
+  <div class="search-card" id="loadingCard" style="display:none; text-align:center; padding: 32px;">
+    <p style="color: var(--text-light); font-size: 14px;">正在查询订单…</p>
+  </div>
+
+  <!-- Results -->
+  <div class="result-card" id="resultCard">
+    <div class="order-info">
+      <div class="customer" id="custName">—</div>
+      <div class="product" id="prodName">—</div>
+      <div class="order-id" id="orderIdDisplay">—</div>
+    </div>
+
+    <div class="progress-tracker" id="progressTracker">
+      <div class="progress-line-bg"></div>
+      <div class="progress-line-fill" id="progressFill"></div>
+      <!-- Stages injected by JS -->
+    </div>
+
+    <div class="status-banner" id="statusBanner"></div>
+
+    <div class="delivery-estimate" id="deliveryEstimate">
+      <div class="label">预计发货日期</div>
+      <div class="date" id="deliveryDate">—</div>
+    </div>
+
+    <div class="timeline" id="timeline">
+      <div class="timeline-title">进度记录</div>
+      <!-- Timeline items injected by JS -->
+    </div>
+  </div>
+
+  <!-- Not Found -->
+  <div class="search-card empty-state" id="emptyState">
+    <div class="empty-icon">🔍</div>
+    <div class="empty-title">未找到该订单</div>
+    <div class="empty-desc">
+      请确认订单编号是否正确<br>
+      如有疑问，请联系客服获取帮助
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    如有疑问请联系客服获取帮助
+  </div>
+
+</div>
+
+<script>
+// ── Constants ──
+const STAGES = [
+  { key: 'design',    label: '设计确认', icon: '✏️', iconDone: '✓' },
+  { key: 'fabric',    label: '面料采购', icon: '🧵', iconDone: '✓' },
+  { key: 'production',label: '生产中',   icon: '🏭', iconDone: '✓' },
+  { key: 'shipping',  label: '已发货',   icon: '📦', iconDone: '✓' }
+];
+
+// ── DOM refs ──
+const $input    = document.getElementById('orderInput');
+const $search   = document.getElementById('searchBtn');
+const $searchCard = document.getElementById('searchCard');
+const $loading  = document.getElementById('loadingCard');
+const $result   = document.getElementById('resultCard');
+const $empty    = document.getElementById('emptyState');
+const $error    = document.getElementById('errorMsg');
+const $tracker  = document.getElementById('progressTracker');
+const $fill     = document.getElementById('progressFill');
+const $banner   = document.getElementById('statusBanner');
+
+let ordersData = {};
+
+// ── Load order data ──
+async function loadOrders() {
+  try {
+    const resp = await fetch('orders.json?' + Date.now());
+    ordersData = await resp.json();
+  } catch (e) {
+    console.error('Failed to load orders:', e);
+    ordersData = { orders: {} };
+  }
+}
+
+// ── Lookup ──
+async function lookupOrder() {
+  const raw = $input.value.trim();
+  if (!raw) {
+    showError('请输入订单编号');
+    return;
+  }
+
+  // Hide previous results
+  $result.classList.remove('show');
+  $empty.classList.remove('show');
+  $error.classList.remove('show');
+
+  // Show loading
+  $searchCard.style.display = 'none';
+  $loading.style.display = 'block';
+  $search.disabled = true;
+
+  // Small delay for UX
+  await new Promise(r => setTimeout(r, 400));
+
+  if (!ordersData.orders) await loadOrders();
+
+  const order = ordersData.orders[raw];
+
+  $loading.style.display = 'none';
+  $searchCard.style.display = 'block';
+  $search.disabled = false;
+
+  if (!order) {
+    $empty.classList.add('show');
+    $result.classList.remove('show');
+    return;
+  }
+
+  renderOrder(raw, order);
+  $result.classList.add('show');
+  $empty.classList.remove('show');
+
+  // Scroll to result
+  $result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── Render ──
+function renderOrder(orderId, order) {
+  document.getElementById('custName').textContent = order.customer;
+  document.getElementById('prodName').textContent = order.product;
+  document.getElementById('orderIdDisplay').textContent = orderId;
+  document.getElementById('deliveryDate').textContent = order.estimated_delivery || '待定';
+
+  const stageIdx = STAGES.findIndex(s => s.key === order.stage_key);
+  const currentIdx = stageIdx >= 0 ? stageIdx : 0;
+  const isShipped = order.stage_key === 'shipping';
+
+  // Progress bar fill
+  const totalStages = STAGES.length - 1;
+  const pct = totalStages > 0 ? (currentIdx / totalStages) * 100 : 0;
+  $fill.style.width = pct + '%';
+
+  // Build stage circles
+  $tracker.querySelectorAll('.stage').forEach(el => el.remove());
+  STAGES.forEach((s, i) => {
+    const stageDiv = document.createElement('div');
+    stageDiv.className = 'stage';
+    if (i < currentIdx) stageDiv.classList.add('completed');
+    else if (i === currentIdx) stageDiv.classList.add('current');
+    else stageDiv.classList.add('future');
+
+    const circle = document.createElement('div');
+    circle.className = 'stage-circle';
+    circle.textContent = i < currentIdx ? s.iconDone : s.icon;
+
+    const label = document.createElement('div');
+    label.className = 'stage-label';
+    label.textContent = s.label;
+
+    // Find matching update date
+    const update = (order.updates || []).find(u => u.stage_key === s.key);
+    const dateEl = document.createElement('div');
+    dateEl.className = 'stage-date';
+    dateEl.textContent = update ? update.date : '';
+
+    stageDiv.appendChild(circle);
+    stageDiv.appendChild(label);
+    stageDiv.appendChild(dateEl);
+    $tracker.appendChild(stageDiv);
+  });
+
+  // Status banner
+  if (isShipped) {
+    $banner.className = 'status-banner done';
+    $banner.textContent = '🎉 您的订单已发货，请注意查收';
+  } else {
+    $banner.className = 'status-banner in-progress';
+    $banner.textContent = '⏳ 订单正在按流程推进中，请耐心等待';
+  }
+
+  // Timeline
+  const timeline = document.getElementById('timeline');
+  timeline.querySelectorAll('.timeline-item').forEach(el => el.remove());
+  (order.updates || []).forEach(u => {
+    const item = document.createElement('div');
+    item.className = 'timeline-item';
+    item.innerHTML = `
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <div class="t-date">${u.date}</div>
+        <div class="t-note">${u.note}</div>
+      </div>`;
+    timeline.appendChild(item);
+  });
+}
+
+function showError(msg) {
+  $error.textContent = msg;
+  $error.classList.add('show');
+  setTimeout(() => $error.classList.remove('show'), 3000);
+}
+
+// ── Init ──
+$input.addEventListener('keydown', e => {
+  if (e.key === 'Enter') lookupOrder();
+});
+
+loadOrders();
+</script>
+
+</body>
+</html>
