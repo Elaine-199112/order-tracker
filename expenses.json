@@ -55,10 +55,17 @@
       "category": "life",
       "description": "小帅 八大山人25件polo衫",
       "amount": 775
+    },
+    {
+      "id": "exp-2026-06-12-009",
+      "date": "2026-06-12",
+      "category": "work",
+      "description": "古梦云样衣费",
+      "amount": 42
     }
   ],
   "summary": {
-    "work_total": 11403,
+    "work_total": 11445,
     "life_total": 923
   }
 }
