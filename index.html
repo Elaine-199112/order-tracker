@@ -2,741 +2,353 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>订单进度查询</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>南昌奥跑服饰有限公司 - 专业团体服装定制</title>
+<meta name="description" content="南昌奥跑服饰有限公司，专注运动队服、团体服装、企业工服定制。龙舟服、polo衫、T恤、篮球服、足球服等各类团队服装，品质保障。">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --navy: #1B2838;
-    --gold: #C8956C;
-    --gold-light: #E8D5C4;
-    --bg: #FAF8F5;
-    --card: #FFFFFF;
-    --text: #2C3E50;
-    --text-light: #7F8C8D;
-    --success: #27AE60;
-    --border: #E8E2DA;
-    --shadow: 0 2px 16px rgba(27, 40, 56, 0.06);
-    --radius: 16px;
+    --navy: #1a1f2e;
+    --navy-light: #252b3d;
+    --gold: #c8956c;
+    --gold-light: #e8d5c4;
+    --bg: #faf8f5;
+    --white: #ffffff;
+    --text: #2c3e50;
+    --text-light: #7f8c8d;
+    --red: #e74c3c;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
   }
 
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
     background: var(--bg);
     color: var(--text);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    -webkit-tap-highlight-color: transparent;
+    line-height: 1.6;
+    max-width: 500px;
+    margin: 0 auto;
   }
 
-  .container {
-    width: 100%;
-    max-width: 420px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  /* Header */
-  .header {
+  /* ── Hero ── */
+  .hero {
+    background: linear-gradient(160deg, var(--navy) 0%, var(--navy-light) 60%, #2d2342 100%);
+    color: white;
+    padding: 48px 24px 40px;
     text-align: center;
-    padding: 40px 0 20px;
-  }
-  .header .brand {
-    font-size: 13px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--gold);
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
-  .header h1 {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--navy);
-    letter-spacing: 1px;
-  }
-  .header .subtitle {
-    font-size: 14px;
-    color: var(--text-light);
-    margin-top: 6px;
-  }
-
-  /* Search Card */
-  .search-card {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 28px 24px;
-    box-shadow: var(--shadow);
-  }
-  .search-card label {
-    display: block;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--navy);
-    margin-bottom: 12px;
-  }
-  .input-row {
-    display: flex;
-    gap: 10px;
-  }
-  .input-row input {
-    flex: 1;
-    height: 48px;
-    border: 2px solid var(--border);
-    border-radius: 12px;
-    padding: 0 16px;
-    font-size: 16px;
-    color: var(--text);
-    background: var(--bg);
-    transition: border-color 0.2s;
-    outline: none;
-  }
-  .input-row input:focus {
-    border-color: var(--gold);
-  }
-  .input-row input::placeholder {
-    color: #BFC9CA;
-  }
-  .input-row button {
-    height: 48px;
-    padding: 0 24px;
-    background: var(--navy);
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: background 0.2s, transform 0.1s;
-  }
-  .input-row button:active {
-    transform: scale(0.96);
-  }
-  .input-row button:hover {
-    background: #2C4058;
-  }
-  .input-row button:disabled {
-    background: #BFC9CA;
-    cursor: not-allowed;
-  }
-
-  /* Error message */
-  .error-msg {
-    color: #E74C3C;
-    font-size: 13px;
-    margin-top: 10px;
-    display: none;
-  }
-  .error-msg.show { display: block; }
-
-  /* Results Card */
-  .result-card {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 24px;
-    box-shadow: var(--shadow);
-    display: none;
-    animation: fadeIn 0.4s ease;
-  }
-  .result-card.show { display: block; }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .order-info {
-    text-align: center;
-    margin-bottom: 24px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid var(--border);
-  }
-  .order-info .customer {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--navy);
-  }
-  .order-info .product {
-    font-size: 13px;
-    color: var(--text-light);
-    margin-top: 4px;
-  }
-  .order-info .order-id {
-    font-size: 12px;
-    color: var(--gold);
-    font-weight: 600;
-    margin-top: 6px;
-    letter-spacing: 1px;
-  }
-
-  /* Progress Tracker */
-  .progress-tracker {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
     position: relative;
-    padding: 0 8px;
+    overflow: hidden;
   }
-
-  /* The connecting line behind stages */
-  .progress-line-bg {
+  .hero::after {
+    content: '';
     position: absolute;
-    top: 20px;
-    left: 38px;
-    right: 38px;
-    height: 3px;
-    background: var(--border);
-    z-index: 0;
-  }
-  .progress-line-fill {
-    position: absolute;
-    top: 20px;
-    left: 38px;
-    height: 3px;
-    background: var(--gold);
-    z-index: 1;
-    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .stage {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    position: relative;
-    z-index: 2;
-    flex: 1;
-    min-width: 0;
-  }
-  .stage-circle {
-    width: 40px;
-    height: 40px;
+    top: -40%; right: -30%;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(200,149,108,0.15) 0%, transparent 70%);
     border-radius: 50%;
+  }
+  .hero .badge {
+    display: inline-block;
+    background: rgba(200,149,108,0.2);
+    border: 1px solid rgba(200,149,108,0.3);
+    color: var(--gold-light);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+  }
+  .hero h1 {
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 6px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero .subtitle {
+    font-size: 15px;
+    color: rgba(255,255,255,0.7);
+    position: relative;
+    z-index: 1;
+  }
+  .hero-logo {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, var(--gold) 0%, #e8b98a 100%);
+    border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
-    font-weight: 700;
-    transition: all 0.4s ease;
-  }
-  .stage.completed .stage-circle {
-    background: var(--success);
-    color: #fff;
-    box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
-  }
-  .stage.current .stage-circle {
-    background: var(--navy);
-    color: #fff;
-    box-shadow: 0 2px 12px rgba(27, 40, 56, 0.35);
-    animation: pulse 2s infinite;
-  }
-  .stage.future .stage-circle {
-    background: #F0EDE8;
-    color: #BFC9CA;
-  }
-  @keyframes pulse {
-    0%, 100% { box-shadow: 0 2px 12px rgba(27, 40, 56, 0.35); }
-    50% { box-shadow: 0 2px 24px rgba(27, 40, 56, 0.15); }
-  }
-  .stage-label {
-    font-size: 11px;
-    font-weight: 600;
-    text-align: center;
-    line-height: 1.3;
-    transition: color 0.3s;
-  }
-  .stage.completed .stage-label { color: var(--success); }
-  .stage.current .stage-label { color: var(--navy); }
-  .stage.future .stage-label { color: #BFC9CA; }
-  .stage-date {
-    font-size: 10px;
-    color: var(--text-light);
-    text-align: center;
+    margin: 0 auto 16px;
+    font-size: 28px;
+    font-weight: 900;
+    color: white;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 8px 32px rgba(200,149,108,0.3);
   }
 
-  /* Status Banner */
-  .status-banner {
-    margin-top: 24px;
-    padding: 14px 18px;
+  /* ── Quick Actions ── */
+  .quick-actions {
+    display: flex;
+    gap: 10px;
+    padding: 0 20px;
+    margin-top: -20px;
+    position: relative;
+    z-index: 2;
+  }
+  .quick-btn {
+    flex: 1;
+    background: var(--white);
     border-radius: 12px;
+    padding: 14px 12px;
     text-align: center;
-    font-size: 14px;
-    font-weight: 600;
+    text-decoration: none;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s;
+    color: var(--text);
   }
-  .status-banner.in-progress {
-    background: #FEF3E2;
-    color: #E67E22;
+  .quick-btn:active { transform: scale(0.96); }
+  .quick-btn .icon { font-size: 22px; margin-bottom: 4px; }
+  .quick-btn .label { font-size: 12px; font-weight: 600; }
+  .quick-btn.primary { background: var(--navy); color: white; }
+  .quick-btn.primary .label { color: rgba(255,255,255,0.8); }
+
+  /* ── Sections ── */
+  .section {
+    padding: 28px 20px;
   }
-  .status-banner.done {
-    background: #E8F8F0;
-    color: var(--success);
+  .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::before {
+    content: '';
+    width: 4px;
+    height: 20px;
+    background: var(--gold);
+    border-radius: 2px;
   }
 
-  /* Tracking Section */
-  .tracking-section {
-    margin-top: 20px;
-    display: none;
+  /* ── Services ── */
+  .service-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
   }
-  .tracking-section.show { display: block; }
-  .tracking-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--text-light);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 12px;
+  .service-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 18px 14px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
   }
-  .tracking-badge {
-    display: inline-block;
-    padding: 4px 12px;
+  .service-card .s-icon { font-size: 28px; margin-bottom: 8px; }
+  .service-card .s-name { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+  .service-card .s-desc { font-size: 11px; color: var(--text-light); }
+
+  /* ── Features ── */
+  .feature-list {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 4px 0;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid #f0ece6;
+  }
+  .feature-item:last-child { border-bottom: none; }
+  .feature-item .f-icon {
+    width: 36px; height: 36px;
+    background: var(--bg);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .feature-item .f-text strong { font-size: 14px; display: block; }
+  .feature-item .f-text span { font-size: 12px; color: var(--text-light); }
+
+  /* ── Clients ── */
+  .client-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .client-tag {
+    background: var(--white);
+    border: 1px solid #e8e2da;
     border-radius: 20px;
-    font-size: 12px;
-    font-weight: 700;
-    margin-bottom: 12px;
-  }
-  .tracking-badge.transit { background: #FFF3E0; color: #E67E22; }
-  .tracking-badge.picked { background: #E3F2FD; color: #1565C0; }
-  .tracking-badge.signed { background: #E8F8F0; color: #27AE60; }
-  .tracking-badge.default { background: #F0EDE8; color: #666; }
-
-  .tracking-item {
-    display: flex;
-    gap: 12px;
-    padding: 10px 0;
-    position: relative;
-  }
-  .tracking-item:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    left: 7px;
-    top: 32px;
-    bottom: -10px;
-    width: 2px;
-    background: var(--border);
-  }
-  .tracking-item.latest .tracking-dot {
-    background: var(--navy);
-    border-color: var(--navy);
-    box-shadow: 0 0 0 4px rgba(27, 40, 56, 0.1);
-  }
-  .tracking-dot {
-    width: 16px;
-    min-width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #fff;
-    border: 3px solid var(--border);
-    margin-top: 2px;
-  }
-  .tracking-content .t-time {
-    font-size: 12px;
-    color: var(--text-light);
-    margin-bottom: 2px;
-  }
-  .tracking-content .t-desc {
-    font-size: 14px;
-    color: var(--text);
-    font-weight: 500;
-  }
-  .tracking-item.latest .t-desc {
-    color: var(--navy);
-    font-weight: 600;
-  }
-
-  /* Timeline Updates */
-  .timeline {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-  .timeline-title {
+    padding: 6px 14px;
     font-size: 13px;
-    font-weight: 700;
-    color: var(--text-light);
-    margin-bottom: 12px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  .timeline-item {
-    display: flex;
-    gap: 12px;
-    padding: 10px 0;
-    position: relative;
-  }
-  .timeline-item:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    left: 7px;
-    top: 32px;
-    bottom: -10px;
-    width: 2px;
-    background: var(--border);
-  }
-  .timeline-dot {
-    width: 16px;
-    height: 16px;
-    min-width: 16px;
-    border-radius: 50%;
-    background: var(--gold-light);
-    border: 3px solid var(--gold);
-    margin-top: 2px;
-  }
-  .timeline-content .t-date {
-    font-size: 12px;
-    color: var(--text-light);
-    margin-bottom: 2px;
-  }
-  .timeline-content .t-note {
-    font-size: 14px;
     color: var(--text);
-    font-weight: 500;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.03);
   }
 
-  /* Delivery estimate */
-  .delivery-estimate {
-    margin-top: 20px;
-    padding: 16px;
-    background: linear-gradient(135deg, #F5F1ED, #FEF9F3);
-    border-radius: 12px;
+  /* ── Contact ── */
+  .contact-card {
+    background: var(--navy);
+    color: white;
+    border-radius: 14px;
+    padding: 24px;
     text-align: center;
   }
-  .delivery-estimate .label {
-    font-size: 12px;
-    color: var(--text-light);
-    margin-bottom: 4px;
+  .contact-card h3 {
+    font-size: 17px;
+    margin-bottom: 16px;
   }
-  .delivery-estimate .date {
-    font-size: 20px;
+  .contact-card .cta-btn {
+    display: inline-block;
+    background: var(--gold);
+    color: white;
+    padding: 12px 28px;
+    border-radius: 25px;
     font-weight: 700;
-    color: var(--navy);
+    text-decoration: none;
+    font-size: 15px;
+  }
+  .contact-card .cta-btn:active { opacity: 0.85; }
+  .contact-info {
+    margin-top: 16px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
   }
 
-  /* Footer */
+  /* ── Footer ── */
   .footer {
     text-align: center;
-    padding: 20px 0 40px;
+    padding: 24px 20px 32px;
     font-size: 12px;
     color: var(--text-light);
   }
-  .footer .contact {
-    color: var(--gold);
-    font-weight: 600;
-    text-decoration: none;
-  }
 
-  /* Loading spinner */
-  .spinner {
-    display: inline-block;
-    width: 18px;
-    height: 18px;
-    border: 2px solid #fff;
-    border-top-color: transparent;
-    border-radius: 50%;
-    animation: spin 0.6s linear infinite;
-    vertical-align: middle;
+  /* ── Responsive ── */
+  @media (min-width: 500px) {
+    body { border-left: 1px solid #e8e2da; border-right: 1px solid #e8e2da; }
   }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* Empty state */
-  .empty-state {
-    text-align: center;
-    padding: 32px 20px;
-    display: none;
-  }
-  .empty-state.show { display: block; }
-  .empty-icon { font-size: 48px; margin-bottom: 12px; }
-  .empty-title { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
-  .empty-desc { font-size: 13px; color: var(--text-light); line-height: 1.6; }
 </style>
 </head>
 <body>
 
-<div class="container">
-
-  <!-- Header -->
-  <div class="header">
-    <div class="brand">Order Tracking</div>
-    <h1>订单进度查询</h1>
-    <p class="subtitle">输入订单编号，实时查看制作进度</p>
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-logo">奥</div>
+    <div class="badge">专业团体服装定制</div>
+    <h1>南昌奥跑服饰有限公司</h1>
+    <p class="subtitle">运动队服 · 团体制服 · 企业工服</p>
   </div>
 
-  <!-- Search -->
-  <div class="search-card" id="searchCard">
-    <label for="orderInput">订单编号</label>
-    <div class="input-row">
-      <input type="text" id="orderInput" placeholder="例如：ORD-2026001" autocomplete="off" inputmode="text">
-      <button id="searchBtn" onclick="lookupOrder()">查询</button>
-    </div>
-    <p class="error-msg" id="errorMsg"></p>
+  <!-- Quick Actions -->
+  <div class="quick-actions">
+    <a href="track.html" class="quick-btn primary">
+      <div class="icon">📦</div>
+      <div class="label">订单追踪</div>
+    </a>
+    <a href="expenses.html" class="quick-btn">
+      <div class="icon">💰</div>
+      <div class="label">开支记录</div>
+    </a>
   </div>
 
-  <!-- Loading -->
-  <div class="search-card" id="loadingCard" style="display:none; text-align:center; padding: 32px;">
-    <p style="color: var(--text-light); font-size: 14px;">正在查询订单…</p>
-  </div>
-
-  <!-- Results -->
-  <div class="result-card" id="resultCard">
-    <div class="order-info">
-      <div class="customer" id="custName">—</div>
-      <div class="product" id="prodName">—</div>
-      <div class="order-id" id="orderIdDisplay">—</div>
-    </div>
-
-    <div class="progress-tracker" id="progressTracker">
-      <div class="progress-line-bg"></div>
-      <div class="progress-line-fill" id="progressFill"></div>
-      <!-- Stages injected by JS -->
-    </div>
-
-    <div class="status-banner" id="statusBanner"></div>
-
-    <div class="delivery-estimate" id="deliveryEstimate">
-      <div class="label">预计发货日期</div>
-      <div class="date" id="deliveryDate">—</div>
-    </div>
-
-    <div class="timeline" id="timeline">
-      <div class="timeline-title">进度记录</div>
-      <!-- Timeline items injected by JS -->
-    </div>
-
-    <!-- Logistics Tracking -->
-    <div class="tracking-section" id="trackingSection">
-      <div class="tracking-title">📦 物流追踪</div>
-      <div class="tracking-badge" id="trackingBadge"></div>
-      <div class="tracking-list" id="trackingList">
-        <!-- Tracking items injected by JS -->
+  <!-- Services -->
+  <div class="section">
+    <div class="section-title">我们的服务</div>
+    <div class="service-cards">
+      <div class="service-card">
+        <div class="s-icon">⚽</div>
+        <div class="s-name">运动队服定制</div>
+        <div class="s-desc">篮球·足球·龙舟·跑步</div>
+      </div>
+      <div class="service-card">
+        <div class="s-icon">👔</div>
+        <div class="s-name">团体Polo衫</div>
+        <div class="s-desc">公司团建·学校·社团</div>
+      </div>
+      <div class="service-card">
+        <div class="s-icon">🏢</div>
+        <div class="s-name">企业工服定制</div>
+        <div class="s-desc">工作服·马甲·围裙</div>
+      </div>
+      <div class="service-card">
+        <div class="s-icon">🎨</div>
+        <div class="s-name">个性化定制</div>
+        <div class="s-desc">烫画·刺绣·印花LOGO</div>
       </div>
     </div>
   </div>
 
-  <!-- Not Found -->
-  <div class="search-card empty-state" id="emptyState">
-    <div class="empty-icon">🔍</div>
-    <div class="empty-title">未找到该订单</div>
-    <div class="empty-desc">
-      请确认订单编号是否正确<br>
-      如有疑问，请联系客服获取帮助
+  <!-- Why Us -->
+  <div class="section">
+    <div class="section-title">为什么选择奥跑</div>
+    <div class="feature-list">
+      <div class="feature-item">
+        <div class="f-icon">🧵</div>
+        <div class="f-text">
+          <strong>自有供应链</strong>
+          <span>面料采购到生产一条龙，省去中间环节</span>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="f-icon">🎯</div>
+        <div class="f-text">
+          <strong>多种定制工艺</strong>
+          <span>烫画、刺绣、丝印、热转印，按需选择</span>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="f-icon">⏱️</div>
+        <div class="f-text">
+          <strong>交期有保障</strong>
+          <span>标准化生产流程，实时追踪订单进度</span>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="f-icon">💬</div>
+        <div class="f-text">
+          <strong>一对一服务</strong>
+          <span>从设计确认到发货，全程专人对接</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Clients -->
+  <div class="section">
+    <div class="section-title">合作客户</div>
+    <div class="client-tags">
+      <span class="client-tag">🏆 新建区龙舟队</span>
+      <span class="client-tag">⚽ 长风体育</span>
+      <span class="client-tag">🐉 高新区龙舟队</span>
+      <span class="client-tag">👕 小帅体育</span>
+      <span class="client-tag">🏃 企业团建定制</span>
+      <span class="client-tag">🏫 培训机构定制</span>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="section">
+    <div class="contact-card">
+      <h3>📋 需要定制团体服装？</h3>
+      <a href="javascript:void(0)" onclick="alert('请联系 Eliane 获取报价')" class="cta-btn">立即咨询</a>
+      <div class="contact-info">南昌奥跑服饰有限公司 · 专业团体服装定制</div>
     </div>
   </div>
 
   <!-- Footer -->
   <div class="footer">
-    如有疑问请联系客服获取帮助
-    <br><a href="expenses.html" style="color:#667eea;text-decoration:none;">💰 日常开支记录</a>
-    &nbsp;·&nbsp;
-    <a href="admin.html" style="color:#999;text-decoration:none;">管理入口</a>
+    南昌奥跑服饰有限公司 © 2026<br>
+    专注运动队服 · 团体制服 · 企业工服定制
   </div>
-
-</div>
-
-<script>
-// ── Constants ──
-const STAGES = [
-  { key: 'design',    label: '设计确认', icon: '✏️', iconDone: '✓' },
-  { key: 'fabric',    label: '面料采购', icon: '🧵', iconDone: '✓' },
-  { key: 'production',label: '生产中',   icon: '🏭', iconDone: '✓' },
-  { key: 'shipping',  label: '已发货',   icon: '📦', iconDone: '✓' }
-];
-
-// ── DOM refs ──
-const $input    = document.getElementById('orderInput');
-const $search   = document.getElementById('searchBtn');
-const $searchCard = document.getElementById('searchCard');
-const $loading  = document.getElementById('loadingCard');
-const $result   = document.getElementById('resultCard');
-const $empty    = document.getElementById('emptyState');
-const $error    = document.getElementById('errorMsg');
-const $tracker  = document.getElementById('progressTracker');
-const $fill     = document.getElementById('progressFill');
-const $banner   = document.getElementById('statusBanner');
-
-let ordersData = {};
-
-// ── Load order data ──
-async function loadOrders() {
-  try {
-    const resp = await fetch('orders.json?' + Date.now());
-    ordersData = await resp.json();
-  } catch (e) {
-    console.error('Failed to load orders:', e);
-    ordersData = { orders: {} };
-  }
-}
-
-// ── Lookup ──
-async function lookupOrder() {
-  const raw = $input.value.trim();
-  if (!raw) {
-    showError('请输入订单编号');
-    return;
-  }
-
-  // Hide previous results
-  $result.classList.remove('show');
-  $empty.classList.remove('show');
-  $error.classList.remove('show');
-
-  // Show loading
-  $searchCard.style.display = 'none';
-  $loading.style.display = 'block';
-  $search.disabled = true;
-
-  // Small delay for UX
-  await new Promise(r => setTimeout(r, 400));
-
-  if (!ordersData.orders) await loadOrders();
-
-  const order = ordersData.orders[raw];
-
-  $loading.style.display = 'none';
-  $searchCard.style.display = 'block';
-  $search.disabled = false;
-
-  if (!order) {
-    $empty.classList.add('show');
-    $result.classList.remove('show');
-    return;
-  }
-
-  renderOrder(raw, order);
-  $result.classList.add('show');
-  $empty.classList.remove('show');
-
-  // Scroll to result
-  $result.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-// ── Render ──
-function renderOrder(orderId, order) {
-  document.getElementById('custName').textContent = order.customer;
-  document.getElementById('prodName').textContent = order.product;
-  document.getElementById('orderIdDisplay').textContent = orderId;
-  document.getElementById('deliveryDate').textContent = order.estimated_delivery || '待定';
-
-  const stageIdx = STAGES.findIndex(s => s.key === order.stage_key);
-  const currentIdx = stageIdx >= 0 ? stageIdx : 0;
-  const isShipped = order.stage_key === 'shipping';
-
-  // Progress bar fill
-  const totalStages = STAGES.length - 1;
-  const pct = totalStages > 0 ? (currentIdx / totalStages) * 100 : 0;
-  $fill.style.width = pct + '%';
-
-  // Build stage circles
-  $tracker.querySelectorAll('.stage').forEach(el => el.remove());
-  STAGES.forEach((s, i) => {
-    const stageDiv = document.createElement('div');
-    stageDiv.className = 'stage';
-    if (i < currentIdx) stageDiv.classList.add('completed');
-    else if (i === currentIdx) stageDiv.classList.add('current');
-    else stageDiv.classList.add('future');
-
-    const circle = document.createElement('div');
-    circle.className = 'stage-circle';
-    circle.textContent = i < currentIdx ? s.iconDone : s.icon;
-
-    const label = document.createElement('div');
-    label.className = 'stage-label';
-    label.textContent = s.label;
-
-    // Find matching update date
-    const update = (order.updates || []).find(u => u.stage_key === s.key);
-    const dateEl = document.createElement('div');
-    dateEl.className = 'stage-date';
-    dateEl.textContent = update ? update.date : '';
-
-    stageDiv.appendChild(circle);
-    stageDiv.appendChild(label);
-    stageDiv.appendChild(dateEl);
-    $tracker.appendChild(stageDiv);
-  });
-
-  // Status banner
-  if (isShipped) {
-    $banner.className = 'status-banner done';
-    $banner.textContent = '🎉 您的订单已发货，请注意查收';
-  } else {
-    $banner.className = 'status-banner in-progress';
-    $banner.textContent = '⏳ 订单正在按流程推进中，请耐心等待';
-  }
-
-  // Timeline
-  const timeline = document.getElementById('timeline');
-  timeline.querySelectorAll('.timeline-item').forEach(el => el.remove());
-  (order.updates || []).forEach(u => {
-    const item = document.createElement('div');
-    item.className = 'timeline-item';
-    item.innerHTML = `
-      <div class="timeline-dot"></div>
-      <div class="timeline-content">
-        <div class="t-date">${u.date}</div>
-        <div class="t-note">${u.note}</div>
-      </div>`;
-    timeline.appendChild(item);
-  });
-
-  // Tracking section
-  const trackingSection = document.getElementById('trackingSection');
-  const trackingBadge = document.getElementById('trackingBadge');
-  const trackingList = document.getElementById('trackingList');
-  
-  const trackingHistory = order.tracking_history || [];
-  const trackingStatus = order.tracking_status || '';
-  const trackingNum = order.tracking_number || '';
-  const carrier = order.carrier || '';
-  
-  if (trackingHistory.length > 0) {
-    trackingSection.classList.add('show');
-    
-    // Badge
-    let badgeClass = 'default';
-    if (trackingStatus.includes('签收')) badgeClass = 'signed';
-    else if (trackingStatus.includes('揽收')) badgeClass = 'picked';
-    else if (trackingStatus.includes('派送') || trackingStatus.includes('在途')) badgeClass = 'transit';
-    
-    trackingBadge.className = 'tracking-badge ' + badgeClass;
-    trackingBadge.textContent = trackingStatus + (carrier ? ' · ' + carrier : '') + ' · ' + trackingNum;
-    
-    // History items
-    trackingList.querySelectorAll('.tracking-item').forEach(el => el.remove());
-    trackingHistory.forEach((t, i) => {
-      const item = document.createElement('div');
-      item.className = 'tracking-item' + (i === 0 ? ' latest' : '');
-      item.innerHTML = `
-        <div class="tracking-dot"></div>
-        <div class="tracking-content">
-          <div class="t-time">${t.time}</div>
-          <div class="t-desc">${t.desc}</div>
-        </div>`;
-      trackingList.appendChild(item);
-    });
-  } else {
-    trackingSection.classList.remove('show');
-  }
-}
-
-function showError(msg) {
-  $error.textContent = msg;
-  $error.classList.add('show');
-  setTimeout(() => $error.classList.remove('show'), 3000);
-}
-
-// ── Init ──
-$input.addEventListener('keydown', e => {
-  if (e.key === 'Enter') lookupOrder();
-});
-
-loadOrders();
-</script>
 
 </body>
 </html>
