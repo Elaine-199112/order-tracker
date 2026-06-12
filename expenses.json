@@ -62,10 +62,17 @@
       "category": "work",
       "description": "古梦云样衣费",
       "amount": 42
+    },
+    {
+      "id": "exp-2026-06-12-010",
+      "date": "2026-06-12",
+      "category": "work",
+      "description": "公司货拉拉费用",
+      "amount": 40
     }
   ],
   "summary": {
-    "work_total": 11445,
+    "work_total": 11485,
     "life_total": 923
   }
 }
