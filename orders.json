@@ -47,6 +47,22 @@
       "tracking_number": "",
       "carrier": "",
       "tracking_history": []
+    },
+    "AT260613XS-001": {
+      "customer": "小帅",
+      "product": "八大山人25件polo衫",
+      "stage_key": "design",
+      "estimated_delivery": "待定",
+      "updates": [
+        {
+          "date": "6月13日",
+          "stage_key": "design",
+          "note": "订单已确认"
+        }
+      ],
+      "tracking_number": "",
+      "carrier": "",
+      "tracking_history": []
     }
   }
 }
