@@ -48,10 +48,17 @@
       "category": "life",
       "description": "个人外卖",
       "amount": 148
+    },
+    {
+      "id": "exp-2026-06-12-008",
+      "date": "2026-06-12",
+      "category": "work",
+      "description": "小帅 八大山人25件polo衫",
+      "amount": 775
     }
   ],
   "summary": {
-    "work_total": 11403,
+    "work_total": 12178,
     "life_total": 148
   }
 }
