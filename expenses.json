@@ -1,7 +1,57 @@
 {
-  "expenses": [],
+  "expenses": [
+    {
+      "id": "exp-2026-06-12-001",
+      "date": "2026-06-12",
+      "category": "work",
+      "description": "客户黑老三退定金",
+      "amount": 1100
+    },
+    {
+      "id": "exp-2026-06-12-002",
+      "date": "2026-06-12",
+      "category": "work",
+      "description": "顺丰运费充值",
+      "amount": 1000
+    },
+    {
+      "id": "exp-2026-06-12-003",
+      "date": "2026-06-12",
+      "category": "work",
+      "description": "背心1件定制（1-5月费用）",
+      "amount": 3180
+    },
+    {
+      "id": "exp-2026-06-12-004",
+      "date": "2026-06-12",
+      "category": "work",
+      "description": "东海6个锦纶冰丝面料",
+      "amount": 5267
+    },
+    {
+      "id": "exp-2026-06-12-005",
+      "date": "2026-06-12",
+      "category": "work",
+      "description": "中通充值费用",
+      "amount": 500
+    },
+    {
+      "id": "exp-2026-06-12-006",
+      "date": "2026-06-12",
+      "category": "work",
+      "description": "小帅10件速干T恤（阿里支付）",
+      "amount": 356
+    },
+    {
+      "id": "exp-2026-06-12-007",
+      "date": "2026-06-12",
+      "category": "life",
+      "description": "个人外卖",
+      "amount": 148
+    }
+  ],
   "summary": {
-    "work_total": 0,
-    "life_total": 0
+    "work_total": 11403,
+    "life_total": 148
   }
 }
