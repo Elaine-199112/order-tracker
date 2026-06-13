@@ -69,10 +69,31 @@
       "category": "work",
       "description": "公司货拉拉费用",
       "amount": 40
+    },
+    {
+      "id": "exp-2026-06-13-011",
+      "date": "2026-06-13",
+      "category": "work",
+      "description": "吴娇香港客户补货52件棉T恤",
+      "amount": 677.8
+    },
+    {
+      "id": "exp-2026-06-13-012",
+      "date": "2026-06-13",
+      "category": "work",
+      "description": "货拉拉费用",
+      "amount": 21.4
+    },
+    {
+      "id": "exp-2026-06-13-013",
+      "date": "2026-06-13",
+      "category": "work",
+      "description": "货拉拉费用",
+      "amount": 18.7
     }
   ],
   "summary": {
-    "work_total": 11485,
+    "work_total": 12202.9,
     "life_total": 923
   }
 }
