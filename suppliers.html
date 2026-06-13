@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>供应商管理 - 南昌奥跑服饰</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #faf8f5;
+    color: #2c3e50;
+    max-width: 500px;
+    margin: 0 auto;
+    min-height: 100vh;
+  }
+  :root { --navy: #1a1f2e; --gold: #c8956c; }
+
+  .header {
+    background: linear-gradient(135deg, var(--navy), #252b3d);
+    color: white;
+    padding: 24px 20px;
+    text-align: center;
+  }
+  .header h1 { font-size: 20px; }
+  .header p { font-size: 13px; opacity: 0.7; margin-top: 4px; }
+
+  .section { padding: 16px; }
+  .section-title {
+    font-size: 15px; font-weight: 700; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  .supplier-card {
+    background: white;
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+    border-left: 4px solid #ddd;
+  }
+  .supplier-card.fabric { border-left-color: #27ae60; }
+  .supplier-card.print { border-left-color: #e74c3c; }
+  .supplier-card.garment { border-left-color: #2d9cdb; }
+
+  .supplier-card .name { font-size: 15px; font-weight: 700; }
+  .supplier-card .tags { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0; }
+  .supplier-card .tags span {
+    font-size: 10px; padding: 3px 8px; border-radius: 10px;
+    background: #f0ece6; color: #666;
+  }
+  .supplier-card .detail {
+    font-size: 12px; color: #7f8c8d;
+    display: flex; gap: 12px; flex-wrap: wrap;
+  }
+
+  .add-form {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  .add-form input, .add-form select {
+    width: 100%; padding: 10px; margin-bottom: 8px;
+    border: 1px solid #e0dbd2; border-radius: 8px;
+    font-size: 14px; background: #faf8f5;
+  }
+  .add-form button {
+    width: 100%; padding: 12px; background: var(--navy);
+    color: white; border: none; border-radius: 8px;
+    font-size: 15px; font-weight: 700; cursor: pointer;
+  }
+  .add-form .note {
+    font-size: 11px; color: #999; text-align: center; margin-top: 8px;
+  }
+
+  .footer-nav {
+    display: flex; justify-content: space-around;
+    padding: 14px 16px; background: white; border-top: 1px solid #eee;
+    font-size: 12px;
+  }
+  .footer-nav a { color: #7f8c8d; text-decoration: none; text-align: center; }
+  .footer-nav a .nav-icon { font-size: 18px; display: block; }
+  .footer-nav a.active { color: var(--navy); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🤝 供应商建档</h1>
+  <p>面料厂 · 印花厂 · 成衣厂</p>
+</div>
+
+<div class="section">
+  <div class="section-title">📋 面料供应商</div>
+  <div id="fabricList">
+    <div class="supplier-card fabric">
+      <div class="name">待添加</div>
+      <div class="tags"><span>面料</span></div>
+      <div class="detail">在下方表单添加第一个供应商</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">🎨 印花/工艺供应商</div>
+  <div id="printList">
+    <div class="supplier-card print">
+      <div class="name">待添加</div>
+      <div class="tags"><span>印花</span></div>
+      <div class="detail">在下方表单添加第一个供应商</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">🏭 成衣加工供应商</div>
+  <div id="garmentList">
+    <div class="supplier-card garment">
+      <div class="name">待添加</div>
+      <div class="tags"><span>成衣</span></div>
+      <div class="detail">在下方表单添加第一个供应商</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">➕ 新增供应商</div>
+  <div class="add-form" id="addForm">
+    <input type="text" id="supName" placeholder="供应商名称 *">
+    <select id="supType">
+      <option value="fabric">面料供应商</option>
+      <option value="print">印花/工艺</option>
+      <option value="garment">成衣加工</option>
+    </select>
+    <input type="text" id="supProduct" placeholder="主营产品（如：冰丝面料、数码印花）">
+    <input type="text" id="supPrice" placeholder="参考价格">
+    <input type="text" id="supDelivery" placeholder="交期（如：7-10天）">
+    <input type="text" id="supContact" placeholder="联系人/电话">
+    <input type="text" id="supNote" placeholder="备注（质量评价、合作历史等）">
+    <button onclick="addSupplier()">保存供应商</button>
+    <div class="note">填写后点保存，生成登记信息发到聊天，助手帮你录入系统</div>
+  </div>
+</div>
+
+<div class="footer-nav">
+  <a href="/order-tracker/"><span class="nav-icon">🏠</span>首页</a>
+  <a href="products.html"><span class="nav-icon">📋</span>产品</a>
+  <a href="track.html"><span class="nav-icon">📦</span>订单</a>
+  <a href="admin.html"><span class="nav-icon">⚙️</span>管理</a>
+</div>
+
+<script>
+function addSupplier() {
+  const name = document.getElementById('supName').value.trim();
+  const type = document.getElementById('supType').value;
+  const product = document.getElementById('supProduct').value.trim();
+  const price = document.getElementById('supPrice').value.trim();
+  const delivery = document.getElementById('supDelivery').value.trim();
+  const contact = document.getElementById('supContact').value.trim();
+  const note = document.getElementById('supNote').value.trim();
+
+  if (!name) { alert('请填写供应商名称'); return; }
+
+  const typeLabels = { fabric: '面料', print: '印花/工艺', garment: '成衣加工' };
+  const msg = `新增供应商：${name} | 类型：${typeLabels[type]} | 主营：${product} | 价格：${price} | 交期：${delivery} | 联系人：${contact} | 备注：${note}`;
+
+  const ta = document.createElement('textarea');
+  ta.value = msg;
+  ta.style.cssText = 'width:100%;height:80px;margin-top:8px;border-radius:8px;border:1px solid #e0dbd2;padding:8px;font-size:13px;';
+  
+  const existing = document.getElementById('genBox');
+  if (existing) existing.remove();
+
+  ta.id = 'genBox';
+  document.getElementById('addForm').appendChild(ta);
+
+  const copyBtn = document.createElement('button');
+  copyBtn.textContent = '📋 复制这段信息发给助手';
+  copyBtn.style.cssText = 'margin-top:6px;background:#c8956c;';
+  copyBtn.onclick = () => {
+    ta.select();
+    document.execCommand('copy');
+    alert('已复制！粘贴发送给助手即可录入');
+  };
+  copyBtn.id = 'copyBtn';
+  const oldBtn = document.getElementById('copyBtn');
+  if (oldBtn) oldBtn.remove();
+  document.getElementById('addForm').appendChild(copyBtn);
+}
+</script>
+
+</body>
+</html>

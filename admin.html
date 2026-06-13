@@ -3,458 +3,246 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>订单管理后台</title>
+<title>工作台 - 南昌奥跑服饰</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
-    background: #FAF8F5;
-    color: #2C3E50;
-    padding: 20px;
-    max-width: 600px;
-    margin: 0 auto;
+    background: #FAF8F5; color: #2C3E50; max-width: 600px; margin: 0 auto;
   }
-  h1 { font-size: 22px; margin-bottom: 6px; color: #1B2838; }
-  .subtitle { font-size: 13px; color: #7F8C8D; margin-bottom: 24px; }
+  :root { --navy: #1a1f2e; --gold: #c8956c; }
   
-  .card {
-    background: #fff;
-    border-radius: 14px;
-    padding: 20px;
-    margin-bottom: 16px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-  }
-  .card h2 { font-size: 16px; margin-bottom: 14px; color: #1B2838; }
+  .header { background: var(--navy); color: white; padding: 20px; text-align: center; }
+  .header h1 { font-size: 20px; }
+  .header p { font-size: 12px; opacity: 0.6; margin-top: 4px; }
 
-  .form-row {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  .pipeline {
+    display: flex; gap: 6px; padding: 14px 12px;
+    background: white; overflow-x: auto;
   }
-  .field { display: flex; flex-direction: column; gap: 4px; }
-  .field label { font-size: 13px; font-weight: 600; color: #555; }
-  .field input, .field select, .field textarea {
-    height: 42px;
-    border: 2px solid #E8E2DA;
-    border-radius: 10px;
-    padding: 0 12px;
-    font-size: 15px;
-    background: #FAF8F5;
-    outline: none;
-    font-family: inherit;
+  .step {
+    flex: 1; min-width: 70px; text-align: center; padding: 10px 6px;
+    border-radius: 10px; font-size: 11px; font-weight: 600;
+    background: #f0ece6; color: #999;
   }
-  .field input:focus, .field select:focus, .field textarea:focus { border-color: #C8956C; }
-  .field textarea { height: 80px; padding: 10px 12px; resize: vertical; }
+  .step.active { background: var(--navy); color: white; }
+
+  .card {
+    background: white; border-radius: 12px; padding: 18px;
+    margin: 10px 14px; box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  }
+  .card h3 { font-size: 15px; margin-bottom: 12px; }
+
+  .form-row { display: flex; flex-direction: column; gap: 10px; }
+  input, select, textarea {
+    width: 100%; padding: 10px 12px; border: 2px solid #e8e2da;
+    border-radius: 8px; font-size: 14px; font-family: inherit;
+    background: #faf8f5;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--gold); outline: none; }
+  textarea { height: 60px; resize: vertical; }
 
   button {
-    height: 44px;
-    padding: 0 24px;
-    border: none;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: transform 0.1s;
+    padding: 12px; border: none; border-radius: 8px;
+    font-size: 14px; font-weight: 700; cursor: pointer; width: 100%;
   }
-  button:active { transform: scale(0.97); }
-  .btn-primary { background: #1B2838; color: #fff; width: 100%; margin-top: 8px; }
-  .btn-add { background: #C8956C; color: #fff; width: 100%; }
-  .btn-danger { background: #fff; color: #E74C3C; border: 2px solid #E74C3C; font-size: 12px; padding: 0 12px; height: 32px; }
-  .btn-copy { background: #27AE60; color: #fff; width: 100%; margin-top: 10px; }
+  .btn-dark { background: var(--navy); color: white; }
+  .btn-gold { background: var(--gold); color: white; }
+  .btn-green { background: #27ae60; color: white; }
 
-  .order-list { display: flex; flex-direction: column; gap: 10px; }
-  .order-item {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 14px; background: #FAF8F5; border-radius: 10px;
-    cursor: pointer; transition: background 0.15s;
-    border: 2px solid transparent;
+  .gen-box {
+    margin-top: 10px; background: #f0ece6; border-radius: 8px;
+    padding: 10px; font-size: 13px; word-break: break-all;
   }
-  .order-item:hover { background: #F0EDE8; }
-  .order-item.selected { border-color: #C8956C; background: #FDF6EF; }
-  .order-item .info { flex: 1; min-width: 0; }
-  .order-item .oid { font-size: 13px; font-weight: 700; color: #1B2838; }
-  .order-item .detail { font-size: 12px; color: #7F8C8D; margin-top: 2px; }
-  .order-item .stage-badge {
-    font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px;
-    white-space: nowrap; margin-left: 8px;
+  .gen-box .copy-btn {
+    margin-top: 8px; background: var(--navy); color: white;
+    padding: 8px; border-radius: 6px; text-align: center; cursor: pointer;
+    font-size: 13px;
   }
-  .badge-design { background: #E8F0FE; color: #1A73E8; }
-  .badge-fabric { background: #FFF3E0; color: #E67E22; }
-  .badge-production { background: #FCE4EC; color: #C62828; }
-  .badge-shipping { background: #E8F8F0; color: #27AE60; }
 
-  .output-area {
-    background: #1B2838; color: #F0EDE8; border-radius: 10px;
-    padding: 16px; font-size: 12px; font-family: monospace;
-    max-height: 300px; overflow-y: auto; white-space: pre-wrap;
-    word-break: break-all; margin-top: 10px; display: none;
+  .footer-nav {
+    display: flex; justify-content: space-around; padding: 14px;
+    background: white; border-top: 1px solid #eee; font-size: 12px;
   }
-  .output-area.show { display: block; }
-  .output-area code { color: #C8956C; }
+  .footer-nav a { color: #999; text-decoration: none; text-align: center; }
+  .footer-nav a .icon { font-size: 18px; display: block; }
+  .footer-nav a.active { color: var(--navy); font-weight: 700; }
 
   .toast {
-    position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-    background: #27AE60; color: #fff; padding: 10px 24px; border-radius: 20px;
-    font-size: 14px; font-weight: 600; display: none; z-index: 99;
+    position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+    background: #333; color: white; padding: 10px 24px;
+    border-radius: 20px; font-size: 13px; opacity: 0; transition: 0.3s;
   }
-  .toast.show { display: block; animation: fadeInOut 2s ease; }
-  @keyframes fadeInOut {
-    0% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
-    15% { opacity: 1; transform: translateX(-50%) translateY(0); }
-    85% { opacity: 1; }
-    100% { opacity: 0; }
-  }
-
-  .tabs { display: flex; gap: 0; margin-bottom: 0; }
-  .tab {
-    flex: 1; text-align: center; padding: 10px; font-size: 14px; font-weight: 600;
-    cursor: pointer; border-bottom: 3px solid transparent; color: #999;
-    transition: all 0.2s;
-  }
-  .tab.active { color: #1B2838; border-bottom-color: #C8956C; }
-  .tab-content { display: none; }
-  .tab-content.active { display: block; }
-
-  .empty-note { text-align: center; color: #999; font-size: 14px; padding: 20px; }
+  .toast.show { opacity: 1; }
 </style>
 </head>
 <body>
 
-<h1>📋 订单管理后台</h1>
-<p class="subtitle">添加 / 修改订单 → 生成更新内容 → 发给我 → 页面刷新生效</p>
-
-<div class="toast" id="toast">✅ 已复制！发给 Hermes 即可</div>
-
-<!-- Tabs -->
-<div class="tabs">
-  <div class="tab active" onclick="switchTab('list')">📦 订单列表</div>
-  <div class="tab" onclick="switchTab('add')">➕ 新增订单</div>
+<div class="header">
+  <h1>⚙️ 业务流程工作台</h1>
+  <p>填表→生成信息→复制发给我→帮你录入系统</p>
 </div>
 
-<!-- Order List -->
-<div class="tab-content active" id="tab-list">
-  <div class="card">
-    <div class="order-list" id="orderList"></div>
-    <div class="empty-note" id="emptyNote">暂无订单</div>
-  </div>
-
-  <!-- Edit selected order -->
-  <div class="card" id="editCard" style="display:none">
-    <h2>✏️ 修改订单：<span id="editOrderId"></span></h2>
-    <div class="form-row">
-      <div class="field">
-        <label>当前进度</label>
-        <select id="editStage">
-          <option value="design">设计确认</option>
-          <option value="fabric">面料采购</option>
-          <option value="production">生产中</option>
-          <option value="shipping">已发货</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>进度备注</label>
-        <input type="text" id="editNote" placeholder="如：面料已到厂，开始缝制">
-      </div>
-      <div class="field">
-        <label>预计发货日期</label>
-        <input type="text" id="editDelivery" placeholder="如：2026年6月20日">
-      </div>
-      <button class="btn-primary" onclick="updateOrder()">✅ 更新此订单</button>
-      <button class="btn-danger" onclick="deleteOrder()" style="width:100%;margin-top:6px">🗑 删除此订单</button>
-    </div>
-  </div>
-
-  <button class="btn-copy" onclick="generateAndCopy()">📋 生成更新并复制</button>
+<div class="pipeline">
+  <div class="step active" id="step1">1. 报价</div>
+  <div class="step" id="step2">2. 确认</div>
+  <div class="step" id="step3">3. 生产</div>
+  <div class="step" id="step4">4. 发货</div>
+  <div class="step" id="step5">5. 售后</div>
 </div>
 
-<!-- Add Order -->
-<div class="tab-content" id="tab-add">
-  <div class="card">
-    <h2>新增订单</h2>
-    <div class="form-row">
-      <div class="field">
-        <label>订单编号</label>
-        <input type="text" id="addOrderId" placeholder="如：ORD-2026004">
-      </div>
-      <div class="field">
-        <label>客户名称</label>
-        <input type="text" id="addCustomer" placeholder="如：李教练">
-      </div>
-      <div class="field">
-        <label>产品描述</label>
-        <input type="text" id="addProduct" placeholder="如：足球队服 · 15套">
-      </div>
-      <div class="field">
-        <label>当前进度</label>
-        <select id="addStage">
-          <option value="design">设计确认</option>
-          <option value="fabric">面料采购</option>
-          <option value="production">生产中</option>
-          <option value="shipping">已发货</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>进度备注</label>
-        <input type="text" id="addNote" placeholder="如：设计方案已确认通过">
-      </div>
-      <div class="field">
-        <label>预计发货日期</label>
-        <input type="text" id="addDelivery" placeholder="如：2026年7月1日">
-      </div>
-      <div class="field">
-        <label>快递公司（发货后填写）</label>
-        <select id="addCarrier">
-          <option value="">暂不填写</option>
-          <option value="shunfeng">顺丰速运</option>
-          <option value="zhongtong">中通快递</option>
-          <option value="yuantong">圆通速递</option>
-          <option value="shentong">申通快递</option>
-          <option value="yunda">韵达快递</option>
-          <option value="jtexpress">极兔速递</option>
-          <option value="jd">京东物流</option>
-          <option value="debangwuliu">德邦物流</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>快递单号（发货后填写）</label>
-        <input type="text" id="addTracking" placeholder="如：SF1234567890123">
-      </div>
-      <button class="btn-add" onclick="addOrder()">➕ 添加到列表</button>
-    </div>
+<!-- 1. 报价 -->
+<div class="card">
+  <h3>💰 快速报价</h3>
+  <div class="form-row">
+    <input type="text" id="q-customer" placeholder="客户名称">
+    <select id="q-product">
+      <option value="">选择产品</option>
+      <option value="篮球服套装">🏀 篮球服 ¥70/套 (5起)</option>
+      <option value="足球服套装">⚽ 足球服 ¥70/套 (5起)</option>
+      <option value="龙舟服">🐉 龙舟服 ¥70/件 (10起)</option>
+      <option value="Polo衫">👔 Polo衫 ¥80/件 (10起)</option>
+      <option value="速干T恤">👕 速干T恤 ¥70/件 (10起)</option>
+      <option value="田径服">🎽 田径服 ¥10/件 (80起)</option>
+    </select>
+    <input type="number" id="q-qty" placeholder="数量" min="1">
+    <input type="text" id="q-custom" placeholder="定制要求（LOGO/号码/颜色等）">
+    <button class="btn-dark" onclick="genQuote()">生成报价信息</button>
+    <div id="quoteBox"></div>
   </div>
 </div>
 
-<!-- Output -->
-<div class="card" id="outputCard" style="display:none">
-  <h2>📤 要发给 Hermes 的内容</h2>
-  <div class="output-area" id="outputArea"></div>
-  <button class="btn-copy" onclick="copyOutput()">📋 复制内容</button>
-  <p style="font-size:12px;color:#999;text-align:center;margin-top:8px">把上面内容粘贴发给 Hermes → 自动更新线上页面</p>
+<!-- 2. 确认订单 -->
+<div class="card">
+  <h3>✅ 确认订单</h3>
+  <div class="form-row">
+    <input type="text" id="c-customer" placeholder="客户名称 *">
+    <input type="text" id="c-product" placeholder="产品描述 *（如：龙舟服35件+冰丝面料）">
+    <input type="text" id="c-price" placeholder="总金额（如：2450）">
+    <input type="text" id="c-delivery" placeholder="预计交期（如：6月20日）">
+    <button class="btn-gold" onclick="genConfirm()">生成确认单</button>
+    <div id="confirmBox"></div>
+  </div>
 </div>
+
+<!-- 3. 生产进度 -->
+<div class="card">
+  <h3>🏭 更新生产进度</h3>
+  <div class="form-row">
+    <input type="text" id="p-orderid" placeholder="订单编号（如：AT260613XS-001）">
+    <select id="p-stage">
+      <option value="design">设计确认</option>
+      <option value="fabric">面料采购</option>
+      <option value="production">生产中</option>
+      <option value="done">生产完成</option>
+    </select>
+    <input type="text" id="p-note" placeholder="备注（如：印花已打完、等待裁剪）">
+    <button class="btn-dark" onclick="genProgress()">生成进度更新</button>
+    <div id="progressBox"></div>
+  </div>
+</div>
+
+<!-- 4. 发货 -->
+<div class="card">
+  <h3>📦 发货登记</h3>
+  <div class="form-row">
+    <input type="text" id="s-orderid" placeholder="订单编号">
+    <select id="s-carrier">
+      <option value="顺丰">顺丰</option>
+      <option value="中通">中通</option>
+      <option value="小拉专送">小拉专送</option>
+      <option value="货拉拉">货拉拉</option>
+    </select>
+    <input type="text" id="s-tracking" placeholder="快递单号/车牌号">
+    <input type="text" id="s-date" placeholder="预计到达日期">
+    <button class="btn-green" onclick="genShip()">生成发货通知</button>
+    <div id="shipBox"></div>
+  </div>
+</div>
+
+<!-- 5. 售后 -->
+<div class="card">
+  <h3>💬 售后记录</h3>
+  <div class="form-row">
+    <input type="text" id="a-orderid" placeholder="订单编号">
+    <select id="a-type">
+      <option value="回访">客户回访</option>
+      <option value="问题">质量问题</option>
+      <option value="补货">客户补货</option>
+      <option value="退款">退款处理</option>
+    </select>
+    <input type="text" id="a-note" placeholder="备注详情">
+    <button class="btn-dark" onclick="genAfter()">生成售后记录</button>
+    <div id="afterBox"></div>
+  </div>
+</div>
+
+<div class="footer-nav">
+  <a href="/order-tracker/"><span class="icon">🏠</span>首页</a>
+  <a href="products.html"><span class="icon">📋</span>产品</a>
+  <a href="suppliers.html"><span class="icon">🤝</span>供应商</a>
+  <a href="admin.html" class="active"><span class="icon">⚙️</span>工作台</a>
+</div>
+
+<div class="toast" id="toast"></div>
 
 <script>
-let orders = {};
-let selectedOrder = null;
-let pendingChanges = [];
-
-const STAGE_NAMES = { design: '设计确认', fabric: '面料采购', production: '生产中', shipping: '已发货' };
-const STAGE_BADGES = { design: 'badge-design', fabric: 'badge-fabric', production: 'badge-production', shipping: 'badge-shipping' };
-
-async function loadOrders() {
-  try {
-    const resp = await fetch('orders.json?' + Date.now());
-    orders = (await resp.json()).orders || {};
-  } catch(e) {
-    orders = {};
-  }
-  renderList();
-}
-loadOrders();
-
-function renderList() {
-  const list = document.getElementById('orderList');
-  const empty = document.getElementById('emptyNote');
-  list.innerHTML = '';
-  const ids = Object.keys(orders);
-  if (ids.length === 0) {
-    empty.style.display = 'block';
-    return;
-  }
-  empty.style.display = 'none';
-  ids.forEach(id => {
-    const o = orders[id];
-    const div = document.createElement('div');
-    div.className = 'order-item' + (selectedOrder === id ? ' selected' : '');
-    div.onclick = () => selectOrder(id);
-    div.innerHTML = `
-      <div class="info">
-        <div class="oid">${id}</div>
-        <div class="detail">${o.customer} · ${o.product}</div>
-      </div>
-      <span class="stage-badge ${STAGE_BADGES[o.stage_key] || ''}">${STAGE_NAMES[o.stage_key] || o.stage_key}</span>`;
-    list.appendChild(div);
-  });
-}
-
-function selectOrder(id) {
-  selectedOrder = id;
-  renderList();
-  const o = orders[id];
-  document.getElementById('editCard').style.display = 'block';
-  document.getElementById('editOrderId').textContent = id;
-  document.getElementById('editStage').value = o.stage_key;
-  document.getElementById('editNote').value = '';
-  document.getElementById('editDelivery').value = o.estimated_delivery || '';
-  document.getElementById('editCard').scrollIntoView({behavior:'smooth'});
-}
-
-function updateOrder() {
-  if (!selectedOrder) return;
-  const newStage = document.getElementById('editStage').value;
-  const note = document.getElementById('editNote').value.trim();
-  const delivery = document.getElementById('editDelivery').value.trim();
-  
-  const o = orders[selectedOrder];
-  const now = new Date();
-  const dateStr = `${now.getMonth()+1}月${now.getDate()}日`;
-  
-  // Add to pending changes
-  pendingChanges.push({
-    action: 'update',
-    orderId: selectedOrder,
-    stage_key: newStage,
-    note: note,
-    date: dateStr,
-    estimated_delivery: delivery
-  });
-  
-  // Update local
-  o.stage_key = newStage;
-  if (note) {
-    o.updates = o.updates || [];
-    o.updates.push({ date: dateStr, stage_key: newStage, note: note });
-  }
-  if (delivery) o.estimated_delivery = delivery;
-  
-  document.getElementById('editNote').value = '';
-  renderList();
-  document.getElementById('editCard').style.display = 'none';
-  selectedOrder = null;
-  
-  showToast('✅ 订单已更新（待提交）');
-}
-
-function addOrder() {
-  const id = document.getElementById('addOrderId').value.trim();
-  const customer = document.getElementById('addCustomer').value.trim();
-  const product = document.getElementById('addProduct').value.trim();
-  const stage = document.getElementById('addStage').value;
-  const note = document.getElementById('addNote').value.trim();
-  const delivery = document.getElementById('addDelivery').value.trim();
-  const carrier = document.getElementById('addCarrier').value;
-  const trackingNum = document.getElementById('addTracking').value.trim();
-  
-  if (!id || !customer || !product) {
-    alert('请填写订单编号、客户名称和产品描述');
-    return;
-  }
-  
-  const now = new Date();
-  const dateStr = `${now.getMonth()+1}月${now.getDate()}日`;
-  
-  // Build note with tracking info if provided
-  let fullNote = note;
-  if (trackingNum) {
-    fullNote = note ? note + ' 快递：' + trackingNum : '快递：' + trackingNum;
-  }
-  
-  pendingChanges.push({
-    action: 'add',
-    orderId: id,
-    customer: customer,
-    product: product,
-    stage_key: stage,
-    note: fullNote,
-    date: dateStr,
-    estimated_delivery: delivery,
-    carrier: carrier,
-    tracking_number: trackingNum
-  });
-  
-  orders[id] = {
-    customer: customer,
-    product: product,
-    stage_key: stage,
-    estimated_delivery: delivery || '待定',
-    updates: fullNote ? [{ date: dateStr, stage_key: stage, note: fullNote }] : [],
-    carrier: carrier,
-    tracking_number: trackingNum,
-    tracking_history: []
-  };
-  
-  // Clear form
-  document.getElementById('addOrderId').value = '';
-  document.getElementById('addCustomer').value = '';
-  document.getElementById('addProduct').value = '';
-  document.getElementById('addNote').value = '';
-  document.getElementById('addDelivery').value = '';
-  document.getElementById('addCarrier').value = '';
-  document.getElementById('addTracking').value = '';
-  
-  renderList();
-  switchTab('list');
-  showToast('✅ 订单已添加（待提交）');
-}
-
-function deleteOrder() {
-  if (!selectedOrder) return;
-  if (!confirm(`确定删除订单 ${selectedOrder}？`)) return;
-  
-  pendingChanges.push({
-    action: 'delete',
-    orderId: selectedOrder
-  });
-  
-  delete orders[selectedOrder];
-  selectedOrder = null;
-  document.getElementById('editCard').style.display = 'none';
-  renderList();
-  showToast('🗑 订单已删除（待提交）');
-}
-
-function generateAndCopy() {
-  if (pendingChanges.length === 0) {
-    alert('没有待提交的更改');
-    return;
-  }
-  
-  let text = '更新订单：\n\n';
-  pendingChanges.forEach(c => {
-    if (c.action === 'add') {
-      text += `➕ 新增 ${c.orderId}\n   客户：${c.customer}\n   产品：${c.product}\n   进度：${STAGE_NAMES[c.stage_key]}\n   备注：${c.note}\n   预计发货：${c.estimated_delivery}\n\n`;
-    } else if (c.action === 'update') {
-      text += `✏️ ${c.orderId} → ${STAGE_NAMES[c.stage_key]}\n   备注：${c.note}\n   预计发货：${c.estimated_delivery}\n\n`;
-    } else if (c.action === 'delete') {
-      text += `🗑 删除 ${c.orderId}\n\n`;
-    }
-  });
-  
-  document.getElementById('outputArea').textContent = text;
-  document.getElementById('outputCard').style.display = 'block';
-  document.getElementById('outputCard').scrollIntoView({behavior:'smooth'});
-  
-  // Copy
-  navigator.clipboard.writeText(text).then(() => showToast('✅ 已复制！发给 Hermes 即可'));
-}
-
-function copyOutput() {
-  const text = document.getElementById('outputArea').textContent;
-  navigator.clipboard.writeText(text).then(() => showToast('✅ 已复制！发给 Hermes 即可'));
-}
-
-function switchTab(tab) {
-  document.querySelectorAll('.tab').forEach((t,i) => {
-    t.classList.toggle('active', (tab === 'list' && i === 0) || (tab === 'add' && i === 1));
-  });
-  document.getElementById('tab-list').classList.toggle('active', tab === 'list');
-  document.getElementById('tab-add').classList.toggle('active', tab === 'add');
-}
-
 function showToast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.remove('show');
-  void t.offsetWidth;
-  t.classList.add('show');
+  t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2000);
 }
+
+function makeBox(id, text) {
+  const el = document.getElementById(id);
+  el.innerHTML = `<div class="gen-box">${text}<div class="copy-btn" onclick="copyText(this.parentElement)">📋 复制发给助手</div></div>`;
+}
+
+function copyText(el) {
+  const text = el.textContent.replace('📋 复制发给助手','').trim();
+  navigator.clipboard.writeText(text).then(() => showToast('已复制！粘贴发给助手'));
+}
+
+function genQuote() {
+  const c = document.getElementById('q-customer').value || '客户';
+  const p = document.getElementById('q-product').value || '定制产品';
+  const q = document.getElementById('q-qty').value || '?';
+  const x = document.getElementById('q-custom').value || '';
+  const extra = x ? `，${x}` : '';
+  makeBox('quoteBox', `报价：${c}，${p}，${q}件${extra}`);
+}
+
+function genConfirm() {
+  const c = document.getElementById('c-customer').value || '客户';
+  const p = document.getElementById('c-product').value || '';
+  const pr = document.getElementById('c-price').value || '';
+  const d = document.getElementById('c-delivery').value || '';
+  makeBox('confirmBox', `确认订单：${c}，${p}，金额¥${pr}，预计交期${d}`);
+}
+
+function genProgress() {
+  const id = document.getElementById('p-orderid').value || '订单编号';
+  const s = document.getElementById('p-stage').value;
+  const stages = {design:'设计确认', fabric:'面料采购', production:'生产中', done:'生产完成'};
+  const n = document.getElementById('p-note').value || '';
+  const extra = n ? `，${n}` : '';
+  makeBox('progressBox', `更新进度：${id}，状态→${stages[s]}${extra}`);
+}
+
+function genShip() {
+  const id = document.getElementById('s-orderid').value || '订单编号';
+  const cr = document.getElementById('s-carrier').value;
+  const t = document.getElementById('s-tracking').value || '';
+  const d = document.getElementById('s-date').value || '';
+  makeBox('shipBox', `发货：${id}，${cr}，单号${t}，预计${d}到达`);
+}
+
+function genAfter() {
+  const id = document.getElementById('a-orderid').value || '订单编号';
+  const tp = document.getElementById('a-type').value;
+  const n = document.getElementById('a-note').value || '';
+  makeBox('afterBox', `售后：${id}，类型：${tp}，${n}`);
+}
 </script>
-<div style="text-align:center;padding:16px;font-size:13px;color:#999;">
-  <a href="/order-tracker/" style="color:#667eea;text-decoration:none;">🏠 公司首页</a>
-  &nbsp;·&nbsp;
-  <a href="track.html" style="color:#667eea;text-decoration:none;">📦 订单追踪</a>
-  &nbsp;·&nbsp;
-  <a href="expenses.html" style="color:#667eea;text-decoration:none;">💰 开支</a>
-</div>
 </body>
 </html>
