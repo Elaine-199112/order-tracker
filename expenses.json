@@ -90,10 +90,45 @@
       "category": "work",
       "description": "货拉拉费用",
       "amount": 18.7
+    },
+    {
+      "id": "exp-2026-06-13-014",
+      "date": "2026-06-13",
+      "category": "life",
+      "description": "奶茶",
+      "amount": 49
+    },
+    {
+      "id": "exp-2026-06-13-015",
+      "date": "2026-06-13",
+      "category": "life",
+      "description": "饭",
+      "amount": 55
+    },
+    {
+      "id": "exp-2026-06-13-016",
+      "date": "2026-06-13",
+      "category": "life",
+      "description": "电影支出",
+      "amount": 12
+    },
+    {
+      "id": "exp-2026-06-13-017",
+      "date": "2026-06-13",
+      "category": "work",
+      "description": "12件polo衫",
+      "amount": 243
+    },
+    {
+      "id": "exp-2026-06-13-018",
+      "date": "2026-06-13",
+      "category": "work",
+      "description": "东海12个新款冰丝面料",
+      "amount": 11850
     }
   ],
   "summary": {
-    "work_total": 12202.9,
-    "life_total": 923
+    "work_total": 24295.9,
+    "life_total": 1039
   }
 }
