@@ -4,355 +4,511 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>南昌奥跑服饰有限公司 - 专业团体服装定制</title>
-<meta name="description" content="南昌奥跑服饰有限公司，专注运动队服、团体服装、企业工服定制。龙舟服、polo衫、T恤、篮球服、足球服等各类团队服装，品质保障。">
+<meta name="description" content="南昌奥跑服饰有限公司，专注运动队服、团体服装、企业工服定制。自有供应链，品质保障。">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --navy: #1a1f2e;
-    --navy-light: #252b3d;
-    --gold: #c8956c;
-    --gold-light: #e8d5c4;
-    --bg: #faf8f5;
-    --white: #ffffff;
-    --text: #2c3e50;
-    --text-light: #7f8c8d;
-    --red: #e74c3c;
-    --shadow: 0 4px 24px rgba(0,0,0,0.08);
-  }
-
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.6;
-    max-width: 500px;
-    margin: 0 auto;
-  }
-
   /* ── Hero ── */
   .hero {
-    background: linear-gradient(160deg, var(--navy) 0%, var(--navy-light) 60%, #2d2342 100%);
+    background: linear-gradient(170deg, var(--navy) 0%, #152838 50%, #1a2535 100%);
     color: white;
-    padding: 48px 24px 40px;
+    padding: 80px 24px 72px;
     text-align: center;
     position: relative;
     overflow: hidden;
   }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -30%; right: -20%;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(200,149,108,0.12) 0%, transparent 70%);
+    border-radius: 50%;
+  }
   .hero::after {
     content: '';
     position: absolute;
-    top: -40%; right: -30%;
-    width: 300px; height: 300px;
-    background: radial-gradient(circle, rgba(200,149,108,0.15) 0%, transparent 70%);
+    bottom: -20%; left: -15%;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(200,149,108,0.08) 0%, transparent 65%);
     border-radius: 50%;
   }
-  .hero .badge {
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .hero-badge {
     display: inline-block;
-    background: rgba(200,149,108,0.2);
-    border: 1px solid rgba(200,149,108,0.3);
+    background: rgba(200,149,108,0.15);
+    border: 1px solid rgba(200,149,108,0.25);
     color: var(--gold-light);
-    padding: 4px 14px;
+    padding: 5px 16px;
     border-radius: 20px;
-    font-size: 12px;
-    margin-bottom: 16px;
-    letter-spacing: 1px;
+    font-size: 13px;
+    font-weight: 400;
+    margin-bottom: 24px;
+    letter-spacing: 0.5px;
   }
   .hero h1 {
-    font-size: 26px;
-    font-weight: 800;
-    margin-bottom: 6px;
-    position: relative;
-    z-index: 1;
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
   }
-  .hero .subtitle {
-    font-size: 15px;
-    color: rgba(255,255,255,0.7);
-    position: relative;
-    z-index: 1;
+  .hero p {
+    font-size: 18px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.5;
+    max-width: 480px;
+    margin: 0 auto 32px;
   }
-  .hero-logo {
-    width: 64px;
-    height: 64px;
-    background: linear-gradient(135deg, var(--gold) 0%, #e8b98a 100%);
-    border-radius: 16px;
+  .hero-buttons {
     display: flex;
-    align-items: center;
+    gap: 12px;
     justify-content: center;
-    margin: 0 auto 16px;
-    font-size: 28px;
-    font-weight: 900;
-    color: white;
-    position: relative;
-    z-index: 1;
-    box-shadow: 0 8px 32px rgba(200,149,108,0.3);
+    flex-wrap: wrap;
   }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--gold);
+    color: white;
+    padding: 12px 28px;
+    border-radius: var(--radius-sm);
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all var(--transition);
+    border: none;
+    cursor: pointer;
+  }
+  .btn-primary:hover { background: var(--gold-hover); transform: translateY(-1px); }
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    color: rgba(255,255,255,0.85);
+    padding: 12px 28px;
+    border-radius: var(--radius-sm);
+    font-size: 15px;
+    font-weight: 400;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: all var(--transition);
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.3); }
 
-  /* ── Quick Actions ── */
-  .quick-actions {
-    display: flex;
-    gap: 10px;
-    padding: 0 20px;
-    margin-top: -20px;
+  /* ── Quick Nav Cards ── */
+  .quick-section {
+    max-width: 1100px;
+    margin: -40px auto 0;
+    padding: 0 24px;
     position: relative;
     z-index: 2;
   }
-  .quick-btn {
-    flex: 1;
-    background: var(--white);
-    border-radius: 12px;
-    padding: 14px 12px;
-    text-align: center;
-    text-decoration: none;
-    box-shadow: var(--shadow);
-    transition: transform 0.2s;
-    color: var(--text);
+  .quick-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
   }
-  .quick-btn:active { transform: scale(0.96); }
-  .quick-btn .icon { font-size: 22px; margin-bottom: 4px; }
-  .quick-btn .label { font-size: 12px; font-weight: 600; }
-  .quick-btn.primary { background: var(--navy); color: white; }
-  .quick-btn.primary .label { color: rgba(255,255,255,0.8); }
+  .quick-card {
+    background: var(--bg);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    text-decoration: none;
+    color: var(--text);
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--border);
+    transition: all var(--transition);
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .quick-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-elevated);
+    border-color: rgba(200,149,108,0.3);
+  }
+  .quick-card-icon {
+    width: 44px; height: 44px;
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .quick-card-icon.track { background: #eef2ff; color: #4f46e5; }
+  .quick-card-icon.products { background: #fef3c7; color: #d97706; }
+  .quick-card-icon.expenses { background: #d1fae5; color: #059669; }
+  .quick-card-icon.admin { background: #fce7f3; color: #db2777; }
+  .quick-card-label { font-size: 12px; color: var(--text-light); font-weight: 400; }
+  .quick-card-title { font-size: 15px; font-weight: 600; color: var(--navy-heading); }
 
   /* ── Sections ── */
   .section {
-    padding: 28px 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 72px 24px;
   }
-  .section-title {
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  .section-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
   }
-  .section-title::before {
-    content: '';
-    width: 4px;
-    height: 20px;
-    background: var(--gold);
-    border-radius: 2px;
+  .section-heading {
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 300;
+    color: var(--navy-heading);
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .section-desc {
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--text-body);
+    max-width: 560px;
+    line-height: 1.5;
+    margin-bottom: 40px;
   }
 
   /* ── Services ── */
-  .service-cards {
+  .services-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
   }
   .service-card {
-    background: var(--white);
-    border-radius: 12px;
-    padding: 18px 14px;
-    text-align: center;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 32px 24px;
+    transition: all var(--transition);
+    position: relative;
+    overflow: hidden;
   }
-  .service-card .s-icon { font-size: 28px; margin-bottom: 8px; }
-  .service-card .s-name { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
-  .service-card .s-desc { font-size: 11px; color: var(--text-light); }
+  .service-card:hover {
+    box-shadow: var(--shadow-elevated);
+    border-color: rgba(200,149,108,0.25);
+    transform: translateY(-2px);
+  }
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), #e8b98a);
+    opacity: 0;
+    transition: opacity var(--transition);
+  }
+  .service-card:hover::before { opacity: 1; }
+  .service-icon {
+    font-size: 32px;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .service-name {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--navy-heading);
+    margin-bottom: 6px;
+  }
+  .service-desc {
+    font-size: 14px;
+    color: var(--text-body);
+    font-weight: 300;
+    line-height: 1.5;
+  }
 
   /* ── Features ── */
-  .feature-list {
-    background: var(--white);
-    border-radius: 12px;
-    padding: 4px 0;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  .features-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px;
   }
   .feature-item {
     display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 16px;
-    border-bottom: 1px solid #f0ece6;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 20px;
+    background: var(--bg-warm);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-soft);
+    transition: all var(--transition);
   }
-  .feature-item:last-child { border-bottom: none; }
-  .feature-item .f-icon {
-    width: 36px; height: 36px;
+  .feature-item:hover {
     background: var(--bg);
-    border-radius: 10px;
+    box-shadow: var(--shadow-card);
+  }
+  .feature-icon {
+    width: 40px; height: 40px;
+    border-radius: var(--radius);
+    background: var(--bg);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 18px;
     flex-shrink: 0;
+    border: 1px solid var(--border-soft);
   }
-  .feature-item .f-text strong { font-size: 14px; display: block; }
-  .feature-item .f-text span { font-size: 12px; color: var(--text-light); }
+  .feature-text strong {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--navy-heading);
+    margin-bottom: 2px;
+  }
+  .feature-text span {
+    font-size: 13px;
+    color: var(--text-body);
+    font-weight: 300;
+  }
 
   /* ── Clients ── */
-  .client-tags {
+  .clients-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 10px;
   }
   .client-tag {
-    background: var(--white);
-    border: 1px solid #e8e2da;
-    border-radius: 20px;
-    padding: 6px 14px;
-    font-size: 13px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 8px 18px;
+    font-size: 14px;
+    font-weight: 400;
     color: var(--text);
-    box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+    transition: all var(--transition);
+    cursor: default;
+  }
+  .client-tag:hover {
+    border-color: var(--gold);
+    background: var(--gold-light);
   }
 
-  /* ── Contact ── */
-  .contact-card {
+  /* ── CTA ── */
+  .cta-section {
     background: var(--navy);
-    color: white;
-    border-radius: 14px;
-    padding: 24px;
+    padding: 72px 24px;
     text-align: center;
+    position: relative;
+    overflow: hidden;
   }
-  .contact-card h3 {
-    font-size: 17px;
-    margin-bottom: 16px;
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle at center, rgba(200,149,108,0.08) 0%, transparent 60%);
   }
-  .contact-card .cta-btn {
-    display: inline-block;
-    background: var(--gold);
+  .cta-content {
+    position: relative;
+    z-index: 1;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  .cta-content h2 {
+    font-size: clamp(24px, 4vw, 32px);
+    font-weight: 300;
     color: white;
-    padding: 12px 28px;
-    border-radius: 25px;
-    font-weight: 700;
-    text-decoration: none;
-    font-size: 15px;
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
   }
-  .contact-card .cta-btn:active { opacity: 0.85; }
-  .contact-info {
-    margin-top: 16px;
-    font-size: 13px;
-    color: rgba(255,255,255,0.7);
-  }
-
-  /* ── Footer ── */
-  .footer {
-    text-align: center;
-    padding: 24px 20px 32px;
-    font-size: 12px;
-    color: var(--text-light);
+  .cta-content p {
+    font-size: 16px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 28px;
+    line-height: 1.5;
   }
 
   /* ── Responsive ── */
-  @media (min-width: 500px) {
-    body { border-left: 1px solid #e8e2da; border-right: 1px solid #e8e2da; }
+  @media (max-width: 640px) {
+    .nav { padding: 0 16px; }
+    .nav-links a:not(.nav-cta) { display: none; }
+    .hero { padding: 56px 20px 48px; }
+    .hero h1 { font-size: 26px; }
+    .hero p { font-size: 16px; }
+    .section { padding: 48px 20px; }
+    .quick-section { padding: 0 20px; margin-top: -32px; }
+    .quick-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .quick-card { padding: 18px 14px; gap: 10px; }
+    .quick-card-icon { width: 36px; height: 36px; font-size: 16px; }
+    .services-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .service-card { padding: 24px 16px; }
+    .cta-section { padding: 48px 20px; }
   }
 </style>
 </head>
 <body>
 
-  <!-- Hero -->
-  <div class="hero">
-    <div class="hero-logo">奥</div>
-    <div class="badge">专业团体服装定制</div>
-    <h1>南昌奥跑服饰有限公司</h1>
-    <p class="subtitle">运动队服 · 团体制服 · 企业工服</p>
-  </div>
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">奥跑服饰</a>
+      <div class="nav-links">
+        <a href="track.html">订单追踪</a>
+        <a href="products.html">产品报价</a>
+        <a href="expenses.html">开支记录</a>
+        <a href="admin.html" class="nav-cta">管理后台</a>
+      </div>
+    </div>
+  </nav>
 
-  <!-- Quick Actions -->
-  <div class="quick-actions">
-    <a href="track.html" class="quick-btn primary">
-      <div class="icon">📦</div>
-      <div class="label">订单追踪</div>
-    </a>
-    <a href="products.html" class="quick-btn">
-      <div class="icon">📋</div>
-      <div class="label">产品报价</div>
-    </a>
-    <a href="expenses.html" class="quick-btn">
-      <div class="icon">💰</div>
-      <div class="label">开支记录</div>
-    </a>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">专业团体服装定制</div>
+      <h1>让每一支队伍<br>都穿上属于自己的战袍</h1>
+      <p>南昌奥跑服饰 — 自有供应链，从面料到成品一站式定制，服务全国运动团队与企业客户</p>
+      <div class="hero-buttons">
+        <a href="products.html" class="btn-primary">查看产品 →</a>
+        <a href="track.html" class="btn-ghost">追踪订单</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Nav -->
+  <div class="quick-section">
+    <div class="quick-grid">
+      <a href="track.html" class="quick-card">
+        <div class="quick-card-icon track">📦</div>
+        <div>
+          <div class="quick-card-label">客户入口</div>
+          <div class="quick-card-title">订单追踪</div>
+        </div>
+      </a>
+      <a href="products.html" class="quick-card">
+        <div class="quick-card-icon products">📋</div>
+        <div>
+          <div class="quick-card-label">产品展示</div>
+          <div class="quick-card-title">标准产品线</div>
+        </div>
+      </a>
+      <a href="expenses.html" class="quick-card">
+        <div class="quick-card-icon expenses">💰</div>
+        <div>
+          <div class="quick-card-label">财务管理</div>
+          <div class="quick-card-title">开支记录</div>
+        </div>
+      </a>
+      <a href="admin.html" class="quick-card">
+        <div class="quick-card-icon admin">⚙️</div>
+        <div>
+          <div class="quick-card-label">内部工具</div>
+          <div class="quick-card-title">管理后台</div>
+        </div>
+      </a>
+    </div>
   </div>
 
   <!-- Services -->
-  <div class="section">
-    <div class="section-title">我们的服务</div>
-    <div class="service-cards">
+  <section class="section">
+    <div class="section-label">我们的服务</div>
+    <h2 class="section-heading">全品类团体服装定制</h2>
+    <p class="section-desc">从运动队服到企业工服，支持烫画、刺绣、丝印等多种工艺，小批量起订，快速交付。</p>
+    <div class="services-grid">
       <div class="service-card">
-        <div class="s-icon">⚽</div>
-        <div class="s-name">运动队服定制</div>
-        <div class="s-desc">篮球·足球·龙舟·跑步</div>
+        <span class="service-icon">⚽</span>
+        <div class="service-name">运动队服定制</div>
+        <div class="service-desc">篮球、足球、龙舟、跑步等各类运动队服，专业面料，透气速干</div>
       </div>
       <div class="service-card">
-        <div class="s-icon">👔</div>
-        <div class="s-name">团体Polo衫</div>
-        <div class="s-desc">公司团建·学校·社团</div>
+        <span class="service-icon">👔</span>
+        <div class="service-name">团体 Polo 衫</div>
+        <div class="service-desc">公司团建、学校社团、活动统一着装，冰丝/珠地棉多面料可选</div>
       </div>
       <div class="service-card">
-        <div class="s-icon">🏢</div>
-        <div class="s-name">企业工服定制</div>
-        <div class="s-desc">工作服·马甲·围裙</div>
+        <span class="service-icon">🏢</span>
+        <div class="service-name">企业工服定制</div>
+        <div class="service-desc">工作服、马甲、围裙、冲锋衣，耐磨耐洗，支持企业LOGO定制</div>
       </div>
       <div class="service-card">
-        <div class="s-icon">🎨</div>
-        <div class="s-name">个性化定制</div>
-        <div class="s-desc">烫画·刺绣·印花LOGO</div>
+        <span class="service-icon">🎨</span>
+        <div class="service-name">个性数码印花</div>
+        <div class="service-desc">烫画、刺绣、丝印、热转印，高精度还原设计，色彩鲜艳耐洗</div>
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- Why Us -->
-  <div class="section">
-    <div class="section-title">为什么选择奥跑</div>
-    <div class="feature-list">
+  <section class="section" style="padding-top: 0;">
+    <div class="section-label">为什么选择奥跑</div>
+    <h2 class="section-heading">自有供应链，品质看得见</h2>
+    <p class="section-desc">从面料采购到成品出厂，全流程自主把控，省去中间环节，性价比更高。</p>
+    <div class="features-list">
       <div class="feature-item">
-        <div class="f-icon">🧵</div>
-        <div class="f-text">
+        <div class="feature-icon">🧵</div>
+        <div class="feature-text">
           <strong>自有供应链</strong>
-          <span>面料采购到生产一条龙，省去中间环节</span>
+          <span>面料采购到生产一条龙，品质可控，成本更低</span>
         </div>
       </div>
       <div class="feature-item">
-        <div class="f-icon">🎯</div>
-        <div class="f-text">
+        <div class="feature-icon">🎯</div>
+        <div class="feature-text">
           <strong>多种定制工艺</strong>
-          <span>烫画、刺绣、丝印、热转印，按需选择</span>
+          <span>烫画、刺绣、丝印、热转印，按需选择最优方案</span>
         </div>
       </div>
       <div class="feature-item">
-        <div class="f-icon">⏱️</div>
-        <div class="f-text">
+        <div class="feature-icon">⏱️</div>
+        <div class="feature-text">
           <strong>交期有保障</strong>
-          <span>标准化生产流程，实时追踪订单进度</span>
+          <span>标准化生产流程，实时追踪订单进度，准时交付</span>
         </div>
       </div>
       <div class="feature-item">
-        <div class="f-icon">💬</div>
-        <div class="f-text">
+        <div class="feature-icon">💬</div>
+        <div class="feature-text">
           <strong>一对一服务</strong>
-          <span>从设计确认到发货，全程专人对接</span>
+          <span>从设计确认到发货，全程专人对接，省心省力</span>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- Clients -->
-  <div class="section">
-    <div class="section-title">合作客户</div>
-    <div class="client-tags">
-      <span class="client-tag">🏆 新建区龙舟队</span>
-      <span class="client-tag">⚽ 长风体育</span>
-      <span class="client-tag">🐉 高新区龙舟队</span>
-      <span class="client-tag">👕 小帅体育</span>
-      <span class="client-tag">🏃 企业团建定制</span>
-      <span class="client-tag">🏫 培训机构定制</span>
+  <!-- Case Wall -->
+  <section class="section" style="padding-top: 0;">
+    <div class="section-label">案例墙</div>
+    <h2 class="section-heading">按品类查看案例</h2>
+    <p class="section-desc">每个品类都有大量实物案例，点击查看。</p>
+    <div class="clients-grid">
+      <a href="gallery.html#dragon" class="client-tag" style="text-decoration:none;cursor:pointer;">🐉 龙舟服</a>
+      <a href="gallery.html#running" class="client-tag" style="text-decoration:none;cursor:pointer;">🏃 跑步服</a>
+      <a href="gallery.html#basketball" class="client-tag" style="text-decoration:none;cursor:pointer;">🏀 篮球服</a>
+      <a href="gallery.html#football" class="client-tag" style="text-decoration:none;cursor:pointer;">⚽ 足球服</a>
+      <a href="gallery.html#racing" class="client-tag" style="text-decoration:none;cursor:pointer;">🏎️ 赛车俱乐部</a>
+      <a href="gallery.html#corp" class="client-tag" style="text-decoration:none;cursor:pointer;">🏢 企业团建</a>
+      <a href="gallery.html#school" class="client-tag" style="text-decoration:none;cursor:pointer;">🏫 学校定制</a>
+      <a href="gallery.html#more" class="client-tag" style="text-decoration:none;cursor:pointer;">📷 更多案例</a>
     </div>
-  </div>
+  </section>
 
   <!-- CTA -->
-  <div class="section">
-    <div class="contact-card">
-      <h3>📋 需要定制团体服装？</h3>
-      <a href="javascript:void(0)" onclick="alert('请联系 Eliane 获取报价')" class="cta-btn">立即咨询</a>
-      <div class="contact-info">南昌奥跑服饰有限公司 · 专业团体服装定制</div>
+  <section class="cta-section">
+    <div class="cta-content">
+      <h2>需要定制团体服装？</h2>
+      <p>告诉我们您的需求——款式、数量、预算，我们为您提供最优方案。</p>
+      <a href="javascript:void(0)" onclick="alert('请联系 Eliane 获取报价方案')" class="btn-primary">立即咨询</a>
     </div>
-  </div>
+  </section>
 
   <!-- Footer -->
-  <div class="footer">
-    南昌奥跑服饰有限公司 © 2026<br>
-    专注运动队服 · 团体制服 · 企业工服定制
-  </div>
+  <footer class="footer">
+    <strong>南昌奥跑服饰有限公司</strong> &nbsp;·&nbsp; 专业团体服装定制<br>
+    运动队服 · 团体制服 · 企业工服 · Polo衫 · 数码印花
+  </footer>
 
 </body>
 </html>

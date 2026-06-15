@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例墙 - 南昌奥跑服饰</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #faf8f5; color: #2c3e50; max-width: 500px; margin: 0 auto;
+  }
+  :root { --navy: #1a1f2e; --gold: #c8956c; }
+
+  .header {
+    background: linear-gradient(135deg, var(--navy), #252b3d);
+    color: white; padding: 28px 20px; text-align: center;
+  }
+  .header h1 { font-size: 22px; }
+  .header p { font-size: 13px; opacity: 0.6; margin-top: 6px; }
+
+  .album-link {
+    display: block; margin: 14px 16px; padding: 14px 18px;
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white; border-radius: 12px; text-align: center;
+    text-decoration: none; font-weight: 700; font-size: 15px;
+    box-shadow: 0 4px 16px rgba(231,76,60,0.3);
+  }
+  .album-link .big { font-size: 18px; display: block; }
+  .album-link .small { font-size: 12px; opacity: 0.8; }
+
+  .category { padding: 0 14px; }
+  .cat-title {
+    font-size: 16px; font-weight: 700; padding: 18px 0 10px;
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: 2px solid #e8e2da; margin-bottom: 10px;
+    scroll-margin-top: 20px;
+  }
+  .cat-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px;
+  }
+  .cat-card {
+    background: white; border-radius: 12px; padding: 24px 16px;
+    text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    text-decoration: none; color: inherit; transition: transform 0.2s;
+  }
+  .cat-card:active { transform: scale(0.96); }
+  .cat-card .emoji { font-size: 36px; margin-bottom: 8px; }
+  .cat-card .label { font-size: 14px; font-weight: 700; }
+  .cat-card .count { font-size: 11px; color: #999; margin-top: 4px; }
+
+  .note {
+    margin: 16px 14px 24px; padding: 14px; background: #fff8e1;
+    border-radius: 10px; font-size: 12px; color: #8d6e00; text-align: center;
+  }
+
+  .footer-nav {
+    display: flex; justify-content: space-around; padding: 14px;
+    background: white; border-top: 1px solid #eee; font-size: 12px;
+  }
+  .footer-nav a { color: #999; text-decoration: none; text-align: center; }
+  .footer-nav a .icon { font-size: 18px; display: block; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📷 案例墙</h1>
+  <p>按品类浏览实物案例 · 点击查看完整相册</p>
+</div>
+
+<a href="https://x.yupoo.com/gallery" target="_blank" class="album-link">
+  <span class="big">📸 查看完整产品相册</span>
+  <span class="small">点击跳转 Yupoo 相册，查看全部实物案例</span>
+</a>
+
+<div class="category">
+  <!-- 龙舟服 -->
+  <div class="cat-title" id="dragon">🐉 龙舟服</div>
+  <div class="cat-grid">
+    <a href="https://x.yupoo.com/gallery" target="_blank" class="cat-card">
+      <div class="emoji">🐉</div>
+      <div class="label">龙舟比赛服</div>
+      <div class="count">冰丝/锦纶面料</div>
+    </a>
+    <a href="https://x.yupoo.com/gallery" target="_blank" class="cat-card">
+      <div class="emoji">🚣</div>
+      <div class="label">龙舟训练服</div>
+      <div class="count">速干透气</div>
+    </a>
+  </div>
+
+  <!-- 跑步服 -->
+  <div class="cat-title" id="running">🏃 跑步服</div>
+  <div class="cat-grid">
+    <a href="https://x.yupoo.com/gallery" target="_blank" class="cat-card">
+      <div class="emoji">🏃</div>
+      <div class="label">马拉松跑步服</div>
+      <div class="count">速干方格面料</div>
+    </a>
+    <a href="https://x.yupoo.com/gallery" target="_blank" class="cat-card">
+      <div class="emoji">🎽</div>
+      <div class="label">田径训练服</div>
+      <div class="count">轻量透气</div>
+    </a>
+  </div>
+
+  <!-- 篮球服 -->
+  <div class="cat-title" id="basketball">🏀 篮球服</div>
+  <div class="cat-grid">
+    <a href="https://x.yupoo.com/gallery" target="_blank" class="cat-card">
+      <div class="emoji">🏀</div>
+      <div class="label">篮球比赛服</div>
+      <div class="count">篮球提花面料</div>
+    </a>
+    <a href="https://x.yupoo.com/gallery" target="_blank" class="cat-card">
+      <div class="emoji">🔥</div>
+      <div class="label">街头篮球风</div>
+      <div class="count">个性定制款</div>
+    </a>
+  </div>
+
+  <!-- 足球服 -->
+  <div class="cat-title" id="football">⚽ 足球服</div>
+  <div class="cat-grid">
+    <a href="https://x.yupoo.com/gallery" target="_blank" class="cat-card">
+      <div class="emoji">⚽</div>
+      <div class="label">足球比赛服</div>
+      <div class="count">小米通面料</div>
+    </a>
+    <a href="https://x.yupoo.com/gallery" target="_blank" class="cat-card">
+      <div class="emoji">🥅</div>
+      <div class="label">守门员服</div>
+      <div class="count">加厚防护</div>
+    </a>
+  </div>
+
+  <!-- 赛车俱乐部 -->
+  <div class="cat-title" id="racing">🏎️ 赛车俱乐部</div>
+  <div class="cat-grid">
+    <a href="https://x.yupoo.com/gallery" target="_blank" class="cat-card">
+      <div class="emoji">🏎️</div>
+      <div class="label">赛车Polo衫</div>
+      <div class="count">小米通面料</div>
+    </a>
+    <a href="https://x.yupoo.com/gallery" target="_blank" class="cat-card">
+      <div class="emoji">🏁</div>
+      <div class="label">车队T恤</div>
+      <div class="count">速干方格</div>
+    </a>
+  </div>
+
+  <!-- 企业团建 -->
+  <div class="cat-title" id="corp">🏢 企业团建</div>
+  <div class="cat-grid">
+    <a href="https://x.yupoo.com/gallery" target="_blank" class="cat-card">
+      <div class="emoji">🏢</div>
+      <div class="label">企业团建服</div>
+      <div class="count">Polo衫/T恤</div>
+    </a>
+    <a href="https://x.yupoo.com/gallery" target="_blank" class="cat-card">
+      <div class="emoji">🧢</div>
+      <div class="label">帽子/配件</div>
+      <div class="count">品牌定制</div>
+    </a>
+  </div>
+
+  <!-- 学校定制 -->
+  <div class="cat-title" id="school">🏫 学校定制</div>
+  <div class="cat-grid">
+    <a href="https://x.yupoo.com/gallery" target="_blank" class="cat-card">
+      <div class="emoji">🏫</div>
+      <div class="label">校运会服装</div>
+      <div class="count">班级/年级定制</div>
+    </a>
+    <a href="https://x.yupoo.com/gallery" target="_blank" class="cat-card">
+      <div class="emoji">🎓</div>
+      <div class="label">毕业纪念服</div>
+      <div class="count">烫画印花</div>
+    </a>
+  </div>
+
+  <!-- 更多 -->
+  <div class="cat-title" id="more">📷 更多案例</div>
+  <div class="cat-grid">
+    <a href="https://x.yupoo.com/gallery" target="_blank" class="cat-card">
+      <div class="emoji">🦺</div>
+      <div class="label">马甲定制</div>
+      <div class="count">多功能款</div>
+    </a>
+    <a href="https://x.yupoo.com/gallery" target="_blank" class="cat-card">
+      <div class="emoji">🧥</div>
+      <div class="label">冲锋衣定制</div>
+      <div class="count">防风防水</div>
+    </a>
+  </div>
+</div>
+
+<div class="note">
+  💡 以上每个品类均为示意入口，点击跳转到完整产品相册查看大量实物案例。<br>
+  如需特定品类的实物照片，告知我们即可提供。
+</div>
+
+<div class="footer-nav">
+  <a href="index.html"><span class="icon">🏠</span>首页</a>
+  <a href="products.html"><span class="icon">📋</span>产品</a>
+  <a href="track.html"><span class="icon">📦</span>订单</a>
+  <a href="admin.html"><span class="icon">⚙️</span>工作台</a>
+</div>
+
+</body>
+</html>
