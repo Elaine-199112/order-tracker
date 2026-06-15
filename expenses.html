@@ -1,266 +1,115 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>日常开支 - Elaine</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: #f5f5f5;
-            color: #333;
-            max-width: 500px;
-            margin: 0 auto;
-            min-height: 100vh;
-        }
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        .header h1 { font-size: 20px; margin-bottom: 4px; }
-        .header .date { font-size: 13px; opacity: 0.85; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>公司开支 - 南昌奥跑服饰</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #faf8f5; color: #2c3e50; max-width: 500px; margin: 0 auto;
+  }
+  :root { --navy: #1a1f2e; --gold: #c8956c; }
 
-        /* Summary cards */
-        .summary-row {
-            display: flex;
-            gap: 12px;
-            padding: 16px;
-            margin-top: -10px;
-        }
-        .summary-card {
-            flex: 1;
-            background: white;
-            border-radius: 12px;
-            padding: 14px;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-        }
-        .summary-card .label {
-            font-size: 12px;
-            color: #999;
-            margin-bottom: 4px;
-        }
-        .summary-card .amount {
-            font-size: 22px;
-            font-weight: 700;
-        }
-        .summary-card.work .amount { color: #667eea; }
-        .summary-card.life .amount { color: #f5576c; }
-        .summary-card.total .amount { color: #333; }
+  .header {
+    background: var(--navy); color: white; padding: 24px 20px; text-align: center;
+  }
+  .header h1 { font-size: 20px; }
+  .header .total { font-size: 32px; font-weight: 800; margin-top: 6px; }
+  .header .sub { font-size: 13px; opacity: 0.6; }
 
-        /* Tabs */
-        .tabs {
-            display: flex;
-            margin: 0 16px;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-        }
-        .tab {
-            flex: 1;
-            text-align: center;
-            padding: 12px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            border-bottom: 3px solid transparent;
-            color: #999;
-        }
-        .tab.active { color: #667eea; border-bottom-color: #667eea; }
-        .tab.life-tab.active { color: #f5576c; border-bottom-color: #f5576c; }
+  .list { padding: 12px 14px; }
+  .day-group { margin-bottom: 16px; }
+  .day-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 14px; background: white; border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04); margin-bottom: 4px;
+  }
+  .day-bar .date { font-size: 14px; font-weight: 700; }
+  .day-bar .sum { font-size: 16px; font-weight: 700; color: var(--navy); }
 
-        /* Expense list */
-        .list {
-            padding: 16px;
-        }
-        .day-group {
-            margin-bottom: 20px;
-        }
-        .day-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            margin-bottom: 8px;
-            border-bottom: 1px solid #eee;
-        }
-        .day-header .day-label {
-            font-size: 14px;
-            font-weight: 700;
-            color: #666;
-        }
-        .day-header .day-total {
-            font-size: 14px;
-            font-weight: 600;
-            color: #f5576c;
-        }
-        .day-header .day-total.work-color { color: #667eea; }
+  .item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 14px; margin-left: 12px;
+    border-left: 2px solid #e8e2da; font-size: 14px;
+  }
+  .item .desc { color: #555; }
+  .item .amt { font-weight: 600; color: var(--navy); }
 
-        .expense-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: white;
-            border-radius: 10px;
-            padding: 12px 14px;
-            margin-bottom: 6px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-        }
-        .expense-item .info { flex: 1; }
-        .expense-item .desc { font-size: 14px; }
-        .expense-item .cat-tag {
-            display: inline-block;
-            font-size: 10px;
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-top: 2px;
-            font-weight: 600;
-        }
-        .cat-tag.work { background: #e8ecff; color: #667eea; }
-        .cat-tag.life { background: #ffe8ec; color: #f5576c; }
-        .expense-item .price {
-            font-size: 17px;
-            font-weight: 700;
-            color: #f5576c;
-        }
-        .expense-item .price.work-color { color: #667eea; }
+  .empty { text-align: center; padding: 40px; color: #bbb; }
 
-        .empty {
-            text-align: center;
-            padding: 40px;
-            color: #bbb;
-            font-size: 14px;
-        }
-
-        .back-link {
-            display: block;
-            text-align: center;
-            padding: 20px;
-            color: #667eea;
-            text-decoration: none;
-            font-size: 14px;
-        }
-    </style>
+  .footer-nav {
+    display: flex; justify-content: space-around; padding: 14px;
+    background: white; border-top: 1px solid #eee; font-size: 12px;
+  }
+  .footer-nav a { color: #999; text-decoration: none; text-align: center; }
+  .footer-nav a .icon { font-size: 18px; display: block; }
+  .footer-nav a.active { color: var(--navy); font-weight: 700; }
+</style>
 </head>
 <body>
-    <div class="header">
-        <h1>💰 日常开支</h1>
-        <div class="date" id="todayDate"></div>
-    </div>
 
-    <div class="summary-row">
-        <div class="summary-card work">
-            <div class="label">工作开支</div>
-            <div class="amount" id="workTotal">¥0</div>
-        </div>
-        <div class="summary-card life">
-            <div class="label">生活开支</div>
-            <div class="amount" id="lifeTotal">¥0</div>
-        </div>
-    </div>
+<div class="header">
+  <h1>💼 公司开支</h1>
+  <div class="total" id="totalAmount">¥0</div>
+  <div class="sub">南昌奥跑服饰有限公司</div>
+</div>
 
-    <div class="tabs">
-        <div class="tab active" onclick="switchTab('all')">全部</div>
-        <div class="tab" onclick="switchTab('work')">💼 工作</div>
-        <div class="tab life-tab" onclick="switchTab('life')">🏠 生活</div>
-    </div>
+<div class="list" id="expenseList"></div>
 
-    <div class="list" id="expenseList"></div>
+<div class="footer-nav">
+  <a href="index.html"><span class="icon">🏠</span>首页</a>
+  <a href="products.html"><span class="icon">📋</span>产品</a>
+  <a href="track.html"><span class="icon">📦</span>订单</a>
+  <a href="admin.html"><span class="icon">⚙️</span>工作台</a>
+</div>
 
-    <a href="/order-tracker/" class="back-link">🏠 公司首页</a>
-    <a href="track.html" class="back-link">📦 订单追踪</a>
+<script>
+async function load() {
+  try {
+    const r = await fetch('expenses.json?' + Date.now());
+    const data = await r.json();
+    const expenses = data.expenses || [];
 
-    <script>
-        let allExpenses = [];
-        let currentTab = 'all';
+    const total = expenses.reduce((s,e) => s + e.amount, 0);
+    document.getElementById('totalAmount').textContent = '¥' + total.toLocaleString();
 
-        document.getElementById('todayDate').textContent = new Date().toLocaleDateString('zh-CN', {
-            year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'
-        });
+    if (expenses.length === 0) {
+      document.getElementById('expenseList').innerHTML = '<div class="empty">暂无公司开支记录</div>';
+      return;
+    }
 
-        async function loadExpenses() {
-            try {
-                const res = await fetch('expenses.json?' + Date.now());
-                const data = await res.json();
-                allExpenses = data.expenses || [];
-                render();
-            } catch(e) {
-                document.getElementById('expenseList').innerHTML = '<div class="empty">加载中...</div>';
-            }
-        }
+    const groups = {};
+    expenses.forEach(e => {
+      if (!groups[e.date]) groups[e.date] = [];
+      groups[e.date].push(e);
+    });
 
-        function switchTab(tab) {
-            currentTab = tab;
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            if (tab === 'life') {
-                document.querySelector('.life-tab').classList.add('active');
-            } else if (tab === 'all') {
-                document.querySelectorAll('.tab')[0].classList.add('active');
-            } else {
-                document.querySelectorAll('.tab')[1].classList.add('active');
-            }
-            render();
-        }
-
-        function render() {
-            let filtered = allExpenses;
-            if (currentTab === 'work') filtered = allExpenses.filter(e => e.category === 'work');
-            if (currentTab === 'life') filtered = allExpenses.filter(e => e.category === 'life');
-
-            // Calculate totals
-            const workSum = allExpenses.filter(e => e.category === 'work').reduce((s, e) => s + e.amount, 0);
-            const lifeSum = allExpenses.filter(e => e.category === 'life').reduce((s, e) => s + e.amount, 0);
-            document.getElementById('workTotal').textContent = '¥' + workSum.toLocaleString();
-            document.getElementById('lifeTotal').textContent = '¥' + lifeSum.toLocaleString();
-
-            if (filtered.length === 0) {
-                document.getElementById('expenseList').innerHTML = '<div class="empty">还没有记录，从聊天发给助手开始记账吧 📝</div>';
-                return;
-            }
-
-            // Group by date
-            const groups = {};
-            filtered.forEach(e => {
-                if (!groups[e.date]) groups[e.date] = [];
-                groups[e.date].push(e);
-            });
-
-            const sortedDates = Object.keys(groups).sort((a, b) => b.localeCompare(a));
-
-            let html = '';
-            sortedDates.forEach(date => {
-                const items = groups[date];
-                const dayTotal = items.reduce((s, e) => s + e.amount, 0);
-                const isWorkTab = currentTab === 'work';
-                html += `<div class="day-group">
-                    <div class="day-header">
-                        <span class="day-label">📅 ${date}</span>
-                        <span class="day-total ${isWorkTab ? 'work-color' : ''}">小计 ¥${dayTotal.toLocaleString()}</span>
-                    </div>`;
-                items.forEach(e => {
-                    const catClass = e.category === 'work' ? 'work' : 'life';
-                    const priceClass = e.category === 'work' ? 'work-color' : '';
-                    const catLabel = e.category === 'work' ? '工作' : '生活';
-                    html += `<div class="expense-item">
-                        <div class="info">
-                            <div class="desc">${e.description}</div>
-                            <span class="cat-tag ${catClass}">${catLabel}</span>
-                        </div>
-                        <div class="price ${priceClass}">¥${e.amount.toLocaleString()}</div>
-                    </div>`;
-                });
-                html += '</div>';
-            });
-
-            document.getElementById('expenseList').innerHTML = html;
-        }
-
-        loadExpenses();
-    </script>
+    const dates = Object.keys(groups).sort((a,b) => b.localeCompare(a));
+    let html = '';
+    dates.forEach(d => {
+      const items = groups[d];
+      const daySum = items.reduce((s,e) => s + e.amount, 0);
+      html += `<div class="day-group">
+        <div class="day-bar">
+          <span class="date">📅 ${d}</span>
+          <span class="sum">¥${daySum.toLocaleString()}</span>
+        </div>`;
+      items.forEach(e => {
+        html += `<div class="item">
+          <span class="desc">${e.description}</span>
+          <span class="amt">¥${e.amount.toLocaleString()}</span>
+        </div>`;
+      });
+      html += '</div>';
+    });
+    document.getElementById('expenseList').innerHTML = html;
+  } catch(e) {
+    document.getElementById('expenseList').innerHTML = '<div class="empty">加载中...</div>';
+  }
+}
+load();
+</script>
 </body>
 </html>

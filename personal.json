@@ -1,0 +1,81 @@
+{
+  "expenses": [
+    {
+      "id": "exp-2026-06-12-007",
+      "date": "2026-06-12",
+      "category": "life",
+      "description": "个人外卖",
+      "amount": 148
+    },
+    {
+      "id": "exp-2026-06-12-008",
+      "date": "2026-06-12",
+      "category": "life",
+      "description": "小帅 八大山人25件polo衫",
+      "amount": 775
+    },
+    {
+      "id": "exp-2026-06-13-014",
+      "date": "2026-06-13",
+      "category": "life",
+      "description": "奶茶",
+      "amount": 49
+    },
+    {
+      "id": "exp-2026-06-13-015",
+      "date": "2026-06-13",
+      "category": "life",
+      "description": "饭",
+      "amount": 55
+    },
+    {
+      "id": "exp-2026-06-13-016",
+      "date": "2026-06-13",
+      "category": "life",
+      "description": "电影支出",
+      "amount": 12
+    },
+    {
+      "id": "exp-2026-06-13-019",
+      "date": "2026-06-13",
+      "category": "life",
+      "description": "盒马",
+      "amount": 128
+    },
+    {
+      "date": "2026-06-15",
+      "category": "life",
+      "description": "个人外卖",
+      "amount": 34,
+      "id": "exp-2026-06-15-021"
+    },
+    {
+      "date": "2026-06-14",
+      "category": "life",
+      "description": "余文琛玩具",
+      "amount": 235,
+      "id": "exp-2026-06-14-023"
+    },
+    {
+      "date": "2026-06-14",
+      "category": "life",
+      "description": "跟余文琛吃饭",
+      "amount": 71,
+      "id": "exp-2026-06-14-024"
+    },
+    {
+      "date": "2026-06-14",
+      "category": "life",
+      "description": "停车费",
+      "amount": 15,
+      "id": "exp-2026-06-14-025"
+    },
+    {
+      "date": "2026-06-13",
+      "category": "life",
+      "description": "余文琛买玩具",
+      "amount": 53,
+      "id": "exp-2026-06-13-026"
+    }
+  ]
+}
