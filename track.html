@@ -3,81 +3,63 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>订单进度查询</title>
+<meta name="description" content="南昌奥跑服饰订单进度查询 - 输入订单编号实时查看团体服装定制进度，从设计确认到发货全程追踪。">
+<title>订单进度查询 — 南昌奥跑服饰</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --navy: #1B2838;
-    --gold: #C8956C;
-    --gold-light: #E8D5C4;
-    --bg: #FAF8F5;
-    --card: #FFFFFF;
-    --text: #2C3E50;
-    --text-light: #7F8C8D;
-    --success: #27AE60;
-    --border: #E8E2DA;
-    --shadow: 0 2px 16px rgba(27, 40, 56, 0.06);
-    --radius: 16px;
-  }
-
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .container {
+  /* ── Main Container ── */
+  .main-container {
     width: 100%;
-    max-width: 420px;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 40px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 24px;
   }
 
-  /* Header */
-  .header {
+  /* ── Page Header ── */
+  .page-header {
     text-align: center;
-    padding: 40px 0 20px;
+    padding: 12px 0 4px;
   }
-  .header .brand {
-    font-size: 13px;
+  .page-header .overline {
+    font-size: 12px;
     letter-spacing: 3px;
     text-transform: uppercase;
     color: var(--gold);
     font-weight: 600;
     margin-bottom: 8px;
   }
-  .header h1 {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--navy);
-    letter-spacing: 1px;
+  .page-header h1 {
+    font-size: 26px;
+    font-weight: 300;
+    color: var(--navy-heading);
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
   }
-  .header .subtitle {
-    font-size: 14px;
-    color: var(--text-light);
-    margin-top: 6px;
+  .page-header .subtitle {
+    font-size: 15px;
+    color: var(--text-body);
+    font-weight: 400;
   }
 
-  /* Search Card */
-  .search-card {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 28px 24px;
-    box-shadow: var(--shadow);
+  /* ── Cards ── */
+  .card {
+    background: var(--bg);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--border);
   }
+
+  /* ── Search Card ── */
   .search-card label {
     display: block;
     font-size: 14px;
-    font-weight: 600;
-    color: var(--navy);
+    font-weight: 500;
+    color: var(--navy-heading);
     margin-bottom: 12px;
   }
   .input-row {
@@ -87,95 +69,102 @@
   .input-row input {
     flex: 1;
     height: 48px;
-    border: 2px solid var(--border);
-    border-radius: 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
     padding: 0 16px;
-    font-size: 16px;
+    font-size: 15px;
+    font-family: 'Source Sans 3', sans-serif;
     color: var(--text);
-    background: var(--bg);
-    transition: border-color 0.2s;
+    background: var(--bg-warm);
+    transition: border-color var(--transition), box-shadow var(--transition);
     outline: none;
   }
   .input-row input:focus {
     border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(200,149,108,0.12);
   }
   .input-row input::placeholder {
-    color: #BFC9CA;
+    color: var(--text-light);
   }
   .input-row button {
     height: 48px;
-    padding: 0 24px;
+    padding: 0 28px;
     background: var(--navy);
     color: #fff;
     border: none;
-    border-radius: 12px;
+    border-radius: var(--radius-sm);
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 500;
+    font-family: 'Source Sans 3', sans-serif;
     cursor: pointer;
     white-space: nowrap;
-    transition: background 0.2s, transform 0.1s;
+    transition: background var(--transition), transform 0.1s ease;
   }
   .input-row button:active {
-    transform: scale(0.96);
+    transform: scale(0.97);
   }
   .input-row button:hover {
-    background: #2C4058;
+    background: var(--navy-dark);
   }
   .input-row button:disabled {
-    background: #BFC9CA;
+    background: #cbd5e1;
     cursor: not-allowed;
   }
 
-  /* Error message */
+  /* ── Error message ── */
   .error-msg {
-    color: #E74C3C;
+    color: var(--danger);
     font-size: 13px;
+    font-weight: 400;
     margin-top: 10px;
     display: none;
   }
   .error-msg.show { display: block; }
 
-  /* Results Card */
+  /* ── Results Card ── */
   .result-card {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 24px;
-    box-shadow: var(--shadow);
+    background: var(--bg);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    box-shadow: var(--shadow-elevated);
+    border: 1px solid var(--border);
     display: none;
     animation: fadeIn 0.4s ease;
   }
   .result-card.show { display: block; }
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(12px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
   .order-info {
     text-align: center;
-    margin-bottom: 24px;
-    padding-bottom: 20px;
+    margin-bottom: 28px;
+    padding-bottom: 24px;
     border-bottom: 1px solid var(--border);
   }
   .order-info .customer {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--navy);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--navy-heading);
+    letter-spacing: -0.3px;
   }
   .order-info .product {
-    font-size: 13px;
-    color: var(--text-light);
+    font-size: 14px;
+    color: var(--text-body);
     margin-top: 4px;
   }
   .order-info .order-id {
     font-size: 12px;
     color: var(--gold);
     font-weight: 600;
-    margin-top: 6px;
+    margin-top: 8px;
     letter-spacing: 1px;
+    text-transform: uppercase;
   }
 
-  /* Progress Tracker */
+  /* ── Progress Tracker ── */
   .progress-tracker {
     display: flex;
     justify-content: space-between;
@@ -184,7 +173,6 @@
     padding: 0 8px;
   }
 
-  /* The connecting line behind stages */
   .progress-line-bg {
     position: absolute;
     top: 20px;
@@ -192,6 +180,7 @@
     right: 38px;
     height: 3px;
     background: var(--border);
+    border-radius: 2px;
     z-index: 0;
   }
   .progress-line-fill {
@@ -200,6 +189,7 @@
     left: 38px;
     height: 3px;
     background: var(--gold);
+    border-radius: 2px;
     z-index: 1;
     transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
@@ -228,21 +218,21 @@
   .stage.completed .stage-circle {
     background: var(--success);
     color: #fff;
-    box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
+    box-shadow: 0 2px 8px rgba(21,190,83,0.25);
   }
   .stage.current .stage-circle {
     background: var(--navy);
     color: #fff;
-    box-shadow: 0 2px 12px rgba(27, 40, 56, 0.35);
+    box-shadow: 0 2px 14px rgba(13,31,45,0.3);
     animation: pulse 2s infinite;
   }
   .stage.future .stage-circle {
-    background: #F0EDE8;
-    color: #BFC9CA;
+    background: #f1f5f9;
+    color: #cbd5e1;
   }
   @keyframes pulse {
-    0%, 100% { box-shadow: 0 2px 12px rgba(27, 40, 56, 0.35); }
-    50% { box-shadow: 0 2px 24px rgba(27, 40, 56, 0.15); }
+    0%, 100% { box-shadow: 0 2px 14px rgba(13,31,45,0.3); }
+    50% { box-shadow: 0 2px 22px rgba(13,31,45,0.12); }
   }
   .stage-label {
     font-size: 11px;
@@ -251,118 +241,73 @@
     line-height: 1.3;
     transition: color 0.3s;
   }
-  .stage.completed .stage-label { color: var(--success); }
-  .stage.current .stage-label { color: var(--navy); }
-  .stage.future .stage-label { color: #BFC9CA; }
+  .stage.completed .stage-label { color: var(--success-text); }
+  .stage.current .stage-label { color: var(--navy-heading); }
+  .stage.future .stage-label { color: #cbd5e1; }
   .stage-date {
     font-size: 10px;
     color: var(--text-light);
     text-align: center;
   }
 
-  /* Status Banner */
+  /* ── Status Banner ── */
   .status-banner {
-    margin-top: 24px;
+    margin-top: 28px;
     padding: 14px 18px;
-    border-radius: 12px;
+    border-radius: var(--radius);
     text-align: center;
     font-size: 14px;
-    font-weight: 600;
-  }
-  .status-banner.in-progress {
-    background: #FEF3E2;
-    color: #E67E22;
-  }
-  .status-banner.done {
-    background: #E8F8F0;
-    color: var(--success);
-  }
-
-  /* Tracking Section */
-  .tracking-section {
-    margin-top: 20px;
-    display: none;
-  }
-  .tracking-section.show { display: block; }
-  .tracking-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--text-light);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 12px;
-  }
-  .tracking-badge {
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 700;
-    margin-bottom: 12px;
-  }
-  .tracking-badge.transit { background: #FFF3E0; color: #E67E22; }
-  .tracking-badge.picked { background: #E3F2FD; color: #1565C0; }
-  .tracking-badge.signed { background: #E8F8F0; color: #27AE60; }
-  .tracking-badge.default { background: #F0EDE8; color: #666; }
-
-  .tracking-item {
-    display: flex;
-    gap: 12px;
-    padding: 10px 0;
-    position: relative;
-  }
-  .tracking-item:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    left: 7px;
-    top: 32px;
-    bottom: -10px;
-    width: 2px;
-    background: var(--border);
-  }
-  .tracking-item.latest .tracking-dot {
-    background: var(--navy);
-    border-color: var(--navy);
-    box-shadow: 0 0 0 4px rgba(27, 40, 56, 0.1);
-  }
-  .tracking-dot {
-    width: 16px;
-    min-width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #fff;
-    border: 3px solid var(--border);
-    margin-top: 2px;
-  }
-  .tracking-content .t-time {
-    font-size: 12px;
-    color: var(--text-light);
-    margin-bottom: 2px;
-  }
-  .tracking-content .t-desc {
-    font-size: 14px;
-    color: var(--text);
     font-weight: 500;
   }
-  .tracking-item.latest .t-desc {
-    color: var(--navy);
-    font-weight: 600;
+  .status-banner.in-progress {
+    background: var(--warning-bg);
+    color: #b45309;
+    border: 1px solid #fde68a;
+  }
+  .status-banner.done {
+    background: #ecfdf5;
+    color: var(--success-text);
+    border: 1px solid #a7f3d0;
   }
 
-  /* Timeline Updates */
+  /* ── Delivery Estimate ── */
+  .delivery-estimate {
+    margin-top: 24px;
+    padding: 20px;
+    background: linear-gradient(135deg, #faf8f5 0%, #f5ebe0 100%);
+    border-radius: var(--radius);
+    text-align: center;
+    border: 1px solid var(--border-soft);
+  }
+  .delivery-estimate .label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-body);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .delivery-estimate .date {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--navy-heading);
+    letter-spacing: -0.3px;
+  }
+
+  /* ── Timeline ── */
   .timeline {
-    margin-top: 20px;
+    margin-top: 24px;
     display: flex;
     flex-direction: column;
     gap: 0;
   }
   .timeline-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--text-light);
-    margin-bottom: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-body);
     text-transform: uppercase;
     letter-spacing: 1px;
+    margin-bottom: 14px;
   }
   .timeline-item {
     display: flex;
@@ -396,47 +341,106 @@
   .timeline-content .t-note {
     font-size: 14px;
     color: var(--text);
-    font-weight: 500;
+    font-weight: 400;
   }
 
-  /* Delivery estimate */
-  .delivery-estimate {
-    margin-top: 20px;
-    padding: 16px;
-    background: linear-gradient(135deg, #F5F1ED, #FEF9F3);
-    border-radius: 12px;
-    text-align: center;
+  /* ── Tracking Section ── */
+  .tracking-section {
+    margin-top: 24px;
+    display: none;
   }
-  .delivery-estimate .label {
+  .tracking-section.show { display: block; }
+  .tracking-title {
     font-size: 12px;
-    color: var(--text-light);
-    margin-bottom: 4px;
-  }
-  .delivery-estimate .date {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--navy);
-  }
-
-  /* Footer */
-  .footer {
-    text-align: center;
-    padding: 20px 0 40px;
-    font-size: 12px;
-    color: var(--text-light);
-  }
-  .footer .contact {
-    color: var(--gold);
     font-weight: 600;
-    text-decoration: none;
+    color: var(--text-body);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+  }
+  .tracking-badge {
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .tracking-badge.transit { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+  .tracking-badge.picked { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+  .tracking-badge.signed { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+  .tracking-badge.default { background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
+
+  .tracking-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    position: relative;
+  }
+  .tracking-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 32px;
+    bottom: -10px;
+    width: 2px;
+    background: var(--border);
+  }
+  .tracking-item.latest .tracking-dot {
+    background: var(--navy);
+    border-color: var(--navy);
+    box-shadow: 0 0 0 4px rgba(13,31,45,0.08);
+  }
+  .tracking-dot {
+    width: 16px;
+    min-width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid var(--border);
+    margin-top: 2px;
+  }
+  .tracking-content .t-time {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-bottom: 2px;
+  }
+  .tracking-content .t-desc {
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 400;
+  }
+  .tracking-item.latest .t-desc {
+    color: var(--navy-heading);
+    font-weight: 600;
   }
 
-  /* Loading spinner */
+  /* ── Empty State ── */
+  .empty-state {
+    text-align: center;
+    padding: 40px 24px;
+    display: none;
+  }
+  .empty-state.show { display: block; }
+  .empty-icon { font-size: 48px; margin-bottom: 16px; }
+  .empty-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--navy-heading);
+    margin-bottom: 8px;
+  }
+  .empty-desc {
+    font-size: 14px;
+    color: var(--text-body);
+    line-height: 1.7;
+  }
+
+  /* ── Loading ── */
   .spinner {
     display: inline-block;
     width: 18px;
     height: 18px;
-    border: 2px solid #fff;
+    border: 2px solid var(--text-light);
     border-top-color: transparent;
     border-radius: 50%;
     animation: spin 0.6s linear infinite;
@@ -444,31 +448,46 @@
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* Empty state */
-  .empty-state {
-    text-align: center;
-    padding: 32px 20px;
-    display: none;
+  /* ── Responsive ── */
+  @media (max-width: 480px) {
+    .nav-brand { font-size: 15px; }
+    .nav-links a { font-size: 13px; padding: 5px 10px; }
+    .main-container { padding: 20px 16px 32px; gap: 20px; }
+    .card, .result-card, .empty-state { padding: 20px; }
+    .page-header h1 { font-size: 22px; }
+    .progress-line-bg, .progress-line-fill { left: 30px; right: 30px; }
+    .stage-circle { width: 36px; height: 36px; font-size: 14px; }
   }
-  .empty-state.show { display: block; }
-  .empty-icon { font-size: 48px; margin-bottom: 12px; }
-  .empty-title { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
-  .empty-desc { font-size: 13px; color: var(--text-light); line-height: 1.6; }
 </style>
 </head>
 <body>
 
-<div class="container">
+<!-- ── Sticky Nav ── -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">南昌奥跑服饰</a>
+    <div class="nav-links">
+      <a href="index.html">首页</a>
+      <a href="products.html">产品</a>
+      <a href="track.html" class="active">订单追踪</a>
+      
+      <a href="admin.html">管理</a>
+    </div>
+  </div>
+</nav>
 
-  <!-- Header -->
-  <div class="header">
-    <div class="brand">Order Tracking</div>
+<!-- ── Main ── -->
+<div class="main-container">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="overline">Order Tracking</div>
     <h1>订单进度查询</h1>
     <p class="subtitle">输入订单编号，实时查看制作进度</p>
   </div>
 
   <!-- Search -->
-  <div class="search-card" id="searchCard">
+  <div class="card search-card" id="searchCard">
     <label for="orderInput">订单编号</label>
     <div class="input-row">
       <input type="text" id="orderInput" placeholder="例如：ORD-2026001" autocomplete="off" inputmode="text">
@@ -478,8 +497,8 @@
   </div>
 
   <!-- Loading -->
-  <div class="search-card" id="loadingCard" style="display:none; text-align:center; padding: 32px;">
-    <p style="color: var(--text-light); font-size: 14px;">正在查询订单…</p>
+  <div class="card" id="loadingCard" style="display:none; text-align:center; padding: 40px 24px;">
+    <p style="color: var(--text-body); font-size: 14px;">正在查询订单…</p>
   </div>
 
   <!-- Results -->
@@ -510,7 +529,7 @@
 
     <!-- Logistics Tracking -->
     <div class="tracking-section" id="trackingSection">
-      <div class="tracking-title">📦 物流追踪</div>
+      <div class="tracking-title">物流追踪</div>
       <div class="tracking-badge" id="trackingBadge"></div>
       <div class="tracking-list" id="trackingList">
         <!-- Tracking items injected by JS -->
@@ -519,7 +538,7 @@
   </div>
 
   <!-- Not Found -->
-  <div class="search-card empty-state" id="emptyState">
+  <div class="card empty-state" id="emptyState">
     <div class="empty-icon">🔍</div>
     <div class="empty-title">未找到该订单</div>
     <div class="empty-desc">
@@ -531,11 +550,12 @@
   <!-- Footer -->
   <div class="footer">
     如有疑问请联系客服获取帮助
-    <br><a href="/order-tracker/" style="color:#667eea;text-decoration:none;">🏠 公司首页</a>
-    &nbsp;·&nbsp;
-    <a href="expenses.html" style="color:#667eea;text-decoration:none;">💰 日常开支</a>
-    &nbsp;·&nbsp;
-    <a href="admin.html" style="color:#999;text-decoration:none;">管理入口</a>
+    <br>
+    <a href="index.html">🏠 公司首页</a>
+    <span class="sep">·</span>
+    
+    <span class="sep">·</span>
+    <a href="admin.html">管理入口</a>
   </div>
 
 </div>

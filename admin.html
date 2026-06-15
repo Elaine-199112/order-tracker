@@ -3,190 +3,400 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="南昌奥跑服饰业务管理后台 - 报价、确认订单、生产进度、发货登记、售后记录全流程工作台。">
 <title>工作台 - 南昌奥跑服饰</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
-    background: #FAF8F5; color: #2C3E50; max-width: 600px; margin: 0 auto;
+  /* ── Page Wrapper ── */
+  .page-wrapper {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 16px 64px;
   }
-  :root { --navy: #1a1f2e; --gold: #c8956c; }
-  
-  .header { background: var(--navy); color: white; padding: 20px; text-align: center; }
-  .header h1 { font-size: 20px; }
-  .header p { font-size: 12px; opacity: 0.6; margin-top: 4px; }
 
+  /* ── Page Header ── */
+  .page-header {
+    padding: 40px 0 12px;
+    text-align: left;
+  }
+  .page-header .badge {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .page-header h1 {
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--navy-heading);
+    letter-spacing: -0.5px;
+    margin-bottom: 4px;
+  }
+  .page-header p {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--text-body);
+  }
+
+  /* ── Pipeline Steps ── */
   .pipeline {
-    display: flex; gap: 6px; padding: 14px 12px;
-    background: white; overflow-x: auto;
+    display: flex;
+    gap: 8px;
+    padding: 0;
+    margin: 20px 0 24px;
+    overflow-x: auto;
   }
   .step {
-    flex: 1; min-width: 70px; text-align: center; padding: 10px 6px;
-    border-radius: 10px; font-size: 11px; font-weight: 600;
-    background: #f0ece6; color: #999;
+    flex: 1;
+    min-width: 72px;
+    text-align: center;
+    padding: 12px 8px;
+    border-radius: var(--radius);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: -0.1px;
+    background: var(--bg);
+    color: var(--text-light);
+    border: 1px solid var(--border);
+    transition: all var(--transition);
+    cursor: default;
+    white-space: nowrap;
   }
-  .step.active { background: var(--navy); color: white; }
+  .step.active {
+    background: var(--navy);
+    color: white;
+    border-color: var(--navy);
+    box-shadow: 0 4px 12px rgba(13,31,45,0.15);
+  }
 
+  /* ── Cards ── */
   .card {
-    background: white; border-radius: 12px; padding: 18px;
-    margin: 10px 14px; box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    background: var(--bg);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-card);
+    transition: all var(--transition);
   }
-  .card h3 { font-size: 15px; margin-bottom: 12px; }
+  .card:hover {
+    border-color: rgba(200,149,108,0.15);
+    box-shadow: var(--shadow-elevated);
+  }
+  .card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--navy-heading);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card h3 .step-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .card h3 .step-icon.quote { background: #eef2ff; color: #4f46e5; }
+  .card h3 .step-icon.confirm { background: #fef3c7; color: #d97706; }
+  .card h3 .step-icon.progress { background: #d1fae5; color: #059669; }
+  .card h3 .step-icon.ship { background: #dbeafe; color: #2563eb; }
+  .card h3 .step-icon.after { background: #fce7f3; color: #db2777; }
 
-  .form-row { display: flex; flex-direction: column; gap: 10px; }
+  /* ── Form Elements ── */
+  .form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: -6px;
+    margin-top: 2px;
+  }
   input, select, textarea {
-    width: 100%; padding: 10px 12px; border: 2px solid #e8e2da;
-    border-radius: 8px; font-size: 14px; font-family: inherit;
-    background: #faf8f5;
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 14px;
+    font-family: inherit;
+    font-weight: 400;
+    color: var(--text);
+    background: var(--bg);
+    transition: all var(--transition);
+    outline: none;
   }
-  input:focus, select:focus, textarea:focus { border-color: var(--gold); outline: none; }
+  input::placeholder, textarea::placeholder { color: var(--text-light); font-weight: 300; }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(200,149,108,0.12);
+  }
   textarea { height: 60px; resize: vertical; }
-
-  button {
-    padding: 12px; border: none; border-radius: 8px;
-    font-size: 14px; font-weight: 700; cursor: pointer; width: 100%;
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%2394a3b8'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+    cursor: pointer;
   }
-  .btn-dark { background: var(--navy); color: white; }
-  .btn-gold { background: var(--gold); color: white; }
-  .btn-green { background: #27ae60; color: white; }
 
+  /* ── Buttons ── */
+  button {
+    padding: 11px 20px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    transition: all var(--transition);
+    letter-spacing: -0.1px;
+    font-family: inherit;
+  }
+  .btn-dark {
+    background: var(--navy);
+    color: white;
+  }
+  .btn-dark:hover {
+    background: var(--navy-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(13,31,45,0.2);
+  }
+  .btn-gold {
+    background: var(--gold);
+    color: white;
+  }
+  .btn-gold:hover {
+    background: var(--gold-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(200,149,108,0.25);
+  }
+  .btn-green {
+    background: var(--success);
+    color: white;
+  }
+  .btn-green:hover {
+    background: var(--success-text);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(21,190,83,0.25);
+  }
+  button:active { transform: translateY(0) !important; }
+
+  /* ── Generated Box ── */
   .gen-box {
-    margin-top: 10px; background: #f0ece6; border-radius: 8px;
-    padding: 10px; font-size: 13px; word-break: break-all;
+    margin-top: 12px;
+    background: var(--bg-warm);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius);
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text);
+    word-break: break-all;
+    line-height: 1.5;
+    font-family: 'Source Code Pro', 'SF Mono', 'Menlo', monospace;
+    letter-spacing: -0.2px;
   }
   .gen-box .copy-btn {
-    margin-top: 8px; background: var(--navy); color: white;
-    padding: 8px; border-radius: 6px; text-align: center; cursor: pointer;
+    margin-top: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--navy);
+    color: white;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
     font-size: 13px;
+    font-weight: 500;
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    transition: all var(--transition);
+    width: auto;
+  }
+  .gen-box .copy-btn:hover {
+    background: var(--navy-dark);
+    transform: translateY(-1px);
   }
 
-  .footer-nav {
-    display: flex; justify-content: space-around; padding: 14px;
-    background: white; border-top: 1px solid #eee; font-size: 12px;
-  }
-  .footer-nav a { color: #999; text-decoration: none; text-align: center; }
-  .footer-nav a .icon { font-size: 18px; display: block; }
-  .footer-nav a.active { color: var(--navy); font-weight: 700; }
-
+  /* ── Toast ── */
   .toast {
-    position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
-    background: #333; color: white; padding: 10px 24px;
-    border-radius: 20px; font-size: 13px; opacity: 0; transition: 0.3s;
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--navy);
+    color: white;
+    padding: 12px 28px;
+    border-radius: 24px;
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 200;
+    pointer-events: none;
+    box-shadow: var(--shadow-elevated);
   }
-  .toast.show { opacity: 1; }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-4px);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .nav { padding: 0 16px; }
+    .nav-links a:not(.nav-cta) { display: none; }
+    .page-wrapper { padding: 0 12px 48px; }
+    .page-header { padding: 28px 0 8px; }
+    .page-header h1 { font-size: 24px; }
+    .card { padding: 18px 16px; }
+    .pipeline { gap: 6px; }
+    .step { padding: 10px 6px; font-size: 11px; }
+  }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <h1>⚙️ 业务流程工作台</h1>
-  <p>填表→生成信息→复制发给我→帮你录入系统</p>
-</div>
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">奥跑服饰</a>
+      <div class="nav-links">
+        <a href="track.html">订单追踪</a>
+        <a href="products.html">产品报价</a>
+        
+        <a href="admin.html" class="nav-cta">工作台</a>
+      </div>
+    </div>
+  </nav>
 
-<div class="pipeline">
-  <div class="step active" id="step1">1. 报价</div>
-  <div class="step" id="step2">2. 确认</div>
-  <div class="step" id="step3">3. 生产</div>
-  <div class="step" id="step4">4. 发货</div>
-  <div class="step" id="step5">5. 售后</div>
-</div>
+  <div class="page-wrapper">
 
-<!-- 1. 报价 -->
-<div class="card">
-  <h3>💰 快速报价</h3>
-  <div class="form-row">
-    <input type="text" id="q-customer" placeholder="客户名称">
-    <select id="q-product">
-      <option value="">选择产品</option>
-      <option value="篮球服套装">🏀 篮球服 ¥70/套 (5起)</option>
-      <option value="足球服套装">⚽ 足球服 ¥70/套 (5起)</option>
-      <option value="龙舟服">🐉 龙舟服 ¥70/件 (10起)</option>
-      <option value="Polo衫">👔 Polo衫 ¥80/件 (10起)</option>
-      <option value="速干T恤">👕 速干T恤 ¥70/件 (10起)</option>
-      <option value="田径服">🎽 田径服 ¥10/件 (80起)</option>
-    </select>
-    <input type="number" id="q-qty" placeholder="数量" min="1">
-    <input type="text" id="q-custom" placeholder="定制要求（LOGO/号码/颜色等）">
-    <button class="btn-dark" onclick="genQuote()">生成报价信息</button>
-    <div id="quoteBox"></div>
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="badge">Admin Workbench</div>
+      <h1>业务流程工作台</h1>
+      <p>填表 → 生成信息 → 复制发给助手 → 录入系统</p>
+    </div>
+
+    <!-- Pipeline Steps -->
+    <div class="pipeline">
+      <div class="step active" id="step1">1. 报价</div>
+      <div class="step" id="step2">2. 确认</div>
+      <div class="step" id="step3">3. 生产</div>
+      <div class="step" id="step4">4. 发货</div>
+      <div class="step" id="step5">5. 售后</div>
+    </div>
+
+    <!-- 1. 报价 -->
+    <div class="card">
+      <h3><span class="step-icon quote">💰</span>快速报价</h3>
+      <div class="form-row">
+        <input type="text" id="q-customer" placeholder="客户名称">
+        <select id="q-product">
+          <option value="">选择产品</option>
+          <option value="篮球服套装">🏀 篮球服 ¥70/套 (5起)</option>
+          <option value="足球服套装">⚽ 足球服 ¥70/套 (5起)</option>
+          <option value="龙舟服">🐉 龙舟服 ¥70/件 (10起)</option>
+          <option value="Polo衫">👔 Polo衫 ¥80/件 (10起)</option>
+          <option value="速干T恤">👕 速干T恤 ¥70/件 (10起)</option>
+          <option value="田径服">🎽 田径服 ¥10/件 (80起)</option>
+        </select>
+        <input type="number" id="q-qty" placeholder="数量" min="1">
+        <input type="text" id="q-custom" placeholder="定制要求（LOGO/号码/颜色等）">
+        <button class="btn-dark" onclick="genQuote()">生成报价信息</button>
+        <div id="quoteBox"></div>
+      </div>
+    </div>
+
+    <!-- 2. 确认订单 -->
+    <div class="card">
+      <h3><span class="step-icon confirm">✅</span>确认订单</h3>
+      <div class="form-row">
+        <input type="text" id="c-customer" placeholder="客户名称 *">
+        <input type="text" id="c-product" placeholder="产品描述 *（如：龙舟服35件+冰丝面料）">
+        <input type="text" id="c-price" placeholder="总金额（如：2450）">
+        <input type="text" id="c-delivery" placeholder="预计交期（如：6月20日）">
+        <button class="btn-gold" onclick="genConfirm()">生成确认单</button>
+        <div id="confirmBox"></div>
+      </div>
+    </div>
+
+    <!-- 3. 生产进度 -->
+    <div class="card">
+      <h3><span class="step-icon progress">🏭</span>更新生产进度</h3>
+      <div class="form-row">
+        <input type="text" id="p-orderid" placeholder="订单编号（如：AT260613XS-001）">
+        <select id="p-stage">
+          <option value="design">设计确认</option>
+          <option value="fabric">面料采购</option>
+          <option value="production">生产中</option>
+          <option value="done">生产完成</option>
+        </select>
+        <input type="text" id="p-note" placeholder="备注（如：印花已打完、等待裁剪）">
+        <button class="btn-dark" onclick="genProgress()">生成进度更新</button>
+        <div id="progressBox"></div>
+      </div>
+    </div>
+
+    <!-- 4. 发货 -->
+    <div class="card">
+      <h3><span class="step-icon ship">📦</span>发货登记</h3>
+      <div class="form-row">
+        <input type="text" id="s-orderid" placeholder="订单编号">
+        <select id="s-carrier">
+          <option value="顺丰">顺丰</option>
+          <option value="中通">中通</option>
+          <option value="小拉专送">小拉专送</option>
+          <option value="货拉拉">货拉拉</option>
+        </select>
+        <input type="text" id="s-tracking" placeholder="快递单号/车牌号">
+        <input type="text" id="s-date" placeholder="预计到达日期">
+        <button class="btn-green" onclick="genShip()">生成发货通知</button>
+        <div id="shipBox"></div>
+      </div>
+    </div>
+
+    <!-- 5. 售后 -->
+    <div class="card">
+      <h3><span class="step-icon after">💬</span>售后记录</h3>
+      <div class="form-row">
+        <input type="text" id="a-orderid" placeholder="订单编号">
+        <select id="a-type">
+          <option value="回访">客户回访</option>
+          <option value="问题">质量问题</option>
+          <option value="补货">客户补货</option>
+          <option value="退款">退款处理</option>
+        </select>
+        <input type="text" id="a-note" placeholder="备注详情">
+        <button class="btn-dark" onclick="genAfter()">生成售后记录</button>
+        <div id="afterBox"></div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      &copy; 2026 <strong>南昌奥跑服饰有限公司</strong> — 专业团体服装定制
+    </div>
+
   </div>
-</div>
 
-<!-- 2. 确认订单 -->
-<div class="card">
-  <h3>✅ 确认订单</h3>
-  <div class="form-row">
-    <input type="text" id="c-customer" placeholder="客户名称 *">
-    <input type="text" id="c-product" placeholder="产品描述 *（如：龙舟服35件+冰丝面料）">
-    <input type="text" id="c-price" placeholder="总金额（如：2450）">
-    <input type="text" id="c-delivery" placeholder="预计交期（如：6月20日）">
-    <button class="btn-gold" onclick="genConfirm()">生成确认单</button>
-    <div id="confirmBox"></div>
-  </div>
-</div>
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
 
-<!-- 3. 生产进度 -->
-<div class="card">
-  <h3>🏭 更新生产进度</h3>
-  <div class="form-row">
-    <input type="text" id="p-orderid" placeholder="订单编号（如：AT260613XS-001）">
-    <select id="p-stage">
-      <option value="design">设计确认</option>
-      <option value="fabric">面料采购</option>
-      <option value="production">生产中</option>
-      <option value="done">生产完成</option>
-    </select>
-    <input type="text" id="p-note" placeholder="备注（如：印花已打完、等待裁剪）">
-    <button class="btn-dark" onclick="genProgress()">生成进度更新</button>
-    <div id="progressBox"></div>
-  </div>
-</div>
-
-<!-- 4. 发货 -->
-<div class="card">
-  <h3>📦 发货登记</h3>
-  <div class="form-row">
-    <input type="text" id="s-orderid" placeholder="订单编号">
-    <select id="s-carrier">
-      <option value="顺丰">顺丰</option>
-      <option value="中通">中通</option>
-      <option value="小拉专送">小拉专送</option>
-      <option value="货拉拉">货拉拉</option>
-    </select>
-    <input type="text" id="s-tracking" placeholder="快递单号/车牌号">
-    <input type="text" id="s-date" placeholder="预计到达日期">
-    <button class="btn-green" onclick="genShip()">生成发货通知</button>
-    <div id="shipBox"></div>
-  </div>
-</div>
-
-<!-- 5. 售后 -->
-<div class="card">
-  <h3>💬 售后记录</h3>
-  <div class="form-row">
-    <input type="text" id="a-orderid" placeholder="订单编号">
-    <select id="a-type">
-      <option value="回访">客户回访</option>
-      <option value="问题">质量问题</option>
-      <option value="补货">客户补货</option>
-      <option value="退款">退款处理</option>
-    </select>
-    <input type="text" id="a-note" placeholder="备注详情">
-    <button class="btn-dark" onclick="genAfter()">生成售后记录</button>
-    <div id="afterBox"></div>
-  </div>
-</div>
-
-<div class="footer-nav">
-  <a href="/order-tracker/"><span class="icon">🏠</span>首页</a>
-  <a href="products.html"><span class="icon">📋</span>产品</a>
-  <a href="suppliers.html"><span class="icon">🤝</span>供应商</a>
-  <a href="admin.html" class="active"><span class="icon">⚙️</span>工作台</a>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script>
+  <script>
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');

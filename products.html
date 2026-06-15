@@ -3,250 +3,464 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="南昌奥跑服饰标准产品线 - 篮球服、足球服、龙舟服、Polo衫、速干T恤、田径服等团体服装定制，含价格及起订量，支持数码印花定制。">
 <title>标准产品线 - 南昌奥跑服饰</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
-    background: #faf8f5;
-    color: #2c3e50;
-    max-width: 500px;
-    margin: 0 auto;
-    min-height: 100vh;
-  }
-  :root { --navy: #1a1f2e; --gold: #c8956c; }
-
-  .header {
-    background: linear-gradient(135deg, var(--navy), #252b3d);
+  /* ── Page Hero ── */
+  .page-hero {
+    background: linear-gradient(170deg, var(--navy) 0%, #152838 50%, #1a2535 100%);
     color: white;
-    padding: 24px 20px;
+    padding: 56px 24px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-hero::before {
+    content: '';
+    position: absolute;
+    top: -30%; right: -15%;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(200,149,108,0.12) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .page-hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .page-hero-badge {
+    display: inline-block;
+    background: rgba(200,149,108,0.15);
+    border: 1px solid rgba(200,149,108,0.25);
+    color: var(--gold-light);
+    padding: 5px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 400;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+  }
+  .page-hero h1 {
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: -0.8px;
+    margin-bottom: 10px;
+  }
+  .page-hero p {
+    font-size: 16px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.5;
+  }
+
+  /* ── Stats Strip ── */
+  .stats-strip {
+    max-width: 1100px;
+    margin: -28px auto 0;
+    padding: 0 24px;
+    position: relative;
+    z-index: 2;
+  }
+  .stats-inner {
+    background: var(--bg);
+    border-radius: var(--radius-lg);
+    padding: 20px 28px;
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--border);
+  }
+  .stat-item {
     text-align: center;
   }
-  .header h1 { font-size: 20px; margin-bottom: 4px; }
-  .header p { font-size: 13px; opacity: 0.7; }
-
-  .summary-bar {
-    display: flex;
-    gap: 8px;
-    padding: 12px 16px;
-    background: white;
-    border-bottom: 1px solid #eee;
-    font-size: 12px;
-    color: #999;
+  .stat-value {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--navy-heading);
+    line-height: 1.2;
   }
-  .summary-bar span { background: #f0ece6; padding: 3px 10px; border-radius: 12px; }
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-body);
+    font-weight: 400;
+    margin-top: 2px;
+  }
 
-  .product-list { padding: 12px 16px; }
+  /* ── Products Section ── */
+  .products-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 56px 24px 32px;
+  }
+  .section-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .section-heading {
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 300;
+    color: var(--navy-heading);
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .section-desc {
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--text-body);
+    margin-bottom: 36px;
+    line-height: 1.5;
+  }
 
+  /* ── Product Grid ── */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
   .product-card {
-    background: white;
-    border-radius: 14px;
-    padding: 16px;
-    margin-bottom: 12px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    transition: all var(--transition);
+    cursor: default;
     display: flex;
-    gap: 14px;
+    flex-direction: column;
+  }
+  .product-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-elevated);
+    border-color: rgba(200,149,108,0.25);
+  }
+  .product-card-header {
+    display: flex;
     align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
   }
   .product-icon {
-    width: 56px; height: 56px;
-    border-radius: 12px;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 26px;
+    font-size: 22px;
     flex-shrink: 0;
   }
-  .product-icon.basketball { background: #ff6b35; }
-  .product-icon.football { background: #2d9cdb; }
-  .product-icon.dragon { background: #e74c3c; }
-  .product-icon.polo { background: #27ae60; }
-  .product-icon.tshirt { background: #9b59b6; }
-  .product-icon.track { background: #f39c12; }
+  .product-icon.basketball { background: #eef2ff; color: #4f46e5; }
+  .product-icon.football   { background: #e0f2fe; color: #0284c7; }
+  .product-icon.dragon     { background: #fce7f3; color: #db2777; }
+  .product-icon.polo       { background: #d1fae5; color: #059669; }
+  .product-icon.tshirt     { background: #f3e8ff; color: #7c3aed; }
+  .product-icon.track      { background: #fef3c7; color: #d97706; }
 
-  .product-info { flex: 1; }
-  .product-info .name { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
-  .product-info .specs {
+  .product-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--navy-heading);
+    letter-spacing: -0.2px;
+  }
+  .product-unit {
     font-size: 12px;
-    color: #7f8c8d;
+    color: var(--text-light);
+    font-weight: 400;
+  }
+
+  .product-specs {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
+    margin-bottom: 16px;
   }
-  .product-info .specs span {
-    background: #f5f3ef;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 11px;
+  .product-specs span {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text-body);
+    background: var(--bg-warm);
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-soft);
+  }
+
+  .product-footer {
+    margin-top: auto;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-top: 14px;
+    border-top: 1px solid var(--border-soft);
   }
   .product-price {
-    text-align: right;
-    flex-shrink: 0;
-  }
-  .product-price .price {
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--navy);
-  }
-  .product-price .unit {
-    font-size: 11px;
-    color: #999;
-  }
-  .product-price .moq {
-    font-size: 10px;
-    color: #c8956c;
+    font-size: 28px;
     font-weight: 600;
+    color: var(--navy-heading);
+    letter-spacing: -0.5px;
+    line-height: 1;
+  }
+  .product-price .currency {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--gold);
+  }
+  .product-moq {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--gold);
+    background: var(--gold-light);
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
   }
 
+  /* ── Note Box ── */
+  .note-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px 56px;
+  }
   .note-box {
-    margin: 0 16px 24px;
-    background: #fff8e1;
-    border-radius: 10px;
-    padding: 14px;
-    font-size: 12px;
-    color: #8d6e00;
+    background: var(--gold-light);
+    border: 1px solid rgba(200,149,108,0.2);
+    border-radius: var(--radius-lg);
+    padding: 16px 20px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #8b6914;
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .note-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
   }
 
-  .footer-nav {
-    display: flex;
-    justify-content: space-around;
-    padding: 14px 16px;
-    background: white;
-    border-top: 1px solid #eee;
-    font-size: 12px;
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .product-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
-  .footer-nav a {
-    color: #7f8c8d;
-    text-decoration: none;
-    text-align: center;
+  @media (max-width: 640px) {
+    .nav { padding: 0 16px; }
+    .nav-links a:not(.active) { display: none; }
+    .nav-links a.active { display: inline-flex; }
+    .page-hero { padding: 48px 20px 40px; }
+    .page-hero h1 { font-size: 24px; }
+    .stats-strip { padding: 0 20px; }
+    .stats-inner { gap: 16px; padding: 16px 20px; }
+    .stat-value { font-size: 17px; }
+    .products-section { padding: 40px 20px 24px; }
+    .product-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .product-card { padding: 16px; }
+    .product-name { font-size: 15px; }
+    .product-price { font-size: 22px; }
+    .note-section { padding: 0 20px 40px; }
   }
-  .footer-nav a .nav-icon { font-size: 18px; display: block; }
-  .footer-nav a.active { color: var(--navy); font-weight: 700; }
+  @media (max-width: 420px) {
+    .product-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <h1>📋 标准产品线</h1>
-  <p>全部支持数码印花定制 · 可来图定制LOGO/队名/号码</p>
-</div>
-
-<div class="summary-bar">
-  <span>6大品类</span>
-  <span>起订5件起</span>
-  <span>💰 含定制价</span>
-</div>
-
-<div class="product-list">
-
-  <div class="product-card">
-    <div class="product-icon basketball">🏀</div>
-    <div class="product-info">
-      <div class="name">篮球服套装</div>
-      <div class="specs">
-        <span>篮球提花面料</span>
-        <span>数码印花</span>
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand">奥跑服饰</a>
+      <div class="nav-links">
+        <a href="index.html">首页</a>
+        <a href="track.html">订单追踪</a>
+        <a href="products.html" class="active">产品报价</a>
+        
+        <a href="admin.html">管理后台</a>
       </div>
     </div>
-    <div class="product-price">
-      <div class="price">¥70</div>
-      <div class="unit">/套</div>
-      <div class="moq">5套起订</div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="page-hero-content">
+      <div class="page-hero-badge">标准产品线</div>
+      <h1>团体服装定制报价</h1>
+      <p>全部支持数码印花定制 · 可来图定制LOGO/队名/号码</p>
+    </div>
+  </section>
+
+  <!-- Stats Strip -->
+  <div class="stats-strip">
+    <div class="stats-inner">
+      <div class="stat-item">
+        <div class="stat-value">6</div>
+        <div class="stat-label">大品类</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">5件起</div>
+        <div class="stat-label">最低起订</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">含定制</div>
+        <div class="stat-label">单色LOGO印花</div>
+      </div>
     </div>
   </div>
 
-  <div class="product-card">
-    <div class="product-icon football">⚽</div>
-    <div class="product-info">
-      <div class="name">足球服套装</div>
-      <div class="specs">
-        <span>小米通面料</span>
-        <span>数码印花</span>
+  <!-- Products -->
+  <section class="products-section">
+    <div class="section-label">产品报价</div>
+    <h2 class="section-heading">选择您的产品</h2>
+    <p class="section-desc">所有产品均为基础定制价，含单色LOGO数码印花。</p>
+
+    <div class="product-grid">
+
+      <!-- 篮球服套装 -->
+      <div class="product-card">
+        <div class="product-card-header">
+          <div class="product-icon basketball">🏀</div>
+          <div>
+            <div class="product-name">篮球服套装</div>
+            <div class="product-unit">/套</div>
+          </div>
+        </div>
+        <div class="product-specs">
+          <span>篮球提花面料</span>
+          <span>数码印花</span>
+        </div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">¥</span>70</div>
+          <div class="product-moq">5套起订</div>
+        </div>
       </div>
+
+      <!-- 足球服套装 -->
+      <div class="product-card">
+        <div class="product-card-header">
+          <div class="product-icon football">⚽</div>
+          <div>
+            <div class="product-name">足球服套装</div>
+            <div class="product-unit">/套</div>
+          </div>
+        </div>
+        <div class="product-specs">
+          <span>小米通面料</span>
+          <span>数码印花</span>
+        </div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">¥</span>70</div>
+          <div class="product-moq">5套起订</div>
+        </div>
+      </div>
+
+      <!-- 龙舟服 -->
+      <div class="product-card">
+        <div class="product-card-header">
+          <div class="product-icon dragon">🐉</div>
+          <div>
+            <div class="product-name">龙舟服</div>
+            <div class="product-unit">/件</div>
+          </div>
+        </div>
+        <div class="product-specs">
+          <span>冰丝/锦纶</span>
+          <span>数码印花</span>
+        </div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">¥</span>70</div>
+          <div class="product-moq">10件起订</div>
+        </div>
+      </div>
+
+      <!-- Polo衫 -->
+      <div class="product-card">
+        <div class="product-card-header">
+          <div class="product-icon polo">👔</div>
+          <div>
+            <div class="product-name">Polo衫</div>
+            <div class="product-unit">/件</div>
+          </div>
+        </div>
+        <div class="product-specs">
+          <span>小米通面料</span>
+          <span>数码印花</span>
+        </div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">¥</span>80</div>
+          <div class="product-moq">10件起订</div>
+        </div>
+      </div>
+
+      <!-- 速干T恤 -->
+      <div class="product-card">
+        <div class="product-card-header">
+          <div class="product-icon tshirt">👕</div>
+          <div>
+            <div class="product-name">速干T恤</div>
+            <div class="product-unit">/件</div>
+          </div>
+        </div>
+        <div class="product-specs">
+          <span>速干方格面料</span>
+          <span>数码印花</span>
+        </div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">¥</span>70</div>
+          <div class="product-moq">10件起订</div>
+        </div>
+      </div>
+
+      <!-- 田径服 -->
+      <div class="product-card">
+        <div class="product-card-header">
+          <div class="product-icon track">🎽</div>
+          <div>
+            <div class="product-name">田径服</div>
+            <div class="product-unit">/件</div>
+          </div>
+        </div>
+        <div class="product-specs">
+          <span>小米通面料</span>
+          <span>数码印花</span>
+        </div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">¥</span>10</div>
+          <div class="product-moq">80件起订</div>
+        </div>
+      </div>
+
     </div>
-    <div class="product-price">
-      <div class="price">¥70</div>
-      <div class="unit">/套</div>
-      <div class="moq">5套起订</div>
+  </section>
+
+  <!-- Note -->
+  <div class="note-section">
+    <div class="note-box">
+      <span class="note-icon">💡</span>
+      <span>以上价格为基础定制价（含单色LOGO印花），多色/刺绣/特殊工艺需另计。量大可议价。</span>
     </div>
   </div>
 
-  <div class="product-card">
-    <div class="product-icon dragon">🐉</div>
-    <div class="product-info">
-      <div class="name">龙舟服</div>
-      <div class="specs">
-        <span>冰丝/锦纶</span>
-        <span>数码印花</span>
-      </div>
-    </div>
-    <div class="product-price">
-      <div class="price">¥70</div>
-      <div class="unit">/件</div>
-      <div class="moq">10件起订</div>
-    </div>
-  </div>
-
-  <div class="product-card">
-    <div class="product-icon polo">👔</div>
-    <div class="product-info">
-      <div class="name">Polo衫</div>
-      <div class="specs">
-        <span>小米通面料</span>
-        <span>数码印花</span>
-      </div>
-    </div>
-    <div class="product-price">
-      <div class="price">¥80</div>
-      <div class="unit">/件</div>
-      <div class="moq">10件起订</div>
-    </div>
-  </div>
-
-  <div class="product-card">
-    <div class="product-icon tshirt">👕</div>
-    <div class="product-info">
-      <div class="name">速干T恤</div>
-      <div class="specs">
-        <span>速干方格面料</span>
-        <span>数码印花</span>
-      </div>
-    </div>
-    <div class="product-price">
-      <div class="price">¥70</div>
-      <div class="unit">/件</div>
-      <div class="moq">10件起订</div>
-    </div>
-  </div>
-
-  <div class="product-card">
-    <div class="product-icon track">🎽</div>
-    <div class="product-info">
-      <div class="name">田径服</div>
-      <div class="specs">
-        <span>小米通面料</span>
-        <span>数码印花</span>
-      </div>
-    </div>
-    <div class="product-price">
-      <div class="price">¥10</div>
-      <div class="unit">/件</div>
-      <div class="moq">80件起订</div>
-    </div>
-  </div>
-
-</div>
-
-<div class="note-box">
-  💡 以上价格为基础定制价（含单色LOGO印花），多色/刺绣/特殊工艺需另计。量大可议价。
-</div>
-
-<div class="footer-nav">
-  <a href="/order-tracker/"><span class="nav-icon">🏠</span>首页</a>
-  <a href="track.html"><span class="nav-icon">📦</span>订单追踪</a>
-  <a href="expenses.html"><span class="nav-icon">💰</span>开支</a>
-  <a href="admin.html"><span class="nav-icon">⚙️</span>管理</a>
-</div>
+  <!-- Footer -->
+  <footer class="footer">
+    <strong>南昌奥跑服饰有限公司</strong> &nbsp;·&nbsp; 专业团体服装定制<br>
+    运动队服 · 团体制服 · 企业工服 · Polo衫 · 数码印花
+  </footer>
 
 </body>
 </html>
