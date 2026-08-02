@@ -47,6 +47,30 @@
       "tracking_number": "",
       "carrier": "",
       "tracking_history": []
+    },
+    "AT0616FY-390": {
+      "customer": "传承",
+      "product": "女士排球服 10件 定制号码和姓名",
+      "amount": "¥900",
+      "unit_price": "¥90",
+      "payment": "转傅媛微信900元全款",
+      "stage_key": "production",
+      "estimated_delivery": "2026年6月20日",
+      "updates": [
+        {
+          "date": "6月16日",
+          "stage_key": "design",
+          "note": "订单确认，已付全款¥900（转傅媛微信）"
+        },
+        {
+          "date": "6月16日",
+          "stage_key": "production",
+          "note": "印花排版中"
+        }
+      ],
+      "tracking_number": "",
+      "carrier": "",
+      "tracking_history": []
     }
   }
 }
