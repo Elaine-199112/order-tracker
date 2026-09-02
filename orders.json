@@ -71,6 +71,62 @@
       "tracking_number": "",
       "carrier": "",
       "tracking_history": []
+    },
+    "AT260902PW-625": {
+      "customer": "徐氏龙舟队",
+      "product": "",
+      "stage_key": "design",
+      "estimated_delivery": "2026年9月9日",
+      "amount": "¥10000",
+      "payment": "已支付全款",
+      "items": [
+        {
+          "name": "紫色数码印冰丝短袖T恤",
+          "qty": 200,
+          "unit_price": 36,
+          "amount": 7200,
+          "image": "/images/2f73264529a84d01b49d32b8927c26a6.png"
+        },
+        {
+          "name": "86601 白色短袖冰丝POLO衫",
+          "qty": 50,
+          "unit_price": 56,
+          "amount": 2800,
+          "image": "/images/3b867b03894843aa8ac0b6f79e99b642.png"
+        }
+      ],
+      "updates": [
+        {
+          "date": "9月2日",
+          "stage_key": "design",
+          "note": "订单确认，已支付全款¥10000"
+        }
+      ],
+      "tracking_number": "",
+      "carrier": "",
+      "tracking_history": []
+    },
+    "AT2026FY-0903": {
+      "customer": "傅如花",
+      "product": "",
+      "stage_key": "design",
+      "estimated_delivery": "2026年9月4日",
+      "amount": "¥440",
+      "payment": "已支付全款",
+      "items": [
+        {
+          "name": "230克全棉白色短袖T恤定制烫画",
+          "qty": 8,
+          "unit_price": 55,
+          "amount": 440,
+          "image": "/images/a7a6615487904ede8ccd62adb4aceb34.png",
+          "note": ""
+        }
+      ],
+      "updates": [],
+      "tracking_number": "",
+      "carrier": "",
+      "tracking_history": []
     }
   }
 }
