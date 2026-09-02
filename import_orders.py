@@ -30,6 +30,21 @@ STAGE_MAP = {
     '已发货': 'shipping',
 }
 
+
+def map_stage(text):
+    """阶段文本 → stage_key。标准名直接映射，否则按关键词推断。"""
+    if not text:
+        return 'design'
+    if text in STAGE_MAP:
+        return STAGE_MAP[text]
+    if any(k in text for k in ('发货', '物流', '送达', '签收')):
+        return 'shipping'
+    if any(k in text for k in ('面料', '采购', '买布')):
+        return 'fabric'
+    if any(k in text for k in ('印', '生产', '裁剪', '缝', '绣', '烫画', '包装')):
+        return 'production'
+    return 'design'
+
 _XDR = 'http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing'
 _A = 'http://schemas.openxmlformats.org/drawingml/2006/main'
 _R = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships'
@@ -208,10 +223,12 @@ def parse(xlsx_path):
                 continue
             stage = str(vals[col2['阶段']] or '').strip()
             note = str(vals[col2['备注']] or '').strip()
+            # 若阶段列填了非标准文本（业务员常把进展描述写这里），当作备注
+            final_note = note or (stage if stage not in STAGE_MAP else '')
             updates_map.setdefault(order_id, []).append({
                 'date': fmt_date(vals[col2['更新日期']]),
-                'stage_key': STAGE_MAP.get(stage, 'design'),
-                'note': note or stage,
+                'stage_key': map_stage(stage),
+                'note': final_note or stage,
             })
 
     return orders, updates_map
