@@ -109,7 +109,7 @@
     "AT2026FY-0903": {
       "customer": "傅如花",
       "product": "",
-      "stage_key": "design",
+      "stage_key": "production",
       "estimated_delivery": "2026年9月4日",
       "amount": "¥440",
       "payment": "已支付全款",
@@ -119,11 +119,17 @@
           "qty": 8,
           "unit_price": 55,
           "amount": 440,
-          "image": "/images/a7a6615487904ede8ccd62adb4aceb34.png",
+          "image": "/images/8a9040ed209442d989dc7fdd9fde7908.png",
           "note": ""
         }
       ],
-      "updates": [],
+      "updates": [
+        {
+          "date": "2026年9月3日",
+          "stage_key": "production",
+          "note": "印花图已打，等待印"
+        }
+      ],
       "tracking_number": "",
       "carrier": "",
       "tracking_history": []
